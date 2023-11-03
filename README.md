@@ -38,7 +38,7 @@ Ornegin terminalimizde dizin olarak Desktop konumunda olalim ve desktopta var ol
 [emreakdik@dell Desktop]$ cd minishell
 ```
 Yukaridaki sekilde komut kullanirsak, terminal bizim icin oldugumuz konumda minishell klasorunu arar ve eger varsa calisma dizinimizi minishell klasoru olarak degistirir. 
-
+ 
 **Absolute Path:**
 
 Diyelim ki documents dizinindeyiz ve Desktop dizinindeki minishell klasorune erismek istiyoruz. Eger bunun icin yukaridaki gibi bir komut kullanirsak klasorun bulunamadigina dair bir hata mesaji ile karsilasacagiz. Cunku relative path vererek kullandigimiz cd komutunda, terminal bizim icin o an oldugumuz dizinde arama yapmaktadir ve minishell klasoru Documents dizininde degil Desktop dizininde. Iste bunun gibi durumlarda Absolute Path kullanimi bizi kurtarmaktadir.
@@ -144,7 +144,7 @@ Yukarida ogrendigimiz iki yontemi tek bir komut icerisinde kullanalim:
 Yukaridaki komutta file_list.txt dosyasi siralanir ve siralanmis versiyonu sorted_file_list.txt dosyasina cikti olarak verilir.
 
 ### Pipelines
-
+---
 Pipe ("|") kullanimi ile komutlarin ciktilarini birbirinin girdisine baglayabiliriz. 
 
 Ornek: 
@@ -155,7 +155,7 @@ Ornek:
 Yukaridaki komutta ls komutunun ciktisi head komutunun girdisine yonlendirilir ve bulundugumuz konumdaki listelenen dosya ve klasorlerin sadece ilk ikisi cikti olarak verilir.
 
 ### Genisletme (Expansion)
-
+---
 Terminaldeki cevre degiskenlerinden bahsedebilmistik. Eger biz bir degisken olusturduysak veya varolan bir degisken uzerinden islem yapacaksak bu degiskenlere "$" isareti ile birlikte erisebiliriz. 
 
 Ornegin:
@@ -166,7 +166,7 @@ Ornegin:
 Yukaridaki komut kullanildiginda terminal bizim icin cevre degiskenlerini tarar ve PATH adinda bir degisken varsa o degiskenin icerigini $PATH kullaniminin yerine yerlestirir ve komutu o sekilde calistirir.
 
 ### Komutlarda Relative ve Absolute
-
+---
 Yukarida relative ve absolute path yontemlerinden bahsetmistim. Ayni sekilde terminalin calisma mantiginda kullandigimiz komutlar PATH degiskeninde belirtilen dizinlerde aranip, bulunursa calistirildigi icin ayni yontem komutlari calistirirkende gecerlidir. 
 
 Relative ornegi:
@@ -181,12 +181,135 @@ Absolute Ornegi:
 ```
 Terminal yukaridaki iki kullanim seklinide anlar ve ls komutunu calistirir.
 
+### Cift Tirnak
+---
 
-----
+Çift tırnakların içine metin yerleştirirsek, kabuk tarafından kullanılan özel karakterler özel anlamlarını kaybeder ve bunlar sıradan karakterler olarak işlenir. İstisnalar, "$", "" (ters eğik çizgi) ve "`" (ters tırnak) karakterleridir. Bu, kelime bölme, yol adı genişletme, tilde genişletme ve süslü parantez genişletmesinin engellendiği anlamına gelir, ancak parametre genişletme, aritmetik genişletme ve komut yerine koyma hala gerçekleştirilir.
+
+```bash
+emre@emres-MacBook-Air ~ % echo "$USER $((2+2)) $(cal)"
+emre 4    November 2023
+Su Mo Tu We Th Fr Sa
+          1  2  3  4
+ 5  6  7  8  9 10 11
+12 13 14 15 16 17 18
+19 20 21 22 23 24 25
+26 27 28 29 30
+```
+
+### Tek Tirnak 
+---
+
+Tüm genişlemeleri bastırmamız gerektiğinde tek tırnak kullanırız. İşte tırnaksız, çift tırnak ve tek tırnak karşılaştırması:
+
+```bash
+emre@emres-MacBook-Air ~ % echo text ~/*.txt {a,b} $(echo foo) $((2+2)) $USER
+text /home/emre/ls-output.txt a b foo 4 me 
+
+emre@emres-MacBook-Air ~ % echo "text ~/*.txt {a,b} $(echo foo) $((2+2)) $USER"
+text ~/*.txt {a,b} foo 4 me 
+
+emre@emres-MacBook-Air ~ % echo 'text ~/*.txt {a,b} $(echo foo) $((2+2)) $USER'
+text ~/*.txt {a,b} $(echo foo) $((2+2)) $USER
+```
+
+
+Tabii ki! İşte terminallerdeki çocuk işlem (child process) oluşturma, pipelar, redirectionlar ve komutların paralel veya eşzamanlı çalışması hakkında kapsamlı bir rehber:
+
+---
+
+### Komutların Paralel ve Eşzamanlı Çalışması
+
+Birden fazla komutu paralel veya eşzamanlı olarak çalıştırmak için bazı araçlar ve yöntemler vardır:
+
+#### `&` Operatörü (Arka Planda Çalıştırma)
+
+Bir komutu arka planda çalıştırmak için `&` operatörünü kullanabilirsiniz.
+
+Örnek:
+```bash
+emre@emres-MacBook-Air ~ % long_running_command &
+```
+
+Yukarıdaki komut, `long_running_command` komutunu arka planda çalıştırır.
+
+#### `;` Operatörü (Sıralı Çalıştırma)
+
+Komutları sırasıyla çalıştırmak için `;` operatörünü kullanabilirsiniz.
+
+Örnek:
+```bash
+emre@emres-MacBook-Air ~ % command1 ; command2
+```
+
+Yukarıdaki komut, `command1` komutunu tamamladıktan sonra `command2` komutunu çalıştırır.
+
+#### `|` Operatoru 
+
+Pipe operatoru, komutların ciktilarini ve girdilerini birbirine bağlamamıza yarar demistik. Fakat bu durumda bilinenin disinda bir durum var. Pipe kullanımında komutlar es zamanli degil paralel calisirlar. **Ezamanli ve paralel farkini öğrenmek istiyorsanız philosophers repomdaki konu anlatımıma bakabilirsiniz.** 
+
+Ornek vermek gerekirse basitçe ls ve head fonksiyonlarını pes pese kullandınız diyelim. ls komutu daha isini bitirmeden head komutuda isine baslar. Kisaca ls yazdıkça head okur yani paralel calisirlar.
+
+Daha basitçe anlayalım:
+
+```bash
+emre@emres-MacBook-Air ~ % sleep 1 | echo "neden echo sleep komutunu beklemedi?"
+neden echo sleep komutunu beklemedi?
+```
+Yukaridaki komutu calistirirsaniz eğer sleep komutunu önce yazmamıza rağmen echo paralel calisarak ciktisini verdi. 
+
+#### `&&` Operatörü (Başarılı Olursa Çalıştırma)
+
+Komutları yalnızca önceki komut başarılı olduğunda çalıştırmak için `&&` operatörünü kullanabilirsiniz.
+
+Örnek:
+```bash
+emre@emres-MacBook-Air ~ % command1 && command2
+```
+
+Yukarıdaki komut, `command1` komutu başarılı olursa `command2` komutunu çalıştırır.
+
+#### `||` Operatörü (Başarısız Olursa Çalıştırma)
+
+Komutları yalnızca önceki komut başarısız olduğunda çalıştırmak için `||` operatörünü kullanabilirsiniz.
+
+Örnek:
+```bash
+emre@emres-MacBook-Air ~ % command1 || command2
+```
+Yukarıdaki komut, `command1` komutu başarısız olursa `command2` komutunu çalıştırır.
+
+#### Basarili Basarisiz Durumunun Sorgulanmasi
+
+Komutlar basarili sekilde calisirlarsa exit code olarak 0 döndürürler. Eğer bir komut yanlış calistiysa 0 disinda bir exit code dondurur, bu da hatasının cikis kodunu verir.
+
+Peki ya son calisan komut'un return degerini nasıl kontrol ederiz? Orneklerle bakmak gerekirse:
+
+```bash
+emre@emres-MacBook-Air ~ % echo emre
+emre
+emre@emres-MacBook-Air ~ % echo $?
+0
+```
+ya da
+```bash
+emre@emres-MacBook-Air ~ % ls mre
+ls: mre: No such file or directory
+emre@emres-MacBook-Air ~ % echo $?
+1
+```
+
+Yukarida görüldüğü gibi "$?" kullanımı son calisan islemin cikis kodunu ulaşılabilir kilar.
+
+
+---
+
+
+
 
  Siradaki Eklenecek basliklar 
- - [ ] Tirnak isaretlerinin calismasi 
- - [ ] Birkomut nasil calisir (process vs) 
+ - [x] Tirnak isaretlerinin calismasi 
+ - [ ] Bir komut nasil calisir (process vs) 
  - [ ]  Bir terminal Nasil calisir (lexer - parser - executer)
  - [ ] Projedeki izinli fonksiyonlar
- - [ ] CTRL-C ve CTRL-D Durumlari
+ - [ ] Sinyaller
