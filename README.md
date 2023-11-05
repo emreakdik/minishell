@@ -253,10 +253,10 @@ Ornek vermek gerekirse basitçe ls ve head fonksiyonlarını pes pese kullandın
 Daha basitçe anlayalım:
 
 ```bash
-emre@emres-MacBook-Air ~ % sleep 1 | echo "neden echo sleep komutunu beklemedi?"
-neden echo sleep komutunu beklemedi?
+emre@emres-MacBook-Air ~ % sleep 1 | echo "neden echo once calisti?"
+neden echo once calisti?
 ```
-Yukaridaki komutu calistirirsaniz eğer sleep komutunu önce yazmamıza rağmen echo paralel calisarak ciktisini verdi. 
+Yukaridaki komutu calistirirsaniz eğer sleep komutunu önce yazmamıza rağmen echo  
 
 #### `&&` Operatörü (Başarılı Olursa Çalıştırma)
 
@@ -301,6 +301,85 @@ emre@emres-MacBook-Air ~ % echo $?
 
 Yukarida görüldüğü gibi "$?" kullanımı son calisan islemin cikis kodunu ulaşılabilir kilar.
 
+### Terminal Process Yonetimi
+---
+Terminala yazdigimiz komutlar genel olarak child process oluşturularak calistirilirlar. Istisnai olarak built-in komutlar'in calisma mantiklarindan kaynakli child process'e ihtiyaci olmaz. 
+
+Bir "child process" (çocuk işlem) oluşturulur ve komut bu process içinde çalıştırılır. Bu, çeşitli avantajlar sunar. Örneğin, paralellik sağlar, böylece birden fazla komut aynı anda çalıştırılabilir ve bir komut diğerleriyle etkileşime girebilir. Ayrıca, bir işlem hata verdiğinde veya çöktüğünde ana terminal işlemi etkilenmez.
+
+Eger calistirilan komut, child process olusturarak calistirilmasaydi, komut bitince veya sinyal ile islemi durdurdugumuzda terminalin kendisi kapanirdi. 
+
+Bunu uygulamalı sekilde gösterebilmek icin **exec** komutundan bahsedeceğim. **exec** komutu ile calistirdigimiz komutlar, Child processes oluşturmak yerine ana processte calisir ve bittiklerinde ana process kapandigi icin terminalimiz kapanır. 
+
+Ornegin:
+
+```bash
+emre@emres-MacBook-Air ~ % exec ls
+```
+
+Yukaridaki komutu calistirdigimizda ls komutu calisir ve biz daha ciktiyi göremeden terminal kapanır. Komutun calyistiginin kantini ise asagidaki gibi elde edebilirsiniz.
+
+```bash
+emre@emres-MacBook-Air ~ % exec ls > output.txt
+```
+
+Process nedir? Thread Nedir? gibi soruların cevaplarını philosophers repomda bulabilirsiniz. Process oluşturma gibi işlevlere yarayan fonksiyonları yazının devamında goreceksiniz.
+
+### Sinyaller
+---
+Shellimizde CTRL + C, CTRL + D gibi tus kombinasyonlarının yönetimini yapacağız. Bunun icin ise kodumuza sinyal yönetimini islememiz gerekecek.
+
+CTRL + C kombinasyonu programımıza SIGINT sinyalini gönderir. Bu sinyal ile birlikte hali hazırda calismakta olan islemin durdurulmasını saglar. Ornek bir kod ile incelersek daha iyi anlasilacagini düşünüyorum:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+
+void sigint_handler(int signum) {
+    printf("CTRL-C received, exiting...\n");
+    exit(0);
+}
+
+int main() {
+    signal(SIGINT, sigint_handler); // SIGINT sinyalini işleyen fonksiyon
+    while (1) {
+        // Shell mantığı burada
+    }
+    return 0;
+}
+```
+CTRL + D kombinasyonu ise, shellin girdi almasını durdurur. Basitçe shell'i kapatır. Bunun icin ise SIGQUIT sinyalini kullanır. Yine üstte gösterilen ornek uzerinden SIQQUIT sinyali icin bir calışma yapılabilir.
+
+## Bir Terminal/Shell Nasil Calisir?
+
+Bu başlıkta basitçe, shell'in calışma adımlarından bahsedeceğim. Shell aslında basitçe bir sinirsiz döngüden ibarettir. Kullanıcıdan girdi bekler, girdiyi alir, parcalar, genişletir, birleştirir ve calistirir. Bu dongunun adımları basitçe asagidaki gibidir:
+
+1. Kullanicidan girdi bekler
+2. Girdiyi parselar/ayristirir
+3. Komutu calistirir ve sonucu verir
+4. Ilk adima geri doner 
+
+Ikinci ve ucuncu adımları daha derinmelesine incelemeye kalktigimizda 4 adim oldugunu goruruz. Bunlar ise: `lexer` → `parser` → `expander` → `executor`
+
+![](https://user-images.githubusercontent.com/68693691/193665518-0c0c7fec-38a9-4f6c-91ca-fef606abfb0d.png) 
+Yukaridaki goruntuyu maiadegraaf isimli kullanıcıdan aldim. 
+
+Simdi aşamaları basitçe aciklamak istiyorum.
+
+ **Lexer (Ayrıştırıcı):**
+    Lexer aşaması, kullanıcının girdiğini alır ve bu girdiyi belirli öğelere, yani "token"lara böler. Bir token, girdinin birimlerini temsil eder. Örneğin, bir token bir komut, bir değişken adı, bir operatör veya bir sayı olabilir. 
+
+**Parser (Ayrıştırıcı):**
+    Parser, lexer tarafından oluşturulan tokenları alır ve bu tokenları bir sözdizimi ağacına çevirir. Sözdizimi ağacı, komutların yapısını ve ilişkilerini temsil eder. Örneğin, bir komutun bir argümanı veya seçeneği olabilir, ve bu ağaç bu ilişkiyi gösterir. Parser, kullanıcının girdisinin doğru bir şekilde yapılandırıldığından emin olur. Eğer girdi doğru bir sözdizimi yapısına sahip değilse, parser hata verir.
+
+**Expander (Genişletici):**
+   Expander aşaması, bazı terminal komutlarının veya ifadelerinin genişlemesini işler. Özellikle, değişkenlerin ve özel karakterlerin değerlerini ve işlevlerini yerine getirir. Örneğin, bir değişkenin değeri yerine koyulabilir veya bir joker karakter (*) tüm dosyaları eşleştirebilir.
+
+**Executor:**
+	Executor, sözdizimi ağacını alır ve bu ağacı yorumlayarak komutları gerçek dünyada yürütür. Yürütücü, kullanıcı komutlarını işletim sistemine veya diğer programlara iletir ve sonuçları kullanıcıya sunar. Örneğin, bir "ls" komutunu yürütmek, dizin içeriğini listeler ve sonucu ekrana yazdırır.
+
+
 
 ---
 
@@ -309,7 +388,7 @@ Yukarida görüldüğü gibi "$?" kullanımı son calisan islemin cikis kodunu u
 
  Siradaki Eklenecek basliklar 
  - [x] Tirnak isaretlerinin calismasi 
- - [ ] Bir komut nasil calisir (process vs) 
+ - [x] Bir komut nasil calisir (process vs) 
  - [ ]  Bir terminal Nasil calisir (lexer - parser - executer)
  - [ ] Projedeki izinli fonksiyonlar
- - [ ] Sinyaller
+ - [x] Sinyaller
