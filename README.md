@@ -257,10 +257,11 @@ Ornek vermek gerekirse basitçe ls ve head fonksiyonlarını pes pese kullandın
 Daha basitçe anlayalım:
 
 ```bash
-emre@emres-MacBook-Air ~ % sleep 1 | echo "neden echo once calisti?"
+emre@emres-MacBook-Air ~ % sleep 1 | echo "neden echo sleep komutunu beklemedi?"
+neden echo sleep komutunu beklemedonce calisti?"
 neden echo once calisti?
 ```
-Yukaridaki komutu calistirirsaniz eğer sleep komutunu önce yazmamıza rağmen echo  
+Yukaridaki komutu calistirirsaniz eğer sleep komutunu önce yazmamıza rağmen echo paralel calisarak ciktisini verdi. 
 
 #### `&&` Operatörü (Başarılı Olursa Çalıştırma)
 
@@ -384,15 +385,405 @@ Simdi aşamaları basitçe aciklamak istiyorum.
 	Executor, sözdizimi ağacını alır ve bu ağacı yorumlayarak komutları gerçek dünyada yürütür. Yürütücü, kullanıcı komutlarını işletim sistemine veya diğer programlara iletir ve sonuçları kullanıcıya sunar. Örneğin, bir "ls" komutunu yürütmek, dizin içeriğini listeler ve sonucu ekrana yazdırır.
 
 
+## Fonksiyonlar
+
+
+### readline
+
+```c
+#include  <stdio.h>
+#include  <stdlib.h>
+#include  <readline/history.h>
+#include  <readline/readline.h>
+
+int  main(void)
+{
+	char  *str;
+
+	// system("clear");
+	str  =  readline("minishell> ");
+
+	/*
+	terminalden okur ve okudugunu return eder, terminalde prompt gosterir.
+	prompt null veya bos string ise prompt gosterilmez.
+	
+	return edilen satir malloc ile alloclanmistir yani serbest birakilmalidir.
+	satirin sonundaki new line silinerek return edilir.
+	
+	eger okunan satirin sonuna gelindiyse yani EOF ile karsilasildiysa ve
+	satir bos ise null dondurur.
+	eger bos olmayan bir satir EOF ile bitmisse, eof'a newline olarak davranilir.
+	*/
+	add_history(str);
+	printf("%s\n", str);
+
+	free(str);
+	return  (0);
+}
+```
+
+### history
+
+```c
+#include  <stdio.h>
+#include  <readline/history.h>
+#include  <readline/readline.h>
+#include  <stdlib.h>
+#include  <unistd.h>
+#include  <fcntl.h>
+
+int  ft_strcmp(char  *str, char  *dst){
+
+	int  i  =  0;
+
+	while (dst[i]){
+	if (str[i] !=  dst[i])
+	break;
+	i++;
+	}
+	return  str[i] -  dst[i];
+}
+
+void  exec_history(char  *history_path){
+
+	int  i  =  0;
+	int  fd;
+	int  rd;
+	char  c;
+
+	fd  =  open("emre.txt", O_RDWR);
+	while((rd  =  read(fd, &c, 1)) !=  0)
+		write(1, &c, 1);
+}
+
+int  main(int  ac, char  **av, char  **envp){
+
+	char  *str;
+	char  *history_path  =  "emre.txt";
+
+	while (1){
+	str  =  readline("minishell> ");
+	add_history(str);
+	/*
+	void add_history (const char *string);
+
+	arguman olarak girilen string'i gecmis'e ekler.
+	fakat bu gecmis anlik olarak o process'te tutulan gecmistir.
+	yani program bittikten sonra history komutu ile o gecmis gorulemez.
+	*/
+	write_history(history_path);
+	/*
+	bu fonksiyon minishell'de kullanilabilir durumda degil.
+
+	fonksiyon verilen stringde bir dosya olusturur ve bu dosyaya 
+	add_history ile eklenmis olan gecmis'i yazar.
+	*/
+	if (!strcmp(str, "history"))
+	exec_history(history_path);
+	if (!strcmp(str, "exit"))
+	break;
+	}
+	free(str);
+}
+```
+
+### fork () ve wait()
+
+```c
+#include <unistd.h>
+#include <sys/wait.h>
+#include <stdio.h>
+
+int main(int ac, char **av){
+
+    int pid = fork();
+    /*
+    fork cagirildigi process'i kopyalayarak yeni bir process olusturur.
+    yeni olusturulan process child process olarak adlandirilir.
+    fork fonksiyonunun cagirildigi process'e ise parent process denir.
+
+    parent process ve child process ayri bellek alanlarina sahiptir.
+    ama yine de ayrildiklarinda ayni icerige sahiptirler.
+    processlerin bellek alanlarina yazmalari esnasinda birbirlerini etkilemezler.
+
+    child process kendine has process ID'ye sahiptir.
+
+    basari durumunda parent process'te child process'in PID'sini return eder, 
+    child process'te ise 0 return eder.
+    */
+    int status;
+    int gpid;
+    if (pid > 0){ // parent process icin kod blogu
+        gpid = wait(&status); // child processin bitmesini bekler
+        /*
+        pid_t wait(int *wstatus);
+
+            wait fonksiyonu herhangi child processin durumunu kontrol eder.
+            child process'te bir degisiklik olana kadar bekler ve sonlanmaz.
+            return olarak biten child processin id'sini dondurur
+            status degiskeni ise child processin bitme durumunu tutar
+            hata durumunda -1 dondurur.
+        */
+        printf("parent process: \n\n");
+        printf("parent process fork() return: %d\n", pid);
+        printf("sonlanan child process id: %d\n", gpid);
+        printf("parent process blogundan child processin bitme durumu: %d\n", status);
+        printf("bitme durumu beklediginden garip dondu degil mi? :)\n");
+    }
+    else if (pid == 0){ // child process icin kod blogu
+        printf("child process: \n\n");
+        printf("child process fork() return: %d\n", pid); 
+        /* 
+        Child process de pid degiskeni 0 tutar cunku fork fonksiyonu child 
+        processte 0 dondurur fakat parent process de child processin id'sin
+        dondurur
+        */
+        printf("child processin id: %d\n", getpid());
+        printf("child processin hangi parent process'e ait oldugu id: %d\n\n", getppid()); 
+        // fark ettiysen getpid degil getppid :)
+    }
+    else // fork fonksiyonunun basarisiz olmasi durumu
+        printf("fork error\n");
+    return 3; // wait fonksiyonunun return'u icin 3 yaptim
+}
+
+```
+### pipe()
+
+```c
+#include <unistd.h>
+/*
+fork, pipe, read ve write fonksiyonlari icin gerekli unistd
+*/
+#include <sys/wait.h>
+/*
+wait fonksiyonu icin gerekli sys/wait
+*/
+#include <stdio.h>
+
+int main(void){
+    int fd[2]; // pipe icin iki dosya tanimlayacagiz
+
+    pipe(fd); // pipe fonksiyonu ile fdleri olusturuyoruz
+    /*
+    int pipe(int pipefd[2]);
+    fd[0] -> read icin
+    fd[1] -> write icin
+
+    write fd'sine yazildiktan sonra kernel write fd'sini read fd'sinden okunana 
+    kadar saklar.
+
+    basari durumunda 0 dondurur. hata durumunda -1 dondurur.
+    */
+    int pid = fork(); // iki process arasinda pipelayacagimiz icin fork ile child 
+    // process olusturuyoruz
+
+    if (pid > 0){ // parent process icin kod blogu
+        close(fd[0]);
+        /*
+        parent process ile birlikte sadece yazma islemi yapacagimiz icin okuma 
+        fd'sini kapatiyoruz.        
+        */
+        write(fd[1], "hello", 5);
+        close(fd[1]);
+        /*
+        kapatilan fd sadece oldugu process icin kapatiliyor. child process 
+        olusturuldugunda parent process'in tum bellek alanini
+        kendi alanina kopyaladigi icin diger processte kapatilmis olan fd diger bir 
+        processte miras kalarak yasamina devam edebiliyor.
+        */
+    }
+    else if (pid == 0){
+        close(fd[1]); // yazma islemi yapilmayacagi icin yazma fd'sini kapatiyoruz
+        char buf[5]; // okuma islemi icin bir buffer olusturuyoruz
+        read(fd[0], buf, 5); // pipe'dan okuma islemi gerceklestiriyoruz
+        printf("%s\n", buf); // okunan degeri ekrana yazdiriyoruz
+        close(fd[0]); // okuma islemi bittigi icin okuma fd'sini kapatiyoruz
+    }
+    else
+        printf("fork error\n");
+    return 0;
+}
+```
+
+### access()
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h> // budur
+
+int main() {
+    const char* file = "example.txt";
+
+    if (access(file, F_OK) == 0) {
+        printf("'%s' dosyası mevcut.\n", file);
+
+        if (access(file, R_OK) == 0) {
+            printf("'%s' dosyası okunabilir.\n", file);
+        } else {
+            printf("'%s' dosyası okunabilir değil.\n", file);
+        }
+
+        if (access(file, W_OK) == 0) {
+            printf("'%s' dosyası yazılabilir.\n", file);
+        } else {
+            printf("'%s' dosyası yazılabilir değil.\n", file);
+        }
+    } else {
+        printf("'%s' dosyası mevcut değil.\n", file);
+    }
+
+    return 0;
+}
+
+/*
+int access(const char *pathname, int mode);
+
+fonksiyon, erisilen fonksiyona olan izinlerimizi veya dosyanin varligini kontrol eder.
+*/
+```
+
+### execve()
+
+```c
+#include <stdio.h>
+
+int main(int argc, char *argv[], char *envp[]) {
+
+    /*
+    envp degiskeni exec fonksiyonlarinin calismasi icin gereken sistem ortam 
+    degiskenlerini tutar.
+
+    bu string'in sonunda null vardir.
+
+    bu stringdeki degiskenlerin formu ise name=value'dur.
+
+    ornekler;
+
+    user, giris yapilan kullanicinin ismidir
+    home, kullanicinin home dizinidir
+    path,  "sh(1)" ve birçok diğer programın, eksik bir yol adıyla bilinen bir 
+    dosyayı ararken uyguladığı dizin önekleri dizisi. Bu önekler ':' ile ayrılır. 
+    pwd, bulunulan calisma dizinini gosterir
+    shell, kullanicinin login shell'inin yoludur
+    term, hangi tip terminal oldugunu tutar
+    */
+
+    char *args1[] = {"/bin/ls", "-l", NULL};
+    char *args2[] = {"/usr/bin/wc", "-l", NULL};
+    int pid;
+    int fd[2];
+
+    if (pipe(fd) == -1)
+        perror("pipe");
+    pid = fork();
+
+    if (pid == 0)
+        execve(args1[0], args1, envp);
+    else if (pid > 0){
+        
+    }
+    else
+        perror("fork");
+
+    execve(args1[0], args1, envp);
+    /*
+    int execve(const char *pathname, char *const argv[],
+                  char *const envp[]);
+    lokasyonu belirtilen programi calistirir. calistirilan
+    program var olan bellek alaniyla birlikte baslar fakat yeni baslangic
+    degerleriyle birlikte tamamen yeni bir program olarak calisir.
+    cagirildigi program sonlandirilir.
+    
+    lokasyonda calistirilabilir binary veya #!interpreter ile baslayan
+    bir script olmalidir.
+
+    execve() basari durumunda return etmez, yeni program eski programdaki
+    text, initialized data, uninitialized data ve stack alanlarinin uzerine yazar.
+
+    program ptraced ise, basarili calisitrmadan sonra SIGTRAP sinyali gonderilir.
+
+    hata durumunda -1 dondurur.
+      */
+    execve(args2[0], args2, envp);
+    return 0;
+}
+
+```
+
+### dup2()
+
+```c
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/wait.h>
+
+void child_process(int fd[], char *args[]){
+    close(fd[0]); // child process ile okuma gerceklestirmeyecegim icin pipe'in (boru'nun :)) okuma tarafini kapatiyorum
+    dup2(fd[1], STDOUT_FILENO); 
+    /*
+    int dup2(int oldfd, int newfd)
+
+    oldfd yerine newfd yerlestirilir ve newfd eger onceden acilmissa yeniden 
+    kullanilmadan once sessizce kapatilir.
+
+    eger oldfd gecerli bir fd degilse, fonksiyon basarisiz olur ve newfd 
+    kapatilmaz.
+
+    eger oldfd gecerliyse ve newfd ile ayni degere sahipse, dup2 hicbir sey yapmaz 
+    ve newfd'yi return eder.
+
+    basari halinda fonksiyon newfd'yi return eder. error durumunda -1 return eder.
+    */
+    close(fd[1]); // pipe'in yazma kismini kapatiyorum cunku artik o kisma standart 
+    // cikti uzerinden erisecegim
+    execve(args[0], args, NULL); // ls -l komutunu calistiriyorum
+}
+
+void parent_process(int fd[], char *args[]){
+    waitpid(-1, NULL, 0);
+    /*
+    ikinci komutun calistirilmasi icin ilk komutun bittiginden emin olmamiz 
+    gerekiyor. bu yuzden ilk komutu child process
+    ile gerceklestirdim ki waitpid fonksiyonu ile child process'in yani ilk komutun 
+    bitmesini bekleyebiliyim. 
+    */
+    close(fd[1]); // parent process ile yazma gerceklestirmeyecegim icin pipe'in 
+    // (boru'nun :)) yazma tarafini kapatiyorum
+    dup2(fd[0], STDIN_FILENO); // pipe'in okuma kismini stdin'e yonlendiriyorum
+    close(fd[0]); // pipe'in okuma kismini kapatiyorum cunku artik o kisma standart 
+    // girdi uzerinden erisecegim
+    execve(args[0], args, NULL); // wc -l komutunu calistiriyorum
+}
+
+int main(void){
+
+    char *args[] = {"/bin/ls", "-l", NULL}; // calistirilacak komut 1
+    char *args2[] = {"/usr/bin/wc", "-l", NULL}; // calistirilacak komut 2
+    int fd[2]; // pipe icin dosya tanimlayicisi
+    int pid;  // fork fonksiyonunun donus degeri
+
+    if (pipe(fd) == -1) // pipe olusturulmasi
+        perror("pipe");
+    pid = fork(); // fork fonksiyonunun cagrilmasi
+    if (pid == 0) // child process icin kod blogu
+        child_process(fd, args);
+    else if (pid > 0) // parent process icin kod blogu
+        parent_process(fd, args2);
+    else
+        perror("fork");
+    
+    return 0;
+}
+```
+
 
 ---
-
-
-
 
  Siradaki Eklenecek basliklar 
  - [x] Tirnak isaretlerinin calismasi 
  - [x] Bir komut nasil calisir (process vs) 
- - [ ]  Bir terminal Nasil calisir (lexer - parser - executer)
+ - [x]  Bir terminal Nasil calisir (lexer - parser - executer)
  - [ ] Projedeki izinli fonksiyonlar
  - [x] Sinyaller
