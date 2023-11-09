@@ -787,3 +787,5 @@ int main(void){
  - [x]  Bir terminal Nasil calisir (lexer - parser - executer)
  - [ ] Projedeki izinli fonksiyonlar
  - [x] Sinyaller
+
+       github:denizcakr
