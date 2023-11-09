@@ -794,8 +794,8 @@ int main(void){
  Siradaki Eklenecek basliklar 
  - [x] Tirnak isaretlerinin calismasi 
  - [x] Bir komut nasil calisir (process vs) 
- - [x]  Bir terminal Nasil calisir (lexer - parser - executer)
+ - [ ]  Bir terminal Nasil calisir (lexer - parser - executer)
  - [ ] Projedeki izinli fonksiyonlar
- - [x] Sinyaller
+ - [ ] Sinyaller Hakkinda Derinlemesine Aciklama
 
        github:denizcakr
