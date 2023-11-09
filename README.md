@@ -2,7 +2,7 @@
 
 Bu repo minishell projesine temiz bir baslangic yapabilmenizi, minishell projesinin parcalarini basitce anlamanizi hedeflemektedir. 
 
-Repo hala gelistirme surecindedir ve tam olarak bitmemistir..
+Repo hala gelistirme surecindedir ve tam olarak bitmemistir.
 
 ## Giris
 
