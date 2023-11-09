@@ -5,7 +5,7 @@ Bu repo minishell projesine temiz bir baslangic yapabilmenizi, minishell projesi
 Repo hala gelistirme surecindedir ve tam olarak bitmemistir...
 
 ## Giris
-
+aa
 Bu projede belli sinirlamalar ile kendi shell'imizi yazacagiz. Isin kod kismina gecis yapmadan once ilk olarak terminal'in calisma mantigini ve  komutlarinin nasil calistigini iyi bilmek gerekiyor. Bu projeyi yapmaya niyetlendiyseniz zaten bu zamana kadar terminalle fazlasiyla icli disli oldugunuzu dusunuyorum. Yine de baslamadan once neyin nasil calistigini bilmek iyi bir secim olacaktir.
 
 ### Terminal Nedir?
