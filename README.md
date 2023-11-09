@@ -797,5 +797,5 @@ int main(void){
  - [ ]  Bir terminal Nasil calisir (lexer - parser - executer)
  - [ ] Projedeki izinli fonksiyonlar
  - [ ] Sinyaller Hakkinda Derinlemesine Aciklama
+ - [ ] Builtin Commands Kod Senaryolari
 
-       github:denizcakr
