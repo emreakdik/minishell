@@ -8,7 +8,7 @@ Kod kismini takim Arkadasim Deniz ile birlikte gelistirmekteyiz.
 
 ## Collobrators 
 
-[<img src="https://github.com/denizcakr.png" width="60px;"/><br /><sub>
+<img src="https://github.com/denizcakr.png" width="60px;"/><br /><sub>
 
 
 ## Giris
