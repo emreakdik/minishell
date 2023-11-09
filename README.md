@@ -6,7 +6,7 @@ Repo hala gelistirme surecindedir ve takim olarak gelistirmekteyiz.
 
 Kod kismini takim Arkadasim Deniz ile birlikte gelistirmekteyiz.
 
-## Collobrators 
+## Collaborators 
 
 <a href="https://github.com/emreakdik/minishell/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=emreakdik/minishell" />
