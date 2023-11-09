@@ -2,7 +2,14 @@
 
 Bu repo minishell projesine temiz bir baslangic yapabilmenizi, minishell projesinin parcalarini basitce anlamanizi hedeflemektedir. 
 
-Repo hala gelistirme surecindedir ve tam olarak bitmemistir.
+Repo hala gelistirme surecindedir ve takim olarak gelistirmekteyiz.
+
+Kod kismini takim Arkadasim Deniz ile birlikte gelistirmekteyiz.
+
+## Collobrators 
+
+[<img src="https://github.com/denizcakr.png" width="60px;"/><br /><sub><ahref="https://github.com/{{ contributor }}">{{ contributor }}</a></sub>](https://github.com/emreakdik/minishell
+
 
 ## Giris
 
