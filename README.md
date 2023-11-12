@@ -798,4 +798,5 @@ int main(void){
  - [ ] Projedeki izinli fonksiyonlar
  - [ ] Sinyaller Hakkinda Derinlemesine Aciklama
  - [ ] Builtin Commands Kod Senaryolari
+ - [ ] Syntax Kontrolu Nasil Yapilir?
 
