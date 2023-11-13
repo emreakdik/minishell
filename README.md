@@ -1,3 +1,4 @@
+
 # How to write your own shell?
 
 Bu repo minishell projesine temiz bir baslangic yapabilmenizi, minishell projesinin parcalarini basitce anlamanizi hedeflemektedir. 
@@ -382,8 +383,24 @@ Yukaridaki goruntuyu maiadegraaf isimli kullanıcıdan aldim.
 
 Simdi aşamaları basitçe aciklamak istiyorum.
 
- **Lexer (Ayrıştırıcı):**
-    Lexer aşaması, kullanıcının girdiğini alır ve bu girdiyi belirli öğelere, yani "token"lara böler. Bir token, girdinin birimlerini temsil eder. Örneğin, bir token bir komut, bir değişken adı, bir operatör veya bir sayı olabilir. 
+ ### **Lexer (Ayrıştırıcı):**
+   Lexer aşaması, kullanıcının girdiğini alır ve bu girdiyi belirli öğelere, yani "token"lara böler. Bir token, girdinin birimlerini temsil eder. Örneğin, bir token bir komut, bir değişken adı, bir operatör veya bir sayı olabilir. 
+
+Lexer asamasi icin genel olarak bir bağlı liste oluşturulur ve bu bağlı listede ayristirilmis tokenler bulunur. Ornek bir yapı olarak sunu gösterebilirim:
+
+```c
+typedef  struct  s_lexlist
+{
+char  type;
+char  *content;
+struct  s_lexlist  *next;
+} t_lexlist;
+```
+
+Yukaridaki gördüğünüz bağlı liste yapısındaki bir kolaylıktan bahsedeceğim. Komut satirimizi tokenlara böldükten sonra bu gördüğünüz bağlı liste yapısında **content** değişkenine tokenleri isliyoruz.
+
+Peki ya **type** degiskeni nedir? diyorsanız aslında type değişkeni  **content** değişkeninin içerisine oturttugumuz tokenin tipini tutar. Bunun sayesinde programimizin ilerleyen kisimlarinda tekrar tekrar tokenlerin icini analiz etmemize gerek kalmayacak ve type uzerinden kontrol sağlayabileceğiz (örneğin, syntax kontrolu). 
+
 
 **Parser (Ayrıştırıcı):**
     Parser, lexer tarafından oluşturulan tokenları alır ve bu tokenları bir sözdizimi ağacına çevirir. Sözdizimi ağacı, komutların yapısını ve ilişkilerini temsil eder. Örneğin, bir komutun bir argümanı veya seçeneği olabilir, ve bu ağaç bu ilişkiyi gösterir. Parser, kullanıcının girdisinin doğru bir şekilde yapılandırıldığından emin olur. Eğer girdi doğru bir sözdizimi yapısına sahip değilse, parser hata verir.
@@ -393,6 +410,29 @@ Simdi aşamaları basitçe aciklamak istiyorum.
 
 **Executor:**
 	Executor, sözdizimi ağacını alır ve bu ağacı yorumlayarak komutları gerçek dünyada yürütür. Yürütücü, kullanıcı komutlarını işletim sistemine veya diğer programlara iletir ve sonuçları kullanıcıya sunar. Örneğin, bir "ls" komutunu yürütmek, dizin içeriğini listeler ve sonucu ekrana yazdırır.
+
+## Syntax Kontrolleri
+
+Terminalimizin doğru bir sekilde calisabilmesi icin bazı syntax kontrollerini yapmamız gerekiyor. Bu kontroller daha çok meta karakterler ve pipe etrafında dönmektedir. Bu noktada kendimizce kullandigimiz kontrolleri ornek olması amaçlı anlatacağım. 
+
+Syntax kontrolunu insanlar genel olarak lexer aşamasında gerçekleştirmekteler. Lexer'da tüm kelimelerin , meta karakterlerin token'a dönüştürülerek bir bağlı liste yapısına işlendiğinden bahsetmiştim. 
+
+Kucuk obeklere yani tokenlere ayrilmis olan komut satirimiz uzerinden syntax kontrol edilebilir. Ornegin bağlı listenin ilk node'unda pipe varsa bu syntax hatasıdır ve bir kaç ufak kontrolle bunu yakalayabiliriz.
+
+### Pipe Kontrolu
+
+- Pipe'in islev gereği komut satirinin baslangicinda olmaması gerekir. 
+- Pipe'in işlev gereği komut satirinin sonunda olmaması gerekir.
+- Pipe'in işlev gereği yan yana olmamalıdır.
+- Pipe sonrasında bir metin tokeni olması gerekmektedir.
+
+### Meta Karakter Kontrolu
+
+- Meta karakterlerin sonrasında text olmak zorundadır. Bu noktada meta karakterden sonra text olması kontrolu yetecektir. 
+
+- Yani meta karakterden sonra text yoksa veya null varsa meta karakter kullanımında bir syntax hatası olduğu anlamına gelir.
+
+
 
 
 ## Fonksiyonlar
@@ -799,4 +839,3 @@ int main(void){
  - [ ] Sinyaller Hakkinda Derinlemesine Aciklama
  - [ ] Builtin Commands Kod Senaryolari
  - [ ] Syntax Kontrolu Nasil Yapilir?
-
