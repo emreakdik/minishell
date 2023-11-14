@@ -79,9 +79,11 @@ Kendi shell'imizi yazarken kok dizinimizde bulunan bazi klasorlerin icerigine ha
 
 ### Environment Variables
 ---
-**Çevre değişkenleri, çevresel değişkenler** ya da **ortam değişkenleri** (ing. environment variable), işletim sistemi seviyesinde konfigüre edilebilen ve bilgisayar işlemleri bilgisayar tarafından erişilebilen değişkenlerdir. Çoğu kez belli programların ve dosyaların konumlarını  ve birden fazla işlem tarafından kullanılabilen bilgi ve ayarları tutmak için kullanılırlar. 
+*wikipedia*: **Çevre değişkenleri, çevresel değişkenler** ya da  **ortam değişkenleri**  (ing. environment variable),  [işletim sistemi](https://tr.wikipedia.org/wiki/%C4%B0%C5%9Fletim_sistemi "İşletim sistemi")  seviyesinde konfigüre edilebilen ve [bilgisayar işlemleri](https://tr.wikipedia.org/wiki/%C4%B0%C5%9Flem_(bilgisayar) "İşlem (bilgisayar)")  tarafından erişilebilen  [değişkenlerdir](https://tr.wikipedia.org/wiki/De%C4%9Fi%C5%9Fken "Değişken"). Çoğu kez belli programların ve dosyaların  [konumlarını](https://tr.wikipedia.org/w/index.php?title=Konum_(bilgisayar)&action=edit&redlink=1 "Konum (bilgisayar) (sayfa mevcut değil)")  (ing. path) ve birden fazla işlem tarafından kullanılabilen bilgi ve ayarları tutmak için kullanılırlar. Çoğunlukla bir karakter dizisi (ing. string) olurlar.
 
-Kendi yazdigimiz shell'de ise bulunan ve ayiklanan komutlar cevre degiskenlerinde var olan PATH degiskenindeki yollar uzerinden aranip o sekilde calistirilabilir dosyalari calistirilacaktir.
+Ortam/çevre kelimesi ile kast edilen programın [çalıştırma ortamıdır](https://tr.wikipedia.org/wiki/%C3%87al%C4%B1%C5%9Ft%C4%B1rma_ortam%C4%B1 "Çalıştırma ortamı") (ing. run-time environment). Böylece aynı işlem farklı çalıştırma ortamlarında ekstra bir konfigürasyona gerek kalmadan çalışabilir, aynı ortamdaki farklı işlemler aynı veriye ortam değişkenleri üzerinden ulaşabilirler.
+
+Kendi yazdigimiz shell'de ise, ayiklanan komutlar bir cevre değişkeni olan PATH degiskenindeki path'ler/yollar uzerinden calistirilabilir dosyalari bulup calistirilacaktir.
 
 Terminalde cevre degiskenlerini gormek icin **env** komutunu kullanabiliriz. Cevre degiskenleri her terminali kapatip actigimizda tekrar varsayilan hale dondurulurler.
 
@@ -89,6 +91,51 @@ Ornek:
 ```bash
 [emreakdik@dell Desktop]$ env
 ```
+
+Cevre değişkenlerini programimizin baslangicinda ayristirarak bir bağlı liste oluşturursak, program boyunca rahat  ve doğru bir sekilde arama yapabiliriz.
+
+Ilk olarak cevre değişkenlerini programımıza nasil dahil edebileceğimizden bahsetmeliyim. Cogumuz bu zamana kadar sadece 2 adet main argümanından haberdardı. Fakat bu argümanlar sadece iki tane degil. Uygulamalı bir sekilde gösterirsem su sekilde:
+
+```c
+#include <stdio.h>
+
+int main(int ac, char **av, char **env){
+
+	for (int i = 0; env[i]; i++)
+		printf("%s", env[i]);
+	
+	return (0);
+}
+```
+
+Yukaridaki kodu calistirirsaniz asagidaki gibi bir cikti alirsiniz:
+
+```bash
+MallocNanoZone=0
+USER=emre
+COMMAND_MODE=unix2003
+__CFBundleIdentifier=com.microsoft.VSCode
+PATH=/opt/homebrew/bin:/opt/homebrew/sbin... (bende cok path cikti kisalttim)
+LOGNAME=emre
+ve dahasi...
+```
+
+Yani yapmamız gereken env değişkeninde olan cevre değişkenlerini bağlı listeye islemek.
+
+Cevre değişkenleri icin ornek bir bağlı liste yapısı:
+
+```c
+typedef  struct  s_env
+{
+char  *env_name;
+char  *content;
+struct  s_env  *next;
+} t_env;
+```
+
+Yukaridaki bağlı listeyi oluşturduktan sonra, tüm cevre değişkenlerinin "=" operatöründen oncesini env_name olarak, "=" operatöründen sonraki kısmı ise content olarak ayiklayabilirsiniz.
+
+Bu ayıklama islemlerini ise basit bağlı liste fonksiyonları ile halledebilirsiniz. Bu kısmi size bırakıyorum.
 
 ### Builtin Commands
 ---
@@ -431,9 +478,6 @@ Kucuk obeklere yani tokenlere ayrilmis olan komut satirimiz uzerinden syntax kon
 - Meta karakterlerin sonrasında text olmak zorundadır. Bu noktada meta karakterden sonra text olması kontrolu yetecektir. 
 
 - Yani meta karakterden sonra text yoksa veya null varsa meta karakter kullanımında bir syntax hatası olduğu anlamına gelir.
-
-
-
 
 ## Fonksiyonlar
 
@@ -839,3 +883,4 @@ int main(void){
  - [ ] Sinyaller Hakkinda Derinlemesine Aciklama
  - [ ] Builtin Commands Kod Senaryolari
  - [ ] Syntax Kontrolu Nasil Yapilir?
+
