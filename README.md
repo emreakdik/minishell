@@ -469,9 +469,11 @@ Kucuk obeklere yani tokenlere ayrilmis olan komut satirimiz uzerinden syntax kon
 ### Pipe Kontrolu
 
 - Pipe'in islev gereği komut satirinin baslangicinda olmaması gerekir. 
-- Pipe'in işlev gereği komut satirinin sonunda olmaması gerekir.
 - Pipe'in işlev gereği yan yana olmamalıdır.
 - Pipe sonrasında bir metin tokeni olması gerekmektedir.
+
+!! Pipe sonrasinda bir girdi yoksa, yani sonda pipe varsa, kodunuzun bu kisimda da terminal gibi davranmasi gerekir. 
+	Ornegin "cat |" komutunu terminalinize yazarsaniz, terminalin bir girdi istedigini gorursunuz. Yani eksik komut veya argumani terminal tamamlamaktadir.
 
 ### Meta Karakter Kontrolu
 
