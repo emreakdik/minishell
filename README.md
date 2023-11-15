@@ -450,6 +450,17 @@ int main() {
         // Shell mantığı burada
     }
     return 0;
+
+// void (*signal(int signum, void (*handler)(int)))(int);
+// signum = kaydedilecek sinyalin numarasını belirtir. Yani,
+// hangi sinyalin işlenmesini istediysek onu belirten bir tamsayı.
+// Örneğin Ctrl+C gönderdiği 'SIGINT' sinyali için nu değer '2' olacak.
+// handler = belirtilen sinyalin işlenmesi için atanacak olan işlevi taşıyan işaretçidir.
+// Yani, bir sinyal alındığında çağırılacak olan işlevi belirtir.
+// bu işlev int tipinde parametre alır ve void tipinde değer döndürür.
+// signal = Bu, sinyal fonksiyonunun dönüş değeridir. 
+// fakat signal fonksiyonu sigaction kadar güvenilir değildir.
+
 }
 ```
 CTRL + D kombinasyonu ise, shellin girdi almasını durdurur. Basitçe shell'i kapatır. Bunun icin ise SIGQUIT sinyalini kullanır. Yine üstte gösterilen ornek uzerinden SIQQUIT sinyali icin bir calışma yapılabilir.
