@@ -14,6 +14,43 @@ Kod kismini takim Arkadasim Deniz ile birlikte gelistirmekteyiz.
 </a>
 
 
+Table of Contents
+=================
+
+* [How to write your own shell?](#how-to-write-your-own-shell)
+   * [Collaborators](#collaborators)
+   * [Giris](#giris)
+      * [Terminal Nedir?](#terminal-nedir)
+      * [Terminal Dosya Sistemi](#terminal-dosya-sistemi)
+      * [<strong>pwd</strong>](#pwd)
+      * [<strong>cd</strong>](#cd)
+      * [Dizinler](#dizinler)
+      * [Environment Variables](#environment-variables)
+      * [Builtin Commands](#builtin-commands)
+      * [Redirection](#redirection)
+      * [Pipelines](#pipelines)
+      * [Genisletme (Expansion)](#genisletme-expansion)
+      * [Komutlarda Relative ve Absolute](#komutlarda-relative-ve-absolute)
+      * [Cift Tirnak](#cift-tirnak)
+      * [Tek Tirnak](#tek-tirnak)
+      * [Komutların Paralel ve Eşzamanlı Çalışması](#komutların-paralel-ve-eşzamanlı-çalışması)
+         * [Basarili Basarisiz Durumunun Sorgulanmasi](#basarili-basarisiz-durumunun-sorgulanmasi)
+      * [Terminal Process Yonetimi](#terminal-process-yonetimi)
+      * [Sinyaller](#sinyaller)
+   * [Bir Terminal/Shell Nasil Calisir?](#bir-terminalshell-nasil-calisir)
+      * [Lexer (Ayrıştırıcı)](#lexer-ayrıştırıcı)
+      * [Expander (Genisletici)](#expander-genisletici)
+   * [Syntax Kontrolleri](#syntax-kontrolleri)
+      * [Pipe Kontrolu](#pipe-kontrolu)
+      * [Meta Karakter Kontrolu](#meta-karakter-kontrolu)
+   * [Fonksiyonlar](#fonksiyonlar)
+      * [readline](#readline)
+      * [history](#history)
+      * [fork () ve wait()](#fork--ve-wait)
+      * [pipe()](#pipe)
+      * [access()](#access)
+      * [execve()](#execve)
+      * [dup2()](#dup2)
 
 ## Giris
 
