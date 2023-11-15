@@ -647,6 +647,53 @@ int  main(int  ac, char  **av, char  **envp){
 }
 ```
 
+### pipe() ve fork()
+
+```c
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+int main()
+{
+    int pipe_fd[2];
+    char buffer[100];
+
+    pipe(pipe_fd);
+    pid_t child_pid = fork();
+
+    if(child_pid == 0)
+    {
+        // Child process
+        close(pipe_fd[1]); // closed write end
+        read(pipe_fd[0], buffer, sizeof(buffer)); 
+        printf("Child Process Write: %s\n", buffer);
+        close(pipe_fd[0]);
+    }
+    else
+    {
+        // Parent process
+        close(pipe_fd[0]); // closed read end
+        write(pipe_fd[1], "Pipe", 4);
+        close(pipe_fd[1]);
+    }
+    return (0);
+}
+
+// pid_t fork(void);
+// fork fonksiyonu process oluşturmak için kullanılır. Bu fonksiyon çağrıldığında,
+// mevcut sürecin tam kopyasını oluşturur. Böylece program 2 farklı yoldan devam eder.
+// biri parent process diğeri ise child process olarak adlandırılır.
+// her iki süreç de aynı kodu paylaşur fakat ayrı bellek alanlarına sahiptirler.
+
+// int pipe(int pipefd[2]);
+// pipefd[2] = iki elemanlı bir dizi alır. Bu dizi, birinci eleman yazma ucunu (write end) ve
+// ikinci eleman okuma ucunu (read end) temsil eder.
+// pipe fonksiyonu, iki süreç arasında iletişim kurmak için kullanılan bir iletişim kanalı oluşturur. 
+// bu iletişim kanalı bir süreçten diğerine veri iletilmesini sağlar.
+
+```
+
 ### fork () ve wait()
 
 ```c
