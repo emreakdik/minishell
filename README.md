@@ -246,7 +246,7 @@ Terminal yukaridaki iki kullanim seklinide anlar ve ls komutunu calistirir.
 ### Cift Tirnak
 ---
 
-Çift tırnakların içine metin yerleştirirsek, kabuk tarafından kullanılan özel karakterler özel anlamlarını kaybeder ve bunlar sıradan karakterler olarak işlenir. İstisnalar, "$", "" (ters eğik çizgi) ve "`" (ters tırnak) karakterleridir. Bu, kelime bölme, yol adı genişletme, tilde genişletme ve süslü parantez genişletmesinin engellendiği anlamına gelir, ancak parametre genişletme, aritmetik genişletme ve komut yerine koyma hala gerçekleştirilir.
+Çift tırnakların içine metin yerleştirirsek, kabuk tarafından kullanılan komutlar özel anlamlarını kaybeder ve bunlar sıradan karakterler olarak işlenir. İstisnalar, "$", "" (ters eğik çizgi) ve "`" (ters tırnak) karakterleridir. Bu, kelime bölme, yol adı genişletme, tilde genişletme ve süslü parantez genişletmesinin engellendiği anlamına gelir, ancak parametre genişletme, aritmetik genişletme ve komut yerine koyma hala gerçekleştirilir.
 
 ```bash
 emre@emres-MacBook-Air ~ % echo "$USER $((2+2)) $(cal)"
@@ -430,7 +430,7 @@ Yukaridaki goruntuyu maiadegraaf isimli kullanıcıdan aldim.
 
 Simdi aşamaları basitçe aciklamak istiyorum.
 
- ### **Lexer (Ayrıştırıcı):**
+ ### Lexer (Ayrıştırıcı)
    Lexer aşaması, kullanıcının girdiğini alır ve bu girdiyi belirli öğelere, yani "token"lara böler. Bir token, girdinin birimlerini temsil eder. Örneğin, bir token bir komut, bir değişken adı, bir operatör veya bir sayı olabilir. 
 
 Lexer asamasi icin genel olarak bir bağlı liste oluşturulur ve bu bağlı listede ayristirilmis tokenler bulunur. Ornek bir yapı olarak sunu gösterebilirim:
@@ -448,12 +448,25 @@ Yukaridaki gördüğünüz bağlı liste yapısındaki bir kolaylıktan bahsedec
 
 Peki ya **type** degiskeni nedir? diyorsanız aslında type değişkeni  **content** değişkeninin içerisine oturttugumuz tokenin tipini tutar. Bunun sayesinde programimizin ilerleyen kisimlarinda tekrar tekrar tokenlerin icini analiz etmemize gerek kalmayacak ve type uzerinden kontrol sağlayabileceğiz (örneğin, syntax kontrolu). 
 
+### Expander (Genisletici)
+   Expander aşaması, bazı terminal komutlarının veya ifadelerinin genişlemesini saglar. Özellikle, değişkenlerin ve özel karakterlerin değerlerini ve işlevlerini yerine getirir. Örneğin, $USER kullaniminda cevre degiskenlerinden USER degiskeninin karsiligini bulur ve yerine karsiligini koyar.
+
+   !! Genisletme isleminde tek tirnak ve cift tirnak kullanimlarina dikkat edilmesi gerekir. Tek tirnak ve cift tirnak kullanimlarini yukaridaki aciklamalarimda bulabilirsiniz. Bu yuzden bir değişkeni veya işareti genisletmeden once, tek tirnak icerisinde mi kontrol edilmesi gerekir. 
+
+Genisletme esnasında, cevre değişkenleri disinda genişletmelerinde yapılması gerekir. Bunlar:
+
+- **$?:** Bir önceki komutun cikis degerine ulasilmasini saglar. Terminal komutları basari durumunda 0, basarisizlik durumunda ise 0'dan büyük olmak uzere hata kodunu dondururlar.
+
+- **$$:** Calistirildigi processin pid'sine ulasilmasini saglar.  
+
+- **~:** Tilde isareti ise kullanicinin Home yolunu temsil eder.
+
+- **$:** Sonrasinda yazılan değişken ismi cevre değişkenlerinden bulunur ve yerine koyulur. Genel olarak  $USER gibi bir kullanım olsa da ${USER} kullanımı da ayni sekilde calismaktadir. Bunun Disinda dolar kullanımında $"USER" ya da $'USER' kullanimlarindaki degisiklikler de göz önünde bulundurulmalıdır. 
+
+> Eger unuttuklarım varsa daha sonra ekleyeceğim.
 
 **Parser (Ayrıştırıcı):**
     Parser, lexer tarafından oluşturulan tokenları alır ve bu tokenları bir sözdizimi ağacına çevirir. Sözdizimi ağacı, komutların yapısını ve ilişkilerini temsil eder. Örneğin, bir komutun bir argümanı veya seçeneği olabilir, ve bu ağaç bu ilişkiyi gösterir. Parser, kullanıcının girdisinin doğru bir şekilde yapılandırıldığından emin olur. Eğer girdi doğru bir sözdizimi yapısına sahip değilse, parser hata verir.
-
-**Expander (Genişletici):**
-   Expander aşaması, bazı terminal komutlarının veya ifadelerinin genişlemesini işler. Özellikle, değişkenlerin ve özel karakterlerin değerlerini ve işlevlerini yerine getirir. Örneğin, bir değişkenin değeri yerine koyulabilir veya bir joker karakter (*) tüm dosyaları eşleştirebilir.
 
 **Executor:**
 	Executor, sözdizimi ağacını alır ve bu ağacı yorumlayarak komutları gerçek dünyada yürütür. Yürütücü, kullanıcı komutlarını işletim sistemine veya diğer programlara iletir ve sonuçları kullanıcıya sunar. Örneğin, bir "ls" komutunu yürütmek, dizin içeriğini listeler ve sonucu ekrana yazdırır.
