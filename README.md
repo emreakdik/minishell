@@ -985,7 +985,62 @@ int main(void){
 }
 ```
 
+### dup() ve dup2()
 
+```c
+
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+
+int main()
+{
+    // Dosya tanımlayıcıları
+    int dosya1, dosya2;
+
+    // Bir dosya aç
+    dosya1 = open("dosya1.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (dosya1 == -1)
+    {
+        perror("dosya1 açma hatası");
+        return 1;
+    }
+
+    // stdout dosya tanımlayıcısını dosya1 ile aynı yap
+    dosya2 = dup2(dosya1, 1);
+    if (dosya2 == -1)
+    {
+        perror("dup2 hatası");
+            return 1;
+    }
+
+    // Yeni stdout'a yazdır
+    printf("Bu çıktı dosya1.txt'ye yönlendirildi.\n");
+
+    // Dosyaları kapat
+    close(dosya1);
+
+    return 0;
+}
+
+// int dup2(int oldfd, int newfd);
+// oldfd = kopyalanacak olan dosya.
+// newfd "oldfd"nin kopyalacağı yeni dosya.
+// dup2() fonksiyonu bir sistem çağrısıdır ve iki dosya arasında bir bağlantı kurar.
+// Genel olarak işlevi bir dosyanın içeriğini başka dosyaya kopyalamaktır.
+// Dosyalar arasında yönlendirme yapmak için kullanılır.
+// Eğer newfd mevcutsa kapatılır. Yani close(newfd) çağrısı yapılır.
+// oldfd newfd'ye atanır.
+// bu işlemler sonucunda, newfd artık oldfd ile aynı dosyayı gösterir.
+
+// dup() ve dup2() farkları..
+// dup() fonksiyonu yalnızca bir dosya tanımlayıcısı (oldfd) alır ve
+// bu tanımlayıcıyı kullanarak mevcut olarak açık olan bir dosyayı kopyalar.
+// dup2() fonksiyonu ise iki dosya tanımlayıcısı (oldfd ve newfd) alır.
+// oldfd7yi kullanarak mevut olarak açık olan dosyayı, newfd'ye kopyalar. Eğer
+// newfd zaten açıksa, önce onu kapatır ve ardından kopyalama işlemini gerçekleştirir.
+
+```
 ---
 
  Siradaki Eklenecek basliklar 
