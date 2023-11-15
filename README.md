@@ -1,11 +1,4 @@
-
-# How to write your own shell?
-
-Bu repo minishell projesine temiz bir baslangic yapabilmenizi, minishell projesinin parcalarini basitce anlamanizi hedeflemektedir. 
-
-Repo hala gelistirme surecindedir ve takim olarak gelistirmekteyiz.
-
-Kod kismini takim Arkadasim Deniz ile birlikte gelistirmekteyiz.
+# minishell
 
 ## Collaborators 
 
@@ -14,49 +7,18 @@ Kod kismini takim Arkadasim Deniz ile birlikte gelistirmekteyiz.
 </a>
 
 
-Table of Contents
-=================
-
-* [How to write your own shell?](#how-to-write-your-own-shell)
-   * [Collaborators](#collaborators)
-   * [Giris](#giris)
-      * [Terminal Nedir?](#terminal-nedir)
-      * [Terminal Dosya Sistemi](#terminal-dosya-sistemi)
-      * [<strong>pwd</strong>](#pwd)
-      * [<strong>cd</strong>](#cd)
-      * [Dizinler](#dizinler)
-      * [Environment Variables](#environment-variables)
-      * [Builtin Commands](#builtin-commands)
-      * [Redirection](#redirection)
-      * [Pipelines](#pipelines)
-      * [Genisletme (Expansion)](#genisletme-expansion)
-      * [Komutlarda Relative ve Absolute](#komutlarda-relative-ve-absolute)
-      * [Cift Tirnak](#cift-tirnak)
-      * [Tek Tirnak](#tek-tirnak)
-      * [Komutların Paralel ve Eşzamanlı Çalışması](#komutların-paralel-ve-eşzamanlı-çalışması)
-         * [Basarili Basarisiz Durumunun Sorgulanmasi](#basarili-basarisiz-durumunun-sorgulanmasi)
-      * [Terminal Process Yonetimi](#terminal-process-yonetimi)
-      * [Sinyaller](#sinyaller)
-   * [Bir Terminal/Shell Nasil Calisir?](#bir-terminalshell-nasil-calisir)
-      * [Lexer (Ayrıştırıcı)](#lexer-ayrıştırıcı)
-      * [Expander (Genisletici)](#expander-genisletici)
-   * [Syntax Kontrolleri](#syntax-kontrolleri)
-      * [Pipe Kontrolu](#pipe-kontrolu)
-      * [Meta Karakter Kontrolu](#meta-karakter-kontrolu)
-   * [Fonksiyonlar](#fonksiyonlar)
-      * [readline](#readline)
-      * [history](#history)
-      * [fork () ve wait()](#fork--ve-wait)
-      * [pipe()](#pipe)
-      * [access()](#access)
-      * [execve()](#execve)
-      * [dup2()](#dup2)
-
 ## Giris
 
-Bu projede belli sinirlamalar ile kendi shell'imizi yazacagiz. Isin kod kismina gecis yapmadan once ilk olarak terminal'in calisma mantigini ve  komutlarinin nasil calistigini iyi bilmek gerekiyor. Bu projeyi yapmaya niyetlendiyseniz zaten bu zamana kadar terminalle fazlasiyla icli disli oldugunuzu dusunuyorum. Yine de baslamadan once neyin nasil calistigini bilmek iyi bir secim olacaktir.
+Bu repo minishell projesine temiz bir baslangic yapabilmenizi, minishell projesinin parcalarini basitce anlamanizi hedeflemektedir. 
 
-### Terminal Nedir?
+Repo hala gelistirme surecindedir.
+
+Kod kismini takim Arkadasim Deniz ile birlikte gelistirmekteyiz.
+
+Bu projede belli sinirlamalar ile kendi shell'imizi yazacagiz. Isin kod kismina gecis yapmadan once ilk olarak terminal'in calisma mantigini ve komutlarinin nasil calistigini iyi bilmek gerekiyor. Bu projeyi yapmaya niyetlendiyseniz zaten bu zamana kadar terminalle fazlasiyla icli disli oldugunuzu dusunuyorum. Yine de baslamadan once neyin nasil calistigini bilmek iyi bir secim olacaktir.
+
+
+## Terminal Nedir?
 ---
 
 Terminal en basitinde, shell'in calistirilabilir dosyalariyla iletisim kurmanizi saglayan bir emulatordur. Mac kullanicisiysaniz iterm, windows kullanicisiysaniz powershell, linux kullanicisiysaniz ise gnome-terminal gibi sayisiz terminal ile karsilasmissinizdir. 
@@ -69,7 +31,7 @@ Isletim sistemleri aslinda arkaplanda tum dosyalarinizi, tum klasorlerinizi bir 
 
 Terminalde ise bu agac yapisinda dolasabilmeniz icin **cd** komutunu kullanabiliriz. Oldugumuz konumu gorebilmek icin ise **pwd** komutunu kullanabiliriz. 
 
-### **pwd**
+### pwd
 ---
 Terminalde hazir olarak calismakta oldugumuz dizini grafiksel olarak goremiyoruz. Bu yuzden calismakta oldugumuz konumu metinsel olarak goruntuleme yoluna gitmeliyiz. Bunu da **pwd** komutu ile gerceklestirebiliriz. 
 ```bash
@@ -78,7 +40,7 @@ Terminalde hazir olarak calismakta oldugumuz dizini grafiksel olarak goremiyoruz
 ```
 Neredeyse butun terminallerde ilk acilis ekraninda dizin home klasoru olarak belirlenmis durumdadir. Oldugumuz terminaldeki dosya ve klasorleri goruntulemek icin ise basitce **ls** komutunu kullanabiliriz.
 
-### **cd**
+### cd
 ---
 Terminal uzerinden oldugumuz konumu degistirmek icin change directory komutunu kullaniriz. Bu degistirme islemini basitce cd komutundan sonra gidecegimiz konumun yolunu yazarak yapabiliriz ama bu konuda iki farkli yontem vardir. Bu yontemler ise relative path ve absolute path yontemleridir. Bu ikisini basitce aciklamak gerekirse:
 
@@ -502,10 +464,10 @@ Genisletme esnasında, cevre değişkenleri disinda genişletmelerinde yapılmas
 
 > Eger unuttuklarım varsa daha sonra ekleyeceğim.
 
-**Parser (Ayrıştırıcı):**
+### Parser (Ayrıştırıcı)
     Parser, lexer tarafından oluşturulan tokenları alır ve bu tokenları bir sözdizimi ağacına çevirir. Sözdizimi ağacı, komutların yapısını ve ilişkilerini temsil eder. Örneğin, bir komutun bir argümanı veya seçeneği olabilir, ve bu ağaç bu ilişkiyi gösterir. Parser, kullanıcının girdisinin doğru bir şekilde yapılandırıldığından emin olur. Eğer girdi doğru bir sözdizimi yapısına sahip değilse, parser hata verir.
 
-**Executor:**
+### Executor (Calistirici)
 	Executor, sözdizimi ağacını alır ve bu ağacı yorumlayarak komutları gerçek dünyada yürütür. Yürütücü, kullanıcı komutlarını işletim sistemine veya diğer programlara iletir ve sonuçları kullanıcıya sunar. Örneğin, bir "ls" komutunu yürütmek, dizin içeriğini listeler ve sonucu ekrana yazdırır.
 
 ## Syntax Kontrolleri
