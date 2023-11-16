@@ -1,52 +1,54 @@
 # minishell
 
-Table of Contents
-=================
-
-* [minishell](#minishell)
-   * [Collaborators](#collaborators)
-   * [Giris](#giris)
-   * [Terminal Nedir?](#terminal-nedir)
-      * [Terminal Dosya Sistemi](#terminal-dosya-sistemi)
-      * [pwd](#pwd)
-      * [cd](#cd)
-      * [Dizinler](#dizinler)
-      * [Environment Variables](#environment-variables)
-      * [Builtin Commands](#builtin-commands)
-      * [Redirection](#redirection)
-      * [Pipelines](#pipelines)
-      * [Genisletme (Expansion)](#genisletme-expansion)
-      * [Komutlarda Relative ve Absolute](#komutlarda-relative-ve-absolute)
-      * [Cift Tirnak](#cift-tirnak)
-      * [Tek Tirnak](#tek-tirnak)
-      * [Komutların Paralel ve Eşzamanlı Çalışması](#komutların-paralel-ve-eşzamanlı-çalışması)
-         * [Basarili Basarisiz Durumunun Sorgulanmasi](#basarili-basarisiz-durumunun-sorgulanmasi)
-      * [Terminal Process Yonetimi](#terminal-process-yonetimi)
-      * [Sinyaller](#sinyaller)
-   * [Bir Terminal/Shell Nasil Calisir?](#bir-terminalshell-nasil-calisir)
-      * [Lexer (Ayrıştırıcı)](#lexer-ayrıştırıcı)
-      * [Expander (Genisletici)](#expander-genisletici)
-      * [Parser (Ayrıştırıcı)](#parser-ayrıştırıcı)
-      * [Executor (Calistirici)](#executor-calistirici)
-   * [Syntax Kontrolleri](#syntax-kontrolleri)
-      * [Pipe Kontrolu](#pipe-kontrolu)
-      * [Meta Karakter Kontrolu](#meta-karakter-kontrolu)
-   * [Fonksiyonlar](#fonksiyonlar)
-      * [readline](#readline)
-      * [history](#history)
-      * [fork () ve wait()](#fork--ve-wait)
-      * [pipe()](#pipe)
-      * [access()](#access)
-      * [execve()](#execve)
-      * [dup2()](#dup2)
-
-
 ## Collaborators 
 
 <a href="https://github.com/emreakdik/minishell/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=emreakdik/minishell" />
 </a>
 
+Table of Contents
+=================
+
+* [](#minishell)
+   * [](#collaborators)
+   * [](#giris)
+   * [](#terminal)
+      * [](#terminal-nedir)
+      * [](#terminal-dosya-sistemi)
+      * [](#pwd)
+      * [](#cd)
+      * [](#dizinler)
+      * [](#environment-variables)
+      * [](#builtin-commands)
+      * [](#redirection)
+      * [](#pipelines)
+      * [](#genisletme-expansion)
+      * [](#komutlarda-relative-ve-absolute)
+      * [](#cift-tirnak)
+      * [](#tek-tirnak)
+      * [](#komutların-paralel-ve-eşzamanlı-çalışması)
+         * [](#basarili-basarisiz-durumunun-sorgulanmasi)
+      * [](#terminal-process-yonetimi)
+      * [](#sinyaller)
+   * [](#bir-terminalshell-nasil-calisir)
+      * [](#lexer-ayrıştırıcı)
+      * [](#expander-genisletici)
+      * [](#parser-ayrıştırıcı)
+      * [](#executor-calistirici)
+   * [](#syntax-kontrolleri)
+      * [](#pipe-kontrolu)
+      * [](#meta-karakter-kontrolu)
+   * [](#xor-operatörü---)
+   * [](#fonksiyonlar)
+      * [](#readline)
+      * [](#history)
+      * [](#pipe-ve-fork)
+      * [](#fork--ve-wait)
+      * [](#pipe)
+      * [](#access)
+      * [](#execve)
+      * [](#dup2)
+      * [](#dup-ve-dup2)
 
 ## Giris
 
@@ -58,8 +60,9 @@ Kod kismini takim Arkadasim Deniz ile birlikte gelistirmekteyiz.
 
 Bu projede belli sinirlamalar ile kendi shell'imizi yazacagiz. Isin kod kismina gecis yapmadan once ilk olarak terminal'in calisma mantigini ve komutlarinin nasil calistigini iyi bilmek gerekiyor. Bu projeyi yapmaya niyetlendiyseniz zaten bu zamana kadar terminalle fazlasiyla icli disli oldugunuzu dusunuyorum. Yine de baslamadan once neyin nasil calistigini bilmek iyi bir secim olacaktir.
 
+## Terminal 
 
-## Terminal Nedir?
+### Terminal Nedir?
 ---
 
 Terminal en basitinde, shell'in calistirilabilir dosyalariyla iletisim kurmanizi saglayan bir emulatordur. Mac kullanicisiysaniz iterm, windows kullanicisiysaniz powershell, linux kullanicisiysaniz ise gnome-terminal gibi sayisiz terminal ile karsilasmissinizdir. 
@@ -544,6 +547,23 @@ Kucuk obeklere yani tokenlere ayrilmis olan komut satirimiz uzerinden syntax kon
 - Meta karakterlerin sonrasında text olmak zorundadır. Bu noktada meta karakterden sonra text olması kontrolu yetecektir. 
 
 - Yani meta karakterden sonra text yoksa veya null varsa meta karakter kullanımında bir syntax hatası olduğu anlamına gelir.
+
+## XOR Operatörü ( ^ )
+
+XOR operatoru **Exclusive OR** operatoru olarak bilinir. Veya operatoruyle benzer islere yarar fakat farkliliklar mevcuttur. 
+
+Veya operatoru karsilastirdigimiz taraflardan herhangi biri 1 oldugu taktirde 1 sonucunu verir ve bu iki tarafinda 1 oldugu durumdada gecerlidir.
+
+Fakat XOR operatoru ile bu durum bu sekilde degildir. Xor operatoru ile sadece "iki taraftan biri" 1 oldugu taktirde 1 sonucunu verir. Yani iki tarafinda ayni oldugu durumlarda 1 sonucunu vermez.
+
+Asagidaki tabloda durumlar daha iyi anlasilabilir:
+
+| p | q | p^q | 
+|--|--|--|
+| 1 | 1 | 0 |
+| 1 | 0 | 1 | 
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
 
 ## Fonksiyonlar
 
