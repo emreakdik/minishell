@@ -6,50 +6,6 @@
   <img src="https://contrib.rocks/image?repo=emreakdik/minishell" />
 </a>
 
-Table of Contents
-=================
-
-* [](#minishell)
-   * [](#collaborators)
-   * [](#giris)
-   * [](#terminal)
-      * [](#terminal-nedir)
-      * [](#terminal-dosya-sistemi)
-      * [](#pwd)
-      * [](#cd)
-      * [](#dizinler)
-      * [](#environment-variables)
-      * [](#builtin-commands)
-      * [](#redirection)
-      * [](#pipelines)
-      * [](#genisletme-expansion)
-      * [](#komutlarda-relative-ve-absolute)
-      * [](#cift-tirnak)
-      * [](#tek-tirnak)
-      * [](#komutların-paralel-ve-eşzamanlı-çalışması)
-         * [](#basarili-basarisiz-durumunun-sorgulanmasi)
-      * [](#terminal-process-yonetimi)
-      * [](#sinyaller)
-   * [](#bir-terminalshell-nasil-calisir)
-      * [](#lexer-ayrıştırıcı)
-      * [](#expander-genisletici)
-      * [](#parser-ayrıştırıcı)
-      * [](#executor-calistirici)
-   * [](#syntax-kontrolleri)
-      * [](#pipe-kontrolu)
-      * [](#meta-karakter-kontrolu)
-   * [](#xor-operatörü---)
-   * [](#fonksiyonlar)
-      * [](#readline)
-      * [](#history)
-      * [](#pipe-ve-fork)
-      * [](#fork--ve-wait)
-      * [](#pipe)
-      * [](#access)
-      * [](#execve)
-      * [](#dup2)
-      * [](#dup-ve-dup2)
-
 ## Giris
 
 Bu repo minishell projesine temiz bir baslangic yapabilmenizi, minishell projesinin parcalarini basitce anlamanizi hedeflemektedir. 
