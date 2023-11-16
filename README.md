@@ -1,11 +1,48 @@
 # minishell
 
-## Collaborators 
+Table of Contents
+=================
 
-<a href="https://github.com/emreakdik/minishell/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=emreakdik/minishell" />
-</a>
-
+* [Minishell](#minishell)
+   * [Giris](#giris)
+   * [Terminal](#terminal)
+      * [Terminal Nedir?](#terminal-nedir)
+      * [Terminal Dosya Sistemi](#terminal-dosya-sistemi)
+      * [Pwd](#pwd)
+      * [cd](#cd)
+      * [Dizinler](#dizinler)
+      * [Environment Variables](#environment-variables)
+      * [Builtin Commands](#builtin-commands)
+      * [Redirections](#redirection)
+      * [Pipelines](#pipelines)
+      * [Expansion (Genisletme)](#genisletme-expansion)
+      * [Komutlarda Relative ve Absolute](#komutlarda-relative-ve-absolute)
+      * [Cift Tirnak Kullanimi](#cift-tirnak)
+      * [Tek Tirnak Kullanimi](#tek-tirnak)
+      * [Komutlarin Paralel ve Eszamanli Calismasi](#komutların-paralel-ve-eşzamanlı-çalışması)
+         * [Basarili veya Basarisiz Durumunun Sorgulanmasi](#basarili-basarisiz-durumunun-sorgulanmasi)
+      * [Terminal Process Yonetimi](#terminal-process-yonetimi)
+      * [Sinyaller](#sinyaller)
+   * [Bir Terminal/Shell Nasil Calisir?](#bir-terminalshell-nasil-calisir)
+      * [Lexer](#lexer-ayrıştırıcı)
+      * [Expander](#expander-genisletici)
+      * [Parser](#parser-ayrıştırıcı)
+      * [Executor](#executor-calistirici)
+   * [Syntax Kontrolleri](#syntax-kontrolleri)
+      * [Pipe](#pipe-kontrolu)
+      * [Meta Karakterler](#meta-karakter-kontrolu)
+   * [XOR Operatoru](#xor-operatörü---)
+   * [Fonksiyonlar](#fonksiyonlar)
+      * [readline](#readline)
+      * [history](#history)
+      * [pipe ve fork](#pipe-ve-fork)
+      * [fork ve wait](#fork--ve-wait)
+      * [pipe](#pipe)
+      * [access](#access)
+      * [execve](#execve)
+      * [dup2](#dup2)
+      * [dup ve dup2](#dup-ve-dup2)
+     
 ## Giris
 
 Bu repo minishell projesine temiz bir baslangic yapabilmenizi, minishell projesinin parcalarini basitce anlamanizi hedeflemektedir. 
