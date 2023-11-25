@@ -40,22 +40,32 @@ OBJ		:= $(SRC:%.c=$(OBJDIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	make -C $(LIBFT)
-	cp libft/libft.a .
+	@echo "Compiling..."
+	@make -C $(LIBFT)
+	@cp libft/libft.a .
 	@$(CC) $(FLAGS) $(CFLAGS) $(OBJ) libft.a -lreadline -o $@
+	@echo "Done!"
+	@echo  "░░██╗██╗██████╗░"
+	@echo  "░██╔╝██║╚════██╗"
+	@echo  "██╔╝░██║░░███╔═╝"
+	@echo  "███████║██╔══╝░░"
+	@echo  "╚════██║███████╗"
+	@echo  "░░░░░╚═╝╚══════╝"
 
 $(OBJDIR)/%.o: %.c
 	@mkdir -p $(@D)
-	$(CC) $(FLAGS) $(CFLAGS) -c $< -o $@
+	@$(CC) $(FLAGS) $(CFLAGS) -c $< -o $@
 
 clean:
-	make clean -C $(LIBFT)
-	rm -rf libft.a
+	@echo "Cleaning..."
+	@make clean -C $(LIBFT)
+	@rm -rf libft.a
 	@rm -rf $(OBJDIR)
 
 fclean:
-	make fclean -C $(LIBFT)
-	rm -rf libft.a
+	@echo "Cleaning..."
+	@make fclean -C $(LIBFT)
+	@rm -rf libft.a
 	@rm -rf $(OBJDIR)
 	@rm -f $(NAME)
 

@@ -96,7 +96,7 @@ static void expander_tilde(t_shell *shell, t_list *lex)
 		tmp = ft_strdup(lex->content);
 		free(lex->content);
 		lex->content = ft_strjoin(get_env(shell->env, "HOME"), tmp + 1);
-		free(tmp); // Freeing tmp here to fix the memory leak
+		free(tmp);
 	}
 	else if (((char *)lex->content)[0] == '~' && ((char *)lex->content)[1] == '\0')
 	{
