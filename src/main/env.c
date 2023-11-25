@@ -3,15 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akaniber <akaniber@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 18:29:16 by aaybaz            #+#    #+#             */
-/*   Updated: 2023/10/15 13:30:06 by akaniber         ###   ########.fr       */
+/*   Updated: 2023/11/25 12:19:50 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <stdlib.h>
+
+void	get_title_from_env(t_shell **shell)
+{
+	char	*user;
+	char	*pwd;
+	char	*title;
+
+	user = get_env((*shell)->env, "USER");
+	pwd = get_env((*shell)->env, "PWD");
+	title = ft_strjoin("\033[1;36m", user);
+	title = ft_strjoin(title, "@");
+	title = ft_strjoin(title, pwd);
+	title = ft_strjoin(title, "$ \033[0m");
+	(*shell)->title = title;
+	free(user);
+	free(pwd);
+}
 
 void	free_str(char **str)
 {

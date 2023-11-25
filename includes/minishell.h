@@ -6,7 +6,7 @@
 /*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:17:18 by akaniber          #+#    #+#             */
-/*   Updated: 2023/11/23 17:34:55 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/11/25 12:18:42 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_shell
 	t_list	*parse;
 	char	*heredoc;
 	int		exec_status;
+	char	*title;
 }				t_shell;
 
 typedef struct s_parse_params
@@ -78,8 +79,8 @@ typedef struct s_fd_params
 
 extern int	g_does_have_heredoc;
 
-void	expander_deneme(t_shell *shell);
-
+void get_title_from_env(t_shell **shell);
+char *get_env(t_list *env, char *key);
 t_parse		*parse_(int *j, t_list *new, int *i);
 char		*after_dark2(char *key, char *tmp);
 char		*quote_control(char *tmp);

@@ -28,7 +28,7 @@ int ft_ultimatestrcmp(char *key, char *tmp, int i)
 	return (0);
 }
 
-static char *get_env(t_list *env, char *key)
+char *get_env(t_list *env, char *key)
 {
 	t_env *tmp;
 	char *ret;
