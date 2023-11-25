@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int ft_ultimatestrcmp(char *key, char *tmp, int i)
+int	ft_ultimatestrcmp(char *key, char *tmp, int i)
 {
-	int j;
+	int	j;
 
 	j = 0;
 	if (tmp[i] != key[0])
@@ -28,10 +28,10 @@ int ft_ultimatestrcmp(char *key, char *tmp, int i)
 	return (0);
 }
 
-char *get_env(t_list *env, char *key)
+char	*get_env(t_list *env, char *key)
 {
-	t_env *tmp;
-	char *ret;
+	t_env	*tmp;
+	char	*ret;
 
 	ret = NULL;
 	while (env)
@@ -39,7 +39,8 @@ char *get_env(t_list *env, char *key)
 		tmp = env->content;
 		if (ft_ultimatestrcmp(tmp->key, key, 0))
 		{
-			ret = ft_strjoin(tmp->value, key + ft_ultimatestrcmp(tmp->key, key, 0));
+			ret = ft_strjoin(tmp->value, key + ft_ultimatestrcmp(tmp->key, key,
+						0));
 			return (ret);
 		}
 		env = env->next;
@@ -47,12 +48,13 @@ char *get_env(t_list *env, char *key)
 	return (ret);
 }
 
-static void expander_dollar(t_shell *shell, t_list *lex)
+static void	expander_dollar(t_shell *shell, t_list *lex)
 {
-	char *temp;
-	char *new_value;
-	char *before;
-	char *after;
+	char	*temp;
+	char	*new_value;
+	char	*before;
+	char	*after;
+	char	*back;
 
 	temp = ft_strchr(lex->content, '$'); // freelenemez
 	before = ft_substr(lex->content, 0, temp - (char *)lex->content);
@@ -61,7 +63,9 @@ static void expander_dollar(t_shell *shell, t_list *lex)
 		after = ft_strdup(temp + 2);
 		free(lex->content);
 		new_value = ft_itoa(shell->exec_status);
-		lex->content = ft_strjoin(before, ft_strjoin(new_value, after));
+		back = ft_strjoin(new_value, after);
+		lex->content = ft_strjoin(before, back);
+		free(back);
 		free(new_value);
 		free(after);
 		free(before);
@@ -69,7 +73,7 @@ static void expander_dollar(t_shell *shell, t_list *lex)
 	else
 	{
 		before = ft_strchr(lex->content, '$') - 1; // freelenemez
-		if (*before == ' ' || *before == '\0')
+		if (*before == '\0')
 		{
 			if (ft_isdigit(temp[1]))
 			{
@@ -79,7 +83,7 @@ static void expander_dollar(t_shell *shell, t_list *lex)
 			}
 			else if (get_env(shell->env, temp + 1))
 			{
-				new_value = ft_strdup((char *)get_env(shell->env, temp + 1)); // freelenemez
+				new_value = get_env(shell->env, temp + 1); // freelenemez
 				free(lex->content);
 				lex->content = new_value;
 			}
@@ -87,22 +91,28 @@ static void expander_dollar(t_shell *shell, t_list *lex)
 	}
 }
 
-static void expander_tilde(t_shell *shell, t_list *lex)
+static void	expander_tilde(t_shell *shell, t_list *lex)
 {
-	char *tmp;
+	char	*tmp;
+	char	*home;
 
+	home = get_env(shell->env, "HOME");
 	if (((char *)lex->content)[0] == '~' && ((char *)lex->content)[1] == '/')
 	{
 		tmp = ft_strdup(lex->content);
 		free(lex->content);
-		lex->content = ft_strjoin(get_env(shell->env, "HOME"), tmp + 1);
+		lex->content = ft_strjoin(home, tmp + 1);
 		free(tmp);
+		free(home);
 	}
-	else if (((char *)lex->content)[0] == '~' && ((char *)lex->content)[1] == '\0')
+	else if (((char *)lex->content)[0] == '~'
+		&& ((char *)lex->content)[1] == '\0')
 	{
 		free(lex->content);
-		lex->content = ft_strdup(get_env(shell->env, "HOME"));
+		lex->content = home;
 	}
+	else
+		free(home);
 }
 
 void	expander(t_shell *shell)

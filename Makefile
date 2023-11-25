@@ -3,7 +3,7 @@ CC		:= gcc
 INCLUDE	:= ./includes
 CFLAGS	:= -ggdb -I $(INCLUDE) -I ./libft
 LIBFT	= libft
-FLAGS	= -Wall -Wextra -Werror
+FLAGS	= -Wall -Wextra -Werror -g
 
 SRCDIR	:= src
 SRC		:= src/builtin/builtin.c \

@@ -6,27 +6,33 @@
 /*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 18:29:16 by aaybaz            #+#    #+#             */
-/*   Updated: 2023/11/25 12:19:50 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/11/25 19:46:45 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <stdlib.h>
 
-void	get_title_from_env(t_shell **shell)
+void get_title_from_env(t_shell **shell)
 {
-	char	*user;
-	char	*pwd;
-	char	*title;
+	char *user;
+	char *pwd;
+	char *title;
+	char *temp;
 
 	user = get_env((*shell)->env, "USER");
 	pwd = get_env((*shell)->env, "PWD");
 	title = ft_strjoin("\033[1;36m", user);
-	title = ft_strjoin(title, "@");
-	title = ft_strjoin(title, pwd);
-	title = ft_strjoin(title, "$ \033[0m");
-	(*shell)->title = title;
 	free(user);
+	temp = ft_strjoin(title, "@");
+	free(title);
+	title = temp;
+	temp = ft_strjoin(title, pwd);
+	free(title);
+	title = temp;
+	temp = ft_strjoin(title, "$ \033[0m");
+	free(title);
+	(*shell)->title = temp;
 	free(pwd);
 }
 

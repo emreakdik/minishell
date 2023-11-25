@@ -6,7 +6,7 @@
 /*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 19:28:18 by aaybaz            #+#    #+#             */
-/*   Updated: 2023/11/22 16:37:06 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/11/25 19:08:56 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	free_loop(t_shell *shell, int control)
 		free(shell->heredoc);
 		shell->heredoc = NULL;
 	}
+	free(shell->title);
 }
 
 void	execve_child_free(t_shell *shell, char **str)

@@ -6,7 +6,7 @@
 /*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:07:54 by akaniber          #+#    #+#             */
-/*   Updated: 2023/11/25 12:11:30 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/11/25 19:38:50 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,6 @@ int	main(int ac, char **av, char **env)
 				error_free(&(shell->lex_list)->lex);
 		}
 		free_loop(shell, control);
-		// system("leaks minishell");
+		system("leaks minishell");
 	}
 }
