@@ -6,7 +6,7 @@
 /*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:07:54 by akaniber          #+#    #+#             */
-/*   Updated: 2023/11/23 17:35:04 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/11/25 09:52:05 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	main(int ac, char **av, char **env)
 		if (quote_check(shell->cmd))
 		{
 			lexer(shell);
-			expander_deneme(shell);
+			expander(shell);
 			control = check(shell);
 			if (control)
 				go_parser(shell, env);
@@ -97,5 +97,6 @@ int	main(int ac, char **av, char **env)
 				error_free(&(shell->lex_list)->lex);
 		}
 		free_loop(shell, control);
+		system("leaks minishell");
 	}
 }

@@ -6,13 +6,71 @@
 /*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:31:03 by aaybaz            #+#    #+#             */
-/*   Updated: 2023/11/23 15:49:24 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/11/25 09:48:17 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+void	free_tmp_tmp2(char *tmp, char *tmp1)
+{
+	free(tmp);
+	free(tmp1);
+}
+
+void quote_build(char **tmp, char **data, int *i, int *j)
+{
+	char a;
+	int x;
+	int y;
+
+	x = *i;
+	y = *j;
+	a = (*tmp)[x++]; // Tırnak işaretini al
+	*i += 1;
+	while ((*tmp)[x] && (*tmp)[x] != a) // Tırnak işaretinin sonuna kadar
+	{
+		(*data)[y] = (*tmp)[x++];
+		*i += 1;
+		*j += 1;
+		y++;
+	}
+}
+
+/**
+ * Bu fonksiyon, verilen bir karakter dizisindeki tırnak işaretlerini kontrol eder
+ * ve tırnak içindeki veriyi yeni bir karakter dizisine kopyalar.
+ * 
+ * bu fonksiyon tirnak isareti hic yoksa normal kopyalama yapar
+ * 
+ * @param tmp   Kontrol edilecek karakter dizisi
+ * @return      Tırnak işaretleri kontrol edilmiş ve tırnak içindeki verinin kopyalandığı yeni karakter dizisi
+ */
+char *quote_control(char *tmp)
+{
+	char *data;
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	data = malloc(sizeof(char) * (ft_strlen(tmp) + 1));
+	while (tmp[i])
+	{
+		if (tmp[i] == '\"' || tmp[i] == '\'') // Tırnak işareti varsa
+			quote_build(&tmp, &data, &i, &j);
+		else // Tırnak işareti yoksa
+		{
+			data[j] = tmp[i]; // Karakter dizisini kopyala
+			j++;
+		}
+		i++;
+	}
+	data[j] = '\0';
+	return (data);
+}
 
 /**
  * Bu fonksiyon, verilen veri listesinin içeriğini günceller.

@@ -21,10 +21,6 @@ SRC		:= src/builtin/builtin.c \
 			src/exec/run_execve1.c \
 			src/exec/single_or_multi_command.c \
 			src/expander/expander.c \
-			src/expander/expander_utils.c \
-			src/expander/expander_utils2.c \
-			src/expander/expander_utils3.c \
-			src/expander/expander_utils4.c \
 			src/files/create_files_utils.c \
 			src/files/create_files.c \
 			src/heredoc/heredoc_utils.c \
@@ -37,7 +33,6 @@ SRC		:= src/builtin/builtin.c \
 			src/parser/parser_utils_others.c \
 			src/parser/welcome_to_parse.c \
 			src/signal/signal.c \
-			src/expander/deneme.c
 
 OBJDIR	:= ./objectives
 OBJ		:= $(SRC:%.c=$(OBJDIR)/%.o)
