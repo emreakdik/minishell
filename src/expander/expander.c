@@ -83,7 +83,8 @@ static void	expander_dollar(t_shell *shell, t_list *lex)
 		free(back);
 		free(before);
 	}
-	else if (temp)
+	temp = ft_strchr(lex->content, '$');
+	if (temp)
 	{
 		before = ft_substr(lex->content, 0, temp - (char *)lex->content);
 		if (before && (before == lex->content || !ft_isalnum(*(before - 1))))
