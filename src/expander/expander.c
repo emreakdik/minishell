@@ -2,6 +2,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// remove qutoes from string if its there on start or on end
+void	remove_quotes(t_list *lex)
+{
+	char	*temp;
+
+	if (((char *)lex->content)[0] == '\"' || ((char *)lex->content)[0] == '\'')
+	{
+		temp = ft_substr(lex->content, 1, ft_strlen(lex->content) - 2);
+		free(lex->content);
+		lex->content = temp;
+	}
+}
+
 int	ft_ultimatestrcmp(char *key, char *tmp, int i)
 {
 	int	j;
@@ -126,12 +139,21 @@ void	expander(t_shell *shell)
 	t_list	*lex;
 
 	lex = shell->lex_list->lex;
-	while (lex && ((char *)lex->content)[0] != '\'')
+	if (((char *)lex->content)[0] != '\'')
 	{
-		if (ft_strchr(lex->content, '$'))
-			expander_dollar(shell, lex);
-		if (ft_strchr(lex->content, '~') && ((char *)lex->content)[0] != '\"')
-			expander_tilde(shell, lex);
-		lex = lex->next;
+		while (lex)
+		{
+			if (ft_strchr(lex->content, '~')
+				&& ((char *)lex->content)[0] != '\"'
+				&& ((char *)lex->content)[0] != '\'')
+				expander_tilde(shell, lex);
+			if (ft_strchr(lex->content, '$')
+				&& ((char *)lex->content)[0] != '\'')
+				expander_dollar(shell, lex);
+			remove_quotes(lex);
+			lex = lex->next;
+		}
 	}
+	else
+		remove_quotes(lex);
 }

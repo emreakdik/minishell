@@ -6,7 +6,7 @@
 /*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 18:21:22 by yakdik            #+#    #+#             */
-/*   Updated: 2023/11/23 13:09:32 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/11/26 20:04:27 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ static int	len_for_separate(char *cmd)
 		{
 			i = ignore_quote(cmd, i) + 1;
 		}
-		i++;
+		else
+			i++;
 	}
 	return (i);
 }
