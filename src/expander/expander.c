@@ -55,10 +55,9 @@ static void	expander_dollar(t_shell *shell, t_list *lex)
 	char	*before;
 	char	*after;
 	char	*back;
-	char	*tmp;
 
 	temp = ft_strchr(lex->content, '$');
-	if (temp[1] == '?')
+	if (temp && temp[1] == '?')
 	{
 		before = ft_substr(lex->content, 0, temp - (char *)lex->content);
 		after = ft_strdup(temp + 2);
@@ -71,28 +70,30 @@ static void	expander_dollar(t_shell *shell, t_list *lex)
 		free(back);
 		free(before);
 	}
-	else if (temp[1] != '?')
+	else if (temp)
 	{
-		tmp = ft_strchr(lex->content, '$');
-		if (tmp && tmp > (char *)lex->content)
+		before = ft_substr(lex->content, 0, temp - (char *)lex->content);
+		if (before && (before == lex->content || !ft_isalnum(*(before - 1))))
 		{
-			before = ft_strchr(lex->content, '$') - 1;
-			if (*before == '\0')
+			if (ft_isdigit(temp[1]))
 			{
-				if (ft_isdigit(temp[1]))
+				new_value = ft_strdup(temp + 2);
+				free(lex->content);
+				lex->content = ft_strjoin(before, new_value);
+				free(new_value);
+			}
+			else
+			{
+				new_value = get_env(shell->env, temp + 1);
+				if (new_value)
 				{
-					new_value = ft_strdup(temp + 2);
 					free(lex->content);
-					lex->content = new_value;
-				}
-				else if (get_env(shell->env, temp + 1))
-				{
-					new_value = get_env(shell->env, temp + 1);
-					free(lex->content);
-					lex->content = new_value;
+					lex->content = ft_strjoin(before, new_value);
+					free(new_value);
 				}
 			}
 		}
+		free(before);
 	}
 }
 
