@@ -130,7 +130,7 @@ void	expander(t_shell *shell)
 	{
 		if (ft_strchr(lex->content, '$'))
 			expander_dollar(shell, lex);
-		if (ft_strchr(lex->content, '~'))
+		if (ft_strchr(lex->content, '~') && ((char *)lex->content)[0] != '\"')
 			expander_tilde(shell, lex);
 		lex = lex->next;
 	}
