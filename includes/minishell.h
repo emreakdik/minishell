@@ -6,7 +6,7 @@
 /*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:17:18 by akaniber          #+#    #+#             */
-/*   Updated: 2023/11/25 12:18:42 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/11/29 19:25:25 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,10 @@ typedef struct s_fd_params
 }	t_fd_params;
 
 extern int	g_does_have_heredoc;
-
+void	remove_quotes(t_list *lex);
+int	ft_ultimatestrcmp(char *key, char *tmp, int i, int *flag);
+void	expand_dollar_variable(t_shell *shell, t_list *lex, char *temp);
+void	expand_question_mark(t_shell *shell, t_list *lex, char *temp);
 void get_title_from_env(t_shell **shell);
 char *get_env(t_list *env, char *key);
 t_parse		*parse_(int *j, t_list *new, int *i);
@@ -90,7 +93,7 @@ char		*_search_path(t_shell *shell);
 char		*get_home(t_shell *shell);
 char		**get_args(t_parse *data, t_list *tmp);
 char		*ft_strjoin2(char *s1, const char *s2);
-int			ft_ultimatestrcmp(char *key, char *tmp, int i);
+int			ft_ultimatestrcmp(char *key, char *tmp, int i, int *flag);
 int			quote_len1(char *data);
 int			check(t_shell *shell);
 int			is_builtin(t_list *tmp);

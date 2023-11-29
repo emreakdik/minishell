@@ -6,7 +6,7 @@
 /*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 18:21:22 by yakdik            #+#    #+#             */
-/*   Updated: 2023/11/26 20:04:27 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/11/28 20:25:07 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,14 @@ static int	len_for_separate(char *cmd)
 	return (i);
 }
 
-static void separate_cmd(char *cmd, t_lexer **lex_list)
+static void	separate_cmd(char *cmd, t_lexer **lex_list)
 {
-	int len;
-	char *content;
-	char *trimmed_content;
+	int		len;
+	char	*content;
+	char	*trimmed_content;
 
 	if (!cmd || !*cmd)
-		return;
+		return ;
 	cmd = ft_strtrim(cmd, " ");
 	len = len_for_separate(cmd);
 	content = ft_substr(cmd, 0, len);
@@ -75,19 +75,22 @@ static void separate_cmd(char *cmd, t_lexer **lex_list)
 	free(cmd);
 }
 
-// static void print_lexer(t_lexer *lex_list) {
-//     t_list *lex;
+// static void	print_lexer(t_lexer *lex_list)
+// {
+// 	t_list	*lex;
 
-//     lex = lex_list->lex;
-//     while (lex) {
-// printf("%s ", (char *)lex);
-//         lex = lex->next;
-//     }
-//     printf("\n");
+// 	lex = lex_list->lex;
+// 	while (lex)
+// 	{
+// 		printf(";;%s;;\n", (char *)lex->content);
+// 		lex = lex->next;
+// 	}
+// 	printf("\n");
 // }
 
 void	lexer(t_shell *shell)
 {
 	shell->lex_list->lex = NULL;
 	separate_cmd(shell->cmd, &shell->lex_list);
+	// print_lexer(shell->lex_list);
 }
