@@ -6,7 +6,7 @@
 /*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:17:18 by akaniber          #+#    #+#             */
-/*   Updated: 2023/11/29 19:25:25 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/11/30 19:38:49 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,17 @@ typedef struct s_env
 {
 	char	*key;
 	char	*value;
-}				t_env;
+}			t_env;
 
 typedef struct s_data
 {
 	char	*read_data;
-}				t_data;
+}			t_data;
 
 typedef struct s_lexer
 {
 	t_list	*lex;
-}				t_lexer;
+}			t_lexer;
 
 typedef struct s_parse
 {
@@ -51,7 +51,7 @@ typedef struct s_parse
 	int		fd;
 	int		pid;
 	int		control;
-}				t_parse;
+}			t_parse;
 
 typedef struct s_shell
 {
@@ -62,28 +62,31 @@ typedef struct s_shell
 	char	*heredoc;
 	int		exec_status;
 	char	*title;
-}				t_shell;
+}			t_shell;
 
 typedef struct s_parse_params
 {
-	int	i;
-	int	j;
-	int	flag;
-}	t_parse_params;
+	int		i;
+	int		j;
+	int		flag;
+}			t_parse_params;
 
 typedef struct s_fd_params
 {
 	int		*fd;
 	int		fd_index;
-}	t_fd_params;
+}			t_fd_params;
 
 extern int	g_does_have_heredoc;
-void	remove_quotes(t_list *lex);
-int	ft_ultimatestrcmp(char *key, char *tmp, int i, int *flag);
-void	expand_dollar_variable(t_shell *shell, t_list *lex, char *temp);
-void	expand_question_mark(t_shell *shell, t_list *lex, char *temp);
-void get_title_from_env(t_shell **shell);
-char *get_env(t_list *env, char *key);
+
+int			count_of_quotes(char *before);
+int			quote_index(char *str, int is_from_last);
+void		remove_quotes(t_list *lex);
+int			ft_ultimatestrcmp(char *key, char *tmp, int i, int *flag);
+void		expand_dollar_variable(t_shell *shell, t_list *lex, char *temp);
+void		expand_question_mark(t_shell *shell, t_list *lex, char *temp);
+void		get_title_from_env(t_shell **shell);
+char		*get_env(t_list *env, char *key);
 t_parse		*parse_(int *j, t_list *new, int *i);
 char		*after_dark2(char *key, char *tmp);
 char		*quote_control(char *tmp);
@@ -136,15 +139,15 @@ void		get_after_num(char *tmp, t_list *data, int i);
 void		quote_build(char **tmp, char **data, int *i, int *j);
 void		ft_exit_status(t_shell *shell, char *tmp, t_list *data);
 void		free_node(t_list *node);
-void		welcome_to_parse(t_shell *shell, t_list	*node, t_parse_params arg);
+void		welcome_to_parse(t_shell *shell, t_list *node, t_parse_params arg);
 void		get_text(t_parse **parse, char *str, int j, int a);
 void		tokenize_type(t_parse **parse, const char *str);
 void		free_parse(t_parse *parse);
 void		parse_init(t_shell *shell);
-void		does_dollar_make_sense(char *tmp, t_list *data,
-				t_list *shell_data, int i);
-void		_does_dollar_make_sense(t_env *y, char *before,
-				char *after, t_list *data);
+void		does_dollar_make_sense(char *tmp, t_list *data, t_list *shell_data,
+				int i);
+void		_does_dollar_make_sense(t_env *y, char *before, char *after,
+				t_list *data);
 void		exec_echo(t_shell *shell, t_parse *data);
 void		exec_env(t_shell *shell);
 void		exec_export(t_shell *shell, t_parse *data);
@@ -155,10 +158,10 @@ void		create_dup(t_shell *shell, t_list *data1, t_fd_params fd);
 void		clear_pipe(int *fd);
 void		switch_pipe(int **fd);
 void		wait_all(t_shell *shell);
-void		execute_builtin_command(t_shell *shell, t_list *tmp, \
-			t_fd_params fd);
-void		exec_others(t_shell *shell, t_list *data, char **env, \
-			t_fd_params fd);
+void		execute_builtin_command(t_shell *shell, t_list *tmp,
+				t_fd_params fd);
+void		exec_others(t_shell *shell, t_list *data, char **env,
+				t_fd_params fd);
 void		execve_child_free(t_shell *shell, char **str);
 void		replace_data(t_list **data, char *tmp2);
 void		ft_newlstiter(t_list *lst, void (*f)(), t_shell *shell);

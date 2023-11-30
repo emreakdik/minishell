@@ -6,12 +6,47 @@
 /*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:24:35 by yakdik            #+#    #+#             */
-/*   Updated: 2023/11/29 19:26:46 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/11/30 20:05:35 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include <stdlib.h>
+
+int	count_of_quotes(char *before)
+{
+	int	count;
+	int	i;
+
+	i = 0;
+	count = 0;
+	while (before[i])
+	{
+		if (before[i] == '\'')
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+int	quote_index(char *str, int is_from_last)
+{
+	int	len;
+
+	len = 0;
+	if (is_from_last)
+		len = ft_strlen(str) - 1;
+	while (str[len])
+	{
+		if (str[len] == '\'')
+			return (len);
+		if (is_from_last)
+			len--;
+		else
+			len++;
+	}
+	return (0);
+}
 
 char	*get_env(t_list *env, char *key)
 {
@@ -39,16 +74,25 @@ char	*get_env(t_list *env, char *key)
 	return (ret);
 }
 
-void	remove_quotes(t_list *lex)
+void remove_quotes(t_list *lex)
 {
-	char	*temp;
+	char *str = lex->content;
+	int len = strlen(str);
+	int i = 0;
+	int j = 0;
 
-	if (((char *)lex->content)[0] == '\"' || ((char *)lex->content)[0] == '\'')
+	while (i < len)
 	{
-		temp = ft_substr(lex->content, 1, ft_strlen(lex->content) - 2);
-		free(lex->content);
-		lex->content = temp;
+		if (str[i] == '\'' || str[i] == '\"')
+		{
+			i++;
+			continue;
+		}
+		str[j] = str[i];
+		i++;
+		j++;
 	}
+	str[j] = '\0';
 }
 
 int	ft_ultimatestrcmp(char *key, char *tmp, int i, int *flag)

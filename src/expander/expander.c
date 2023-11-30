@@ -6,7 +6,7 @@
 /*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:16:27 by yakdik            #+#    #+#             */
-/*   Updated: 2023/11/29 19:26:36 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/11/30 20:39:56 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,31 @@ void	expand_dollar_variable(t_shell *shell, t_list *lex, char *temp)
 {
 	char	*before;
 	char	*new_value;
+	int		first_quote_index;
+	int		second_quote_index;
 
 	before = ft_substr(lex->content, 0, temp - (char *)lex->content);
-	if (before && (before == lex->content || !ft_isalnum(*(before - 1))))
+	if (count_of_quotes(before) % 2 == 1 && count_of_quotes(lex->content) > 1)
+	{
+		first_quote_index = quote_index(before, 1);
+		second_quote_index = first_quote_index + quote_index(lex->content
+				+ first_quote_index + 1, 0);
+		temp = ft_strdup(lex->content + second_quote_index);
+		if (!ft_strchr(temp, '$'))
+		{
+			free(before);
+			free(temp);
+			return ;
+		}
+		else
+		{
+			expand_dollar_variable(shell, lex, temp);
+			free(before);
+			free(temp);
+			return ;
+		}
+	}
+	else if (before && (before == lex->content || !ft_isalnum(*(before - 1))))
 	{
 		if (ft_isdigit(temp[1]))
 		{
@@ -118,9 +140,9 @@ void	expander(t_shell *shell)
 			if (ft_strchr(lex->content, '$')
 				&& ((char *)lex->content)[0] != '\'')
 				handle_dollar(shell, lex);
-			if (ft_strnstr(lex->content, "$?", ft_strlen(lex->content))
-				|| ft_strchr(lex->content, '$'))
-				continue ;
+			// if (ft_strnstr(lex->content, "$?", ft_strlen(lex->content))
+			// 	|| ft_strchr(lex->content, '$'))
+			// 	continue ;
 			remove_quotes(lex);
 			lex = lex->next;
 		}
