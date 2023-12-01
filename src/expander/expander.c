@@ -6,7 +6,7 @@
 /*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:16:27 by yakdik            #+#    #+#             */
-/*   Updated: 2023/11/30 20:39:56 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/01 16:58:42 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,54 +14,58 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "libft.h"
+
 void	expand_dollar_variable(t_shell *shell, t_list *lex, char *temp)
 {
-	char	*before;
-	char	*new_value;
-	int		first_quote_index;
-	int		second_quote_index;
+    char	*before;
+    char	*new_value;
+    int		first_quote_index;
+    int		second_quote_index;
 
-	before = ft_substr(lex->content, 0, temp - (char *)lex->content);
-	if (count_of_quotes(before) % 2 == 1 && count_of_quotes(lex->content) > 1)
-	{
-		first_quote_index = quote_index(before, 1);
-		second_quote_index = first_quote_index + quote_index(lex->content
-				+ first_quote_index + 1, 0);
-		temp = ft_strdup(lex->content + second_quote_index);
-		if (!ft_strchr(temp, '$'))
-		{
-			free(before);
-			free(temp);
-			return ;
-		}
-		else
-		{
-			expand_dollar_variable(shell, lex, temp);
-			free(before);
-			free(temp);
-			return ;
-		}
-	}
-	else if (before && (before == lex->content || !ft_isalnum(*(before - 1))))
-	{
-		if (ft_isdigit(temp[1]))
-		{
-			new_value = ft_strdup(temp + 2);
-			free(lex->content);
-			lex->content = ft_strjoin(before, new_value);
-			free(new_value);
-		}
-		else
-		{
-			new_value = get_env(shell->env, temp + 1);
-			free(lex->content);
-			lex->content = ft_strjoin(before, new_value);
-			if ((char *)lex->content == NULL)
-				lex->content = ft_strdup(before);
-			free(new_value);
-		}
-	}
-	free(before);
+    before = ft_substr(lex->content, 0, temp - (char *)lex->content);
+    if (count_of_quotes(before) % 2 == 1 && count_of_quotes(lex->content) > 1)
+    {
+        first_quote_index = quote_index(before, 1);
+        second_quote_index = first_quote_index + quote_index(lex->content
+                + first_quote_index + 1, 0);
+        temp = ft_strdup(lex->content + second_quote_index + 1);
+        if (!ft_strchr(temp, '$'))
+        {
+            free(before);
+            free(temp);
+            return ;
+        }
+        else
+        {
+            if (temp[0] != '\'') {
+                expand_dollar_variable(shell, lex, temp);
+            }
+            free(before);
+            free(temp);
+            return ;
+        }
+    }
+    else if (before && (before == lex->content || !ft_isalnum(*(before - 1))))
+    {
+        if (ft_isdigit(temp[1]))
+        {
+            new_value = ft_strdup(temp + 2);
+            free(lex->content);
+            lex->content = ft_strjoin(before, new_value);
+            free(new_value);
+        }
+        else if (temp[0] != '\'')
+        {
+            new_value = get_env(shell->env, temp + 1);
+            free(lex->content);
+            lex->content = ft_strjoin(before, new_value);
+            if ((char *)lex->content == NULL)
+                lex->content = ft_strdup(before);
+            free(new_value);
+        }
+    }
+    free(before);
 }
 
 void	expand_question_mark(t_shell *shell, t_list *lex, char *temp)

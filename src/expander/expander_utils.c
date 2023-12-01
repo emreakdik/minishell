@@ -6,7 +6,7 @@
 /*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:24:35 by yakdik            #+#    #+#             */
-/*   Updated: 2023/11/30 20:05:35 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/01 16:52:24 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	quote_index(char *str, int is_from_last)
 
 	len = 0;
 	if (is_from_last)
-		len = ft_strlen(str) - 1;
+		len = ft_strlen(str);
 	while (str[len])
 	{
 		if (str[len] == '\'')
