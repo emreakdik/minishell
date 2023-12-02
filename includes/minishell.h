@@ -6,7 +6,7 @@
 /*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:17:18 by akaniber          #+#    #+#             */
-/*   Updated: 2023/11/30 19:38:49 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/02 14:47:25 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ typedef struct s_fd_params
 
 extern int	g_does_have_heredoc;
 
-int			count_of_quotes(char *before);
+void		handle_dollar(t_shell *shell, t_list *lex);
+int			is_count_odd(char *before, char c);
 int			quote_index(char *str, int is_from_last);
 void		remove_quotes(t_list *lex);
 int			ft_ultimatestrcmp(char *key, char *tmp, int i, int *flag);

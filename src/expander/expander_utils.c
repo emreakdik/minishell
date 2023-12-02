@@ -6,45 +6,28 @@
 /*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:24:35 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/01 16:52:24 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/02 14:39:48 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include <stdlib.h>
 
-int	count_of_quotes(char *before)
+int	is_count_odd(char *before, char c)
 {
-	int	count;
 	int	i;
+	int	count;
 
 	i = 0;
 	count = 0;
 	while (before[i])
 	{
-		if (before[i] == '\'')
+		if (before[i] == c)
 			count++;
 		i++;
 	}
-	return (count);
-}
-
-int	quote_index(char *str, int is_from_last)
-{
-	int	len;
-
-	len = 0;
-	if (is_from_last)
-		len = ft_strlen(str);
-	while (str[len])
-	{
-		if (str[len] == '\'')
-			return (len);
-		if (is_from_last)
-			len--;
-		else
-			len++;
-	}
+	if (count % 2 == 1)
+		return (1);
 	return (0);
 }
 
@@ -74,23 +57,30 @@ char	*get_env(t_list *env, char *key)
 	return (ret);
 }
 
-void remove_quotes(t_list *lex)
+void	remove_quotes(t_list *lex)
 {
-	char *str = lex->content;
-	int len = strlen(str);
-	int i = 0;
-	int j = 0;
+	char	*str;
+	int		len;
+	int		i;
+	int		j;
+	int		in_quotes;
+	char	quote_char;
 
+	str = lex->content;
+	len = strlen(str);
+	i = 0;
+	j = 0;
+	in_quotes = 0;
+	quote_char = '\0';
 	while (i < len)
 	{
-		if (str[i] == '\'' || str[i] == '\"')
+		if ((str[i] == '\'' || str[i] == '\"') && (in_quotes ^= 1)
+				&& (quote_char = str[i]))
 		{
 			i++;
-			continue;
+			continue ;
 		}
-		str[j] = str[i];
-		i++;
-		j++;
+		str[j++] = str[i++];
 	}
 	str[j] = '\0';
 }
