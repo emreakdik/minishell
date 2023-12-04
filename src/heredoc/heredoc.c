@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
+/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:24:52 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/03 16:53:47 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/05 01:03:13 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <signal.h>
+#include <stdio.h>
 #include <readline/readline.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
 
 char	*add_char(char *str, char a)
 {

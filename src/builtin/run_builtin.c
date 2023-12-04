@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   run_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
+/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:25:49 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/03 16:24:22 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/05 01:02:13 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../includes/minishell.h"
+
 #include <unistd.h>
 #include <stdio.h>
 
