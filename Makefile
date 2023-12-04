@@ -33,7 +33,7 @@ SRC		:= src/builtin/builtin.c \
 			src/signal/signal.c \
 			src/expander/expander_utils.c \
 			src/utils/utils.c \
-			src/exec/exec_utils.c \
+			src/exec/exec_utils.c 
 
 OBJDIR	:= ./objectives
 OBJ		:= $(SRC:%.c=$(OBJDIR)/%.o)

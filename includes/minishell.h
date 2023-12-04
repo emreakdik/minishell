@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
+/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:17:18 by akaniber          #+#    #+#             */
-/*   Updated: 2023/12/03 18:09:02 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/05 00:51:30 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,25 +70,26 @@ extern int			g_does_have_heredoc;
 
 /**
  * Lexer Functions
-*/
+ */
 void				lexer(t_shell *shell);
 
 /**
  * Expander Functions
-*/
+ */
 int					is_count_odd(char *before, char c);
 char				*get_env(t_list *env, char *key);
 void				remove_quotes(t_list *node);
 int					ft_ultimatestrcmp(char *key, char *tmp, int i, int *flag);
-void	expander(t_shell *shell);
-void	handle_dollar(t_shell *shell, t_list *lex);
-void	expand_question_mark(t_shell *shell, t_list *lex, char *temp);
-void	expand_dollar_variable(t_shell *shell, t_list *lex, char *temp);
-
+void				expander(t_shell *shell);
+void				handle_dollar(t_shell *shell, t_list *lex);
+void				expand_question_mark(t_shell *shell, t_list *lex,
+						char *temp);
+void				expand_dollar_variable(t_shell *shell, t_list *lex,
+						char *temp);
 
 /**
  * Parser Functions
-*/
+ */
 void				mini_parse(t_list *lex, t_shell *m_shell, int a[3]);
 void				flag_(t_parse *parse);
 void				parse_text_m(t_parse *parse, char *str, int *j, int *flag);
@@ -132,10 +133,9 @@ char				**get_args(t_parse *parse);
 int					single_or_multi_command(t_shell *m_shell);
 t_parse				*_next_command(t_parse **parse);
 
-
 /**
  * Builtins Functions
-*/
+ */
 void				execute_builtin_command(t_parse *parse, t_shell *m_shell);
 int					is_builtin(t_parse *data);
 void				run_echo(t_parse *data, int *i);
@@ -161,14 +161,13 @@ char				*get_home(t_shell *m_shell);
 
 /**
  * Signals Functions
-*/
+ */
 void				signals(int sig);
 void				signals_control(void);
 
-
 /**
  * Main Folder Functions
-*/
+ */
 void				error_free(t_list **node);
 void				go_parser(t_shell *shell, char **env);
 void				get_readline(t_shell *shell);
@@ -177,10 +176,9 @@ void				env_get(char **env, t_shell **shell);
 void				free_str(char **str);
 void				get_title_from_env(t_shell **shell);
 
-
 /**
  * Heredoc Folder Functions
-*/
+ */
 void				killer(int sig);
 void				set_heredoc(int sig);
 void				loop_heredoc(t_shell *m_shell);
@@ -191,33 +189,31 @@ char				*add_char(char *str, char a);
 
 /**
  * Create Dup Folder Functions
-*/
+ */
 void				_create_dup(t_shell *m_shell);
 void				create_dup(t_shell *m_shell, t_parse *parse);
 void				create_dup_one(t_parse *parse, int *fd);
 void				create_dup_two(t_parse *parse, int *fd, int fd_index,
 						t_shell *m_shell);
 
-
 /**
  * Check Folder Functions
-*/
+ */
 void				free_tmp_tmp2(char *tmp, char *tmp1);
 void				quote_build(char **tmp, char **data, int *i, int *j);
 char				*quote_control(char *tmp);
 void				replace_data(t_list **data, char *tmp2);
 int					is_space(char *cmd);
 int					print_error(void);
-int	quote_check(char *data, int *flag);
-int	check(t_shell *shell);
-int	quote_len1(char *data);
-int	cmd_is_valid(t_lexer *lex_list, char *a, char *b);
-int	is_valid_other(char *a, char *b);
-
+int					quote_check(char *data, int *flag);
+int					check(t_shell *shell);
+int					quote_len1(char *data);
+int					cmd_is_valid(t_lexer *lex_list, char *a, char *b);
+int					is_valid_other(char *a, char *b);
 
 /**
  * Utils Folder Functions
-*/
+ */
 void				_multi_command(t_parse **parse);
 void				ft_newlstiter(t_list *lst, void (*f)(), t_shell *shell);
 char				*ft_mini_strdup2(size_t len, char *s, int i,
@@ -227,12 +223,11 @@ void				wait_all(t_shell *m_shell);
 
 /**
  * Create Files Folder Functions
-*/
-int	create_in_files_other_me(t_parse *data, char *pwd);
-int	create_in_files_me(t_parse *parse);
-int	create_files_m(t_shell *m_shell);
-void	create_out_files_me(t_parse *m_parse, t_parse *prev_parse);
-char	*ft_strjoin2(char *s1, const char *s2);
-void	other_text_create_me(t_parse *m_parse);
-void	other_out_filesme(t_parse *parse);
+ */
+int					create_in_files_me(t_parse *parse);
+int					create_files_m(t_shell *m_shell);
+void				create_out_files_me(t_parse *m_parse, t_parse *prev_parse);
+char				*ft_strjoin2(char *s1, const char *s2);
+void				other_text_create_me(t_parse *m_parse);
+void				other_out_filesme(t_parse *parse);
 #endif

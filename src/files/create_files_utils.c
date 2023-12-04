@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_files_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
+/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:20:44 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/03 17:08:05 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/05 00:51:24 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,6 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
-
-int	create_in_files_other_me(t_parse *data, char *pwd)
-{
-	if (pwd)
-		free(pwd);
-	printf("minishell: %s: No such file or directory\n", data->text[0]);
-	return (0);
-}
 
 int	create_in_files_me(t_parse *parse)
 {
