@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
+/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/22 16:07:54 by akaniber          #+#    #+#             */
-/*   Updated: 2023/12/03 18:20:56 by yakdik           ###   ########.fr       */
+/*   Created: 2023/12/04 21:02:01 by emre              #+#    #+#             */
+/*   Updated: 2023/12/04 21:11:20 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <stdio.h>
 #include <readline/history.h>
 #include <readline/readline.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -111,6 +111,6 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		}
 		free_loop(control, shell);
-		system("leaks minishell");
+		// system("leaks minishell");
 	}
 }

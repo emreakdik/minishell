@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
+/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:24:35 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/02 17:23:32 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/05 00:06:44 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,45 +57,36 @@ char	*get_env(t_list *env, char *key)
 	return (ret);
 }
 
-/**
- * this function will remove quotes that paired just itselfs with each other
- * and not replace them remove them in given node
-*/
-void	remove_quotes(t_list *node)
+void	remove_quotes(t_list *lex)
 {
-	char *temp = node->content;
-	int i = 0;
-	int j = 0;
+	char	*str;
+	int		i;
+	int		j;
+	char	quote_char;
+	int		in_quotes;
 
-	while(temp[i]){
-		if (temp[i] == '\''){
-			j = i;
-			while(temp[++i] != '\'');
-			if (!temp[i]){
-				i = ++j;
-			}
-			else{
-				temp[i] = '\0';
-				temp = ft_strjoin(temp + j, temp + i + 1);
-				node->content = temp;
-				i = j;
-			}
+	str = lex->content;
+	i = 0, j = 0, in_quotes = 0;
+	quote_char = '\0';
+	while (str[i])
+	{
+		if ((str[i] == '\'' || str[i] == '\"') && (!in_quotes
+				|| quote_char == str[i]))
+		{
+			in_quotes = !in_quotes;
+			if (in_quotes)
+				quote_char = str[i];
+			else
+				quote_char = '\0';
 		}
-		else if (temp[i] == '\"'){
-			j = i;
-			while(temp[++i] != '\"');
-			if (!temp[i]){
-				i = ++j;
-			}
-			else{
-				temp[i] = '\0';
-				temp = ft_strjoin(temp + j, temp + i);
-				node->content = temp;
-				i = j;
-			}
+		else
+		{
+			str[j] = str[i];
+			j++;
 		}
 		i++;
 	}
+	str[j] = '\0';
 }
 
 int	ft_ultimatestrcmp(char *key, char *tmp, int i, int *flag)
