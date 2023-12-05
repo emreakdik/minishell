@@ -6,14 +6,14 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 21:02:01 by emre              #+#    #+#             */
-/*   Updated: 2023/12/05 20:37:17 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/06 00:01:03 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <stdio.h>
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -38,6 +38,7 @@ void	get_readline(t_shell *shell)
 	if (shell->cmd && !is_space(shell->cmd))
 	{
 		free(shell->cmd);
+		free(shell->title);
 		get_readline(shell);
 	}
 	if (!shell->cmd)
@@ -57,8 +58,13 @@ void	get_readline(t_shell *shell)
  * @param shell Shell yapısı
  * @param env Çevre değişkenleri dizisi
  */
-void	go_parser(t_shell *shell, char **env)
+void	go_parser(t_shell *shell, char **env, int control)
 {
+	if (!control)
+	{
+		error_free(&(shell->lex_list)->lex);
+		return ;
+	}
 	if (ft_strcmp(shell->cmd, ""))
 	{
 		if (ft_parser(shell))
@@ -98,17 +104,13 @@ int	main(int ac, char **av, char **env)
 			lexer(shell);
 			expander(shell);
 			control = check(shell);
-			if (control)
-				go_parser(shell, env);
-			else
-				error_free(&(shell->lex_list)->lex);
+			go_parser(shell, env, control);
 		}
 		else
 		{
-			free(shell->cmd);
+			(free(shell->cmd), free(shell->title));
 			continue ;
 		}
 		free_loop(control, shell);
-		system("leaks minishell");
 	}
 }

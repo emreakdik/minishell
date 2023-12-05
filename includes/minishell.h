@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:17:18 by akaniber          #+#    #+#             */
-/*   Updated: 2023/12/05 20:34:45 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/05 23:54:31 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ void				signals_control(void);
  * Main Folder Functions
  */
 void				error_free(t_list **node);
-void				go_parser(t_shell *shell, char **env);
+void				go_parser(t_shell *shell, char **env, int control);
 void				get_readline(t_shell *shell);
 void				shell_init(t_shell **shell);
 void				env_get(char **env, t_shell **shell);
