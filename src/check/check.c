@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
+/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 21:35:57 by akaniber          #+#    #+#             */
-/*   Updated: 2023/12/03 18:11:38 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/05 20:34:56 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int	is_valid_other(char *a, char *b)
 {
@@ -96,7 +97,7 @@ int	quote_len1(char *data)
 	return (j);
 }
 
-int	quote_check(char *data, int *flag)
+int	quote_check(char *data)
 {
 	int	x;
 
@@ -104,11 +105,9 @@ int	quote_check(char *data, int *flag)
 	x = quote_len1(data);
 	if (x % 2 != 0)
 	{
-		*flag = 1;
 		printf("minishell: quote error\n");
 		return (0);
 	}
-	*flag = 0;
 	return (1);
 }
 

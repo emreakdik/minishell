@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 21:02:01 by emre              #+#    #+#             */
-/*   Updated: 2023/12/05 19:21:21 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/05 20:37:17 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ int	main(int ac, char **av, char **env)
 {
 	t_shell	*shell;
 	int		control;
-	int		error_flag;
 
 	(void)av;
 	control = 0;
@@ -94,7 +93,7 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		get_readline(shell);
-		if (quote_check(shell->cmd, &error_flag))
+		if (quote_check(shell->cmd))
 		{
 			lexer(shell);
 			expander(shell);
@@ -104,9 +103,8 @@ int	main(int ac, char **av, char **env)
 			else
 				error_free(&(shell->lex_list)->lex);
 		}
-		if (error_flag)
+		else
 		{
-			error_flag = 0;
 			free(shell->cmd);
 			continue ;
 		}

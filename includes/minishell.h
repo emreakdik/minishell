@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:17:18 by akaniber          #+#    #+#             */
-/*   Updated: 2023/12/05 00:51:30 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/05 20:34:45 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ char				*quote_control(char *tmp);
 void				replace_data(t_list **data, char *tmp2);
 int					is_space(char *cmd);
 int					print_error(void);
-int					quote_check(char *data, int *flag);
+int					quote_check(char *data);
 int					check(t_shell *shell);
 int					quote_len1(char *data);
 int					cmd_is_valid(t_lexer *lex_list, char *a, char *b);

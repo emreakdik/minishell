@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:21:10 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/05 19:31:46 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/05 20:17:12 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	free_loop(int control, t_shell *m_shell)
 {
 	if (m_shell->cmd)
 		free(m_shell->cmd);
+	free(m_shell->title);
 	if (control)
 	{
 		if (m_shell->parse)

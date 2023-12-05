@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 18:29:16 by aaybaz            #+#    #+#             */
-/*   Updated: 2023/12/05 19:24:53 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/05 20:02:38 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ void get_title_from_env(t_shell **shell)
 	char *title;
 	char *temp;
 
-	if ((*shell)->title)
-		free((*shell)->title);
 	user = get_env((*shell)->env, "USER");
 	pwd = get_env((*shell)->env, "PWD");
 	title = ft_strjoin("\033[1;36m", user);
