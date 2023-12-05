@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:20:37 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/05 01:02:02 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/03 16:58:19 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void	execute_builtin_command(t_parse *parse, t_shell *m_shell)
 {

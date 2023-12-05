@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_files.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:20:50 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/05 14:40:44 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/03 17:08:10 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,6 @@
 #include <unistd.h>
 #include <stdio.h>
 
-/**
- * Bu fonksiyon, parse parametresi olarak verilen struct'ın next ve next->text[0] değerlerini kullanarak
- * dosya oluşturma işlemlerini gerçekleştirir. Fonksiyon, parse->type değerine göre farklı işlemler yapar.
- * Eğer parse->type GREATER ise, dosya açılırken O_APPEND flag'i kullanılır. Eğer parse->type GREAT ise,
- * dosya açılırken O_TRUNC flag'i kullanılır. Dosya açma işlemi tamamlandıktan sonra parse->outfile ve
- * parse->fd değerleri güncellenir. Fonksiyonun sonunda kullanılan bellek alanları serbest bırakılır.
- *
- * @param parse Dosya oluşturma işlemlerinin yapılacağı parse struct'ı
- */
 void	other_out_filesme(t_parse *parse)
 {
 	char		str[256];
@@ -39,9 +30,9 @@ void	other_out_filesme(t_parse *parse)
 	open(pwd1, O_CREAT | O_RDWR, 0777);
 	free(pwd1);
 	pwd1 = ft_strjoin(pwd, nparse->next->text[0]);
-	if (nparse->type == GREATER)
+	if (nparse->type == 4)
 		parse->fd = open(pwd1, O_CREAT | O_RDWR | O_APPEND, 0777);
-	else if (parse->type == GREAT)
+	else if (parse->type == 3)
 		parse->fd = open(pwd1, O_CREAT | O_RDWR | O_TRUNC, 0777);
 	parse->outfile = parse->fd;
 	if (pwd)
@@ -50,22 +41,17 @@ void	other_out_filesme(t_parse *parse)
 		free(pwd1);
 }
 
-/**
- * Bu fonksiyon, verilen t_parse yapısı üzerinde işlem yaparak metin oluşturur.
- * 
- * @param m_parse işlem yapılacak t_parse yapısı
- */
-void other_text_create_me(t_parse *m_parse)
+void	other_text_create_me(t_parse *m_parse)
 {
-	t_parse *n_parse;
-	int i;
-	int j;
+	t_parse	*n_parse;
+	int			i;
+	int			j;
 
 	n_parse = m_parse->next;
 	i = 0;
 	while (m_parse->text[i])
 		i++;
-	while (n_parse->next && n_parse->type != PIPE)
+	while (n_parse->next && n_parse->type != 2)
 	{
 		j = 1;
 		while (n_parse->text[j])
@@ -80,18 +66,6 @@ void other_text_create_me(t_parse *m_parse)
 	other_out_filesme(m_parse);
 }
 
-/**
- * Birleştirilmiş bir dize döndüren ft_strjoin2 fonksiyonu.
- *
- * Bu fonksiyon, verilen iki diziyi birleştirerek yeni bir dize oluşturur.
- * İlk dizeyi ve ikinci diziyi birleştirirken, bellekte yeni bir dize oluşturur ve
- * bu yeni dizeyi döndürür. İlk dizeyi temsil eden s1 ve ikinci dizeyi temsil eden s2
- * parametreleri alır.
- *
- * @param s1 Birinci dize
- * @param s2 İkinci dize
- * @return Birleştirilmiş dize
- */
 char	*ft_strjoin2(char *s1, const char *s2)
 {
 	char	*str;
@@ -109,27 +83,21 @@ char	*ft_strjoin2(char *s1, const char *s2)
 	return (str);
 }
 
-/**
- * Bu fonksiyon, verilen parse yapılarına göre çıkış dosyalarını oluşturur.
- * 
- * @param m_parse   Mevcut parse yapısı
- * @param prev_parse   Önceki parse yapısı
- */
-void create_out_files_me(t_parse *m_parse, t_parse *prev_parse)
+void	create_out_files_me(t_parse *m_parse, t_parse *prev_parse)
 {
-	char str[256];
-	char *pwd;
-	t_parse *m_next;
+	char		str[256];
+	char		*pwd;
+	t_parse	*m_next;
 
-	getcwd(str, 256); // mevcut çalışma dizinini al
+	getcwd(str, 256);
 	m_next = m_parse->next;
-	if (m_next->type == GREAT || m_next->type == GREATER)
+	if (m_next->type == 3 || m_next->type == 4)
 		return (other_text_create_me(m_parse));
 	pwd = ft_strjoin(str, "/");
 	pwd = ft_strjoin2(pwd, m_next->text[0]);
-	if (m_parse->type == GREATER)
+	if (m_parse->type == 4)
 		m_next->fd = open(pwd, O_CREAT | O_RDWR | O_APPEND, 0777);
-	else if (m_parse->type == GREAT)
+	else if (m_parse->type == 3)
 		m_next->fd = open(pwd, O_CREAT | O_RDWR | O_TRUNC, 0777);
 	if (m_parse->cmd)
 		m_parse->outfile = m_next->fd;
@@ -139,26 +107,20 @@ void create_out_files_me(t_parse *m_parse, t_parse *prev_parse)
 		free(pwd);
 }
 
-/**
- * Bu fonksiyon, verilen bir shell yapısı üzerinde dosya oluşturma işlemlerini gerçekleştirir.
- * 
- * @param m_shell Shell yapısı
- * @return Oluşturma işlemi başarılıysa 1, aksi halde 0 döner.
- */
-int create_files_m(t_shell *m_shell)
+int	create_files_m(t_shell *m_shell)
 {
-	t_parse *parse;
-	int i;
+	t_parse	*parse;
+	int			i;
 
 	i = 1;
 	parse = m_shell->parse;
 	while (parse)
 	{
-		if (parse->type == GREAT || parse->type == GREATER)
+		if (parse->type == 3 || parse->type == 4)
 			create_out_files_me(parse, m_shell->parse);
-		else if (parse->type == LESS)
+		else if (parse->type == 5)
 			i = create_in_files_me(parse);
 		parse = parse->next;
 	}
-	return i;
+	return (i);
 }
