@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 21:02:01 by emre              #+#    #+#             */
-/*   Updated: 2023/12/04 21:11:20 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/05 12:36:34 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	shell_init(t_shell **shell)
 	(*shell)->exec_status = 0;
 	(*shell)->heredoc = NULL;
 	(*shell)->cmd = NULL;
+	(*shell)->title = NULL;
 }
 
 void	get_readline(t_shell *shell)
@@ -111,6 +112,5 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		}
 		free_loop(control, shell);
-		// system("leaks minishell");
 	}
 }

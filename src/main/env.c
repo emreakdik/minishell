@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
+/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 18:29:16 by aaybaz            #+#    #+#             */
-/*   Updated: 2023/11/25 19:46:45 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/05 12:35:54 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void get_title_from_env(t_shell **shell)
 	char *title;
 	char *temp;
 
+	if ((*shell)->title)
+		free((*shell)->title);
 	user = get_env((*shell)->env, "USER");
 	pwd = get_env((*shell)->env, "PWD");
 	title = ft_strjoin("\033[1;36m", user);
