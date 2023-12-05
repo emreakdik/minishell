@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:21:10 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/05 19:15:49 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/05 19:31:46 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ void	free_loop(int control, t_shell *m_shell)
 		free(m_shell->heredoc);
 		m_shell->heredoc = NULL;
 	}
-	if (m_shell->title)
-		free(m_shell->title);
 }
 
 void	execve_child_free(char **str, t_shell *m_shell)
