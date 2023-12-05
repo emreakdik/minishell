@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 18:29:16 by aaybaz            #+#    #+#             */
-/*   Updated: 2023/12/05 12:35:54 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/05 15:30:15 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,18 @@ void get_title_from_env(t_shell **shell)
 	free(pwd);
 }
 
-void	free_str(char **str)
+void free_str(char **str)
 {
-	int	i;
-
-	i = 0;
+	int i = 0;
 	while (str[i])
 		free(str[i++]);
 	free(str);
 }
 
-void	env_get(char **env, t_shell **shell)
+void env_get(char **env, t_shell **shell)
 {
-	t_env	*a;
-	char	**str;
+	t_env *a;
+	char **str;
 
 	free((*shell)->env);
 	(*shell)->env = NULL;
@@ -66,3 +64,4 @@ void	env_get(char **env, t_shell **shell)
 		env++;
 	}
 }
+
