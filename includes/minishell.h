@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:17:18 by akaniber          #+#    #+#             */
-/*   Updated: 2023/12/06 13:30:43 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/06 13:39:54 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,10 +196,6 @@ void				create_dup_two(t_parse *parse, int *fd, int fd_index,
 /**
  * Check Folder Functions
  */
-void				free_tmp_tmp2(char *tmp, char *tmp1);
-void				quote_build(char **tmp, char **data, int *i, int *j);
-char				*quote_control(char *tmp);
-void				replace_data(t_list **data, char *tmp2);
 int					is_space(char *cmd);
 int					print_error(void);
 int					quote_check(char *data);
