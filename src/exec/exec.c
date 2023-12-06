@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:21:19 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/05 19:27:04 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/06 16:00:51 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	multi_command_(t_parse *parse, char **env, t_shell *m_shell, int *fd)
 			run_command(env, parse, fd, m_shell);
 		}
 		if (nparse)
-			create_dup_two(nparse, fd, 0, m_shell);
+			create_dup_two(nparse, fd);
 		parse = nparse;
 	}
 }

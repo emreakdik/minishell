@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:17:18 by akaniber          #+#    #+#             */
-/*   Updated: 2023/12/06 13:39:54 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/06 16:00:41 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,8 +190,7 @@ char				*add_char(char *str, char a);
 void				_create_dup(t_shell *m_shell);
 void				create_dup(t_shell *m_shell, t_parse *parse);
 void				create_dup_one(t_parse *parse, int *fd);
-void				create_dup_two(t_parse *parse, int *fd, int fd_index,
-						t_shell *m_shell);
+void				create_dup_two(t_parse *parse, int *fd);
 
 /**
  * Check Folder Functions
