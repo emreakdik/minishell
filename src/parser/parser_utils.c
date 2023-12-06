@@ -3,52 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
+/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:30:44 by aaybaz            #+#    #+#             */
-/*   Updated: 2023/12/02 18:41:37 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/06 13:29:59 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <stdlib.h>
-
-void	free_parse(t_parse *parse)
-{
-	if (!parse)
-		return ;
-	free(parse->cmd);
-	free_text(parse->text);
-	free(parse);
-}
-
-char	*get_hard(t_list *lex)
-{
-	char	*str;
-	char	*ret;
-	int		i;
-
-	i = 0;
-	str = (char *)lex->content;
-	ret = malloc(sizeof(char) * ft_strlen(str) + 1);
-	while (str[i])
-	{
-		ret[i] = str[i];
-		i++;
-	}
-	ret[i] = '\0';
-	return (ret);
-}
-
-void	free_tmp(t_list *tmp)
-{
-	while (tmp)
-	{
-		free(tmp->content);
-		tmp = tmp->next;
-	}
-	free(tmp);
-}
 
 void	free_node(t_list *node)
 {
@@ -62,14 +25,67 @@ void	free_node(t_list *node)
 		node = (free(node), NULL);
 }
 
-int	ft_parser(t_shell *m_shell)
+void	parse_text_m(t_parse *parse, char *str, int *j, int *flag)
 {
-	int	a[3];
+	parse->text[*j] = ft_strdup(str);
+	*j += 1;
+	parse->text[*j] = NULL;
+	*flag = 1;
+}
 
-	a[0] = 0;
-	a[1] = 0;
-	a[2] = 0;
-	mini_parse(m_shell->lex_list->lex, m_shell, a);
-	free_node(m_shell->lex_list->lex);
-	return (create_files_m(m_shell));
+/**
+ * Bu fonksiyon,
+	t_parse yapısı içindeki text alanını serbest bırakır ve NULL olarak ayarlar.
+ *
+ * @param parse t_parse yapısı
+ */
+void	flag_(t_parse *parse)
+{
+	free_text(parse->text);
+	parse->text = NULL;
+}
+
+/**
+ * Bu fonksiyon, verilen bir karakter dizisini analiz ederek,
+	belirli bir tür ataması yapar.
+ *
+ * @param parse - Analiz edilen verinin türünü tutan parse yapısı
+ * @param str - Analiz edilecek karakter dizisi
+ */
+void	tokenize_type_m(t_parse **parse, const char *str)
+{
+	if (str[0] == '|')
+		(*parse)->type = PIPE;
+	else if (str[0] == '>' && str[1] == '>')
+		(*parse)->type = GREATER;
+	else if (str[0] == '<' && str[1] == '<')
+	{
+		(*parse)->type = HEREDOC;
+		g_does_have_heredoc = 1;
+	}
+	else if (str[0] == '>')
+		(*parse)->type = GREAT;
+	else if (str[0] == '<')
+		(*parse)->type = LESS;
+}
+
+t_parse	*parse_init(size_t len)
+{
+	t_parse	*parse;
+
+	parse = malloc(sizeof(t_parse));
+	if (!parse)
+		return (NULL);
+	(parse)->next = NULL;
+	(parse)->cmd = NULL;
+	(parse)->text = ft_calloc(sizeof(char *), len + 1);
+	if (!(parse)->text)
+		return (NULL);
+	(parse)->type = 0;
+	(parse)->infile = STDINN;
+	(parse)->outfile = STDOUT;
+	(parse)->fd = 1;
+	(parse)->pid = 0;
+	(parse)->control = 0;
+	return (parse);
 }

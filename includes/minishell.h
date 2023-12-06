@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:17:18 by akaniber          #+#    #+#             */
-/*   Updated: 2023/12/05 23:54:31 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/06 13:30:43 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,6 @@ void				tokenize_type_m(t_parse **parse, const char *str);
 t_parse				*parse_init(size_t len);
 int					ft_parser(t_shell *m_shell);
 void				free_node(t_list *node);
-void				free_tmp(t_list *tmp);
-char				*get_hard(t_list *lex);
-void				free_parse(t_parse *parse);
 
 /**
  * Execute Functions
