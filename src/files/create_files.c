@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   create_files.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
+/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:20:50 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/03 17:08:10 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/06 19:42:57 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdlib.h>
 #include <fcntl.h>
-#include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 void	other_out_filesme(t_parse *parse)
 {
-	char		str[256];
-	char		*pwd;
-	char		*pwd1;
+	char	str[256];
+	char	*pwd;
+	char	*pwd1;
 	t_parse	*nparse;
 
 	getcwd(str, 256);
@@ -44,8 +44,8 @@ void	other_out_filesme(t_parse *parse)
 void	other_text_create_me(t_parse *m_parse)
 {
 	t_parse	*n_parse;
-	int			i;
-	int			j;
+	int		i;
+	int		j;
 
 	n_parse = m_parse->next;
 	i = 0;
@@ -66,40 +66,32 @@ void	other_text_create_me(t_parse *m_parse)
 	other_out_filesme(m_parse);
 }
 
-char	*ft_strjoin2(char *s1, const char *s2)
-{
-	char	*str;
-	size_t	len;
-
-	if (!s1 || !s2)
-		return (0);
-	len = ft_strlen(s1) + ft_strlen(s2);
-	str = (char *)malloc(sizeof(char) * (len + 1));
-	if (!str)
-		return (0);
-	ft_strlcpy(str, s1, ft_strlen(s1) + 1);
-	ft_strlcat(str, s2, ft_strlen(s1) + ft_strlen(s2) + 1);
-	free(s1);
-	return (str);
-}
-
+/**
+ * Bu fonksiyon, çıkış dosyalarını oluşturur.
+ *
+ * @param m_parse   Geçerli ayrıştırma yapısı
+ * @param prev_parse   Önceki ayrıştırma yapısı
+ */
 void	create_out_files_me(t_parse *m_parse, t_parse *prev_parse)
 {
-	char		str[256];
-	char		*pwd;
+	char	str[256];
+	char	*pwd;
 	t_parse	*m_next;
+	char	*temp;
 
 	getcwd(str, 256);
 	m_next = m_parse->next;
 	if (m_next->type == 3 || m_next->type == 4)
 		return (other_text_create_me(m_parse));
 	pwd = ft_strjoin(str, "/");
-	pwd = ft_strjoin2(pwd, m_next->text[0]);
+	temp = ft_strjoin(pwd, m_next->text[0]);
+	free(pwd);
+	pwd = temp;
 	if (m_parse->type == 4)
 		m_next->fd = open(pwd, O_CREAT | O_RDWR | O_APPEND, 0777);
 	else if (m_parse->type == 3)
 		m_next->fd = open(pwd, O_CREAT | O_RDWR | O_TRUNC, 0777);
-	if (m_parse->cmd)
+	else if (m_parse->cmd)
 		m_parse->outfile = m_next->fd;
 	else if (prev_parse->cmd)
 		prev_parse->outfile = m_next->fd;
@@ -107,10 +99,18 @@ void	create_out_files_me(t_parse *m_parse, t_parse *prev_parse)
 		free(pwd);
 }
 
+/**
+ * create_files_m fonksiyonu,
+	verilen t_shell yapısı içindeki parse listesini dolaşarak
+ * çıkış ve giriş dosyalarını oluşturur.
+ *
+ * @param m_shell t_shell yapısı
+ * @return int işlem başarılıysa 1, aksi halde 0
+ */
 int	create_files_m(t_shell *m_shell)
 {
 	t_parse	*parse;
-	int			i;
+	int		i;
 
 	i = 1;
 	parse = m_shell->parse;

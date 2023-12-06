@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:16:27 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/04 22:44:10 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/06 16:24:21 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,7 @@ void	expand_dollar_variable(t_shell *shell, t_list *lex, char *temp)
 			}
 		}
 		if (ft_strchr(lex->content, '$'))
-		{
-			temp = ft_strchr(lex->content, '$');
 			handle_dollar(shell, lex);
-		}
 	}
 	free(before);
 }
@@ -73,10 +70,7 @@ void	expand_question_mark(t_shell *shell, t_list *lex, char *temp)
 		free(before);
 	}
 	if (ft_strchr(lex->content, '$'))
-	{
-		temp = ft_strchr(lex->content, '$');
 		handle_dollar(shell, lex);
-	}
 }
 
 void	handle_dollar(t_shell *shell, t_list *lex)
