@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:17:18 by akaniber          #+#    #+#             */
-/*   Updated: 2023/12/06 16:00:41 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/06 20:26:11 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,6 @@ void				wait_all(t_shell *m_shell);
 int					create_in_files_me(t_parse *parse);
 int					create_files_m(t_shell *m_shell);
 void				create_out_files_me(t_parse *m_parse, t_parse *prev_parse);
-char				*ft_strjoin2(char *s1, const char *s2);
 void				other_text_create_me(t_parse *m_parse);
 void				other_out_filesme(t_parse *parse);
 #endif
