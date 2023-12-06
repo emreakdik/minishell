@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:20:50 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/06 19:53:05 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/06 20:04:25 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ void	other_text_create_me(t_parse *m_parse)
 /**
  * Bu fonksiyon, çıkış dosyalarını oluşturur.
  *
- * @param parse   Geçerli ayrıştırma yapısı
- * @param prev_parse   Önceki ayrıştırma yapısı
+ * @param current_parse   Geçerli ayrıştırma yapısı
+ * @param first_parse   Önceki ayrıştırma yapısı
  */
-void	create_output_files(t_parse *parse, t_parse *prev_parse)
+void	create_output_files(t_parse *current_parse, t_parse *first_parse)
 {
 	char	str[256];
 	char	*pwd;
@@ -80,21 +80,21 @@ void	create_output_files(t_parse *parse, t_parse *prev_parse)
 	char	*temp;
 
 	getcwd(str, 256);
-	next_parse = parse->next;
+	next_parse = current_parse->next;
 	if (next_parse->type == 3 || next_parse->type == 4)
-		return (other_text_create_me(parse));
+		return (other_text_create_me(current_parse));
 	pwd = ft_strjoin(str, "/");
 	temp = ft_strjoin(pwd, next_parse->text[0]);
 	free(pwd);
 	pwd = temp;
-	if (parse->type == 4)
+	if (current_parse->type == 4)
 		next_parse->fd = open(pwd, O_CREAT | O_RDWR | O_APPEND, 0777);
-	else if (parse->type == 3)
+	else if (current_parse->type == 3)
 		next_parse->fd = open(pwd, O_CREAT | O_RDWR | O_TRUNC, 0777);
-	else if (parse->cmd)
-		parse->outfile = next_parse->fd;
-	else if (prev_parse->cmd)
-		prev_parse->outfile = next_parse->fd;
+	else if (current_parse->cmd)
+		current_parse->outfile = next_parse->fd;
+	else if (first_parse->cmd)
+		first_parse->outfile = next_parse->fd;
 	if (pwd)
 		free(pwd);
 }
@@ -109,18 +109,20 @@ void	create_output_files(t_parse *parse, t_parse *prev_parse)
  */
 int	create_files(t_shell *m_shell)
 {
-	t_parse	*parse;
+	t_parse	*current_parse;
+	t_parse *first_parse;
 	int		i;
 
 	i = 1;
-	parse = m_shell->parse;
-	while (parse)
+	current_parse = m_shell->parse;
+	first_parse = m_shell->parse;
+	while (current_parse)
 	{
-		if (parse->type == 3 || parse->type == 4)
-			create_output_files(parse, m_shell->parse);
-		else if (parse->type == 5)
-			i = create_input_files(parse);
-		parse = parse->next;
+		if (current_parse->type == 3 || current_parse->type == 4)
+			create_output_files(current_parse, first_parse);
+		else if (current_parse->type == 5)
+			i = create_input_files(current_parse);
+		current_parse = current_parse->next;
 	}
 	return (i);
 }
