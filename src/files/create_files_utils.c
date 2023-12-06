@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:20:44 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/06 19:51:12 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/05 00:51:24 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-int	create_input_files(t_parse *parse)
+int	create_in_files_me(t_parse *parse)
 {
 	t_parse	*nparse;
 	char		str[256];

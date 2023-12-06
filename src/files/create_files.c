@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   create_files.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:20:50 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/06 20:04:25 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/03 17:08:10 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <fcntl.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
 #include <unistd.h>
+#include <stdio.h>
 
 void	other_out_filesme(t_parse *parse)
 {
-	char	str[256];
-	char	*pwd;
-	char	*pwd1;
+	char		str[256];
+	char		*pwd;
+	char		*pwd1;
 	t_parse	*nparse;
 
 	getcwd(str, 256);
@@ -44,8 +44,8 @@ void	other_out_filesme(t_parse *parse)
 void	other_text_create_me(t_parse *m_parse)
 {
 	t_parse	*n_parse;
-	int		i;
-	int		j;
+	int			i;
+	int			j;
 
 	n_parse = m_parse->next;
 	i = 0;
@@ -66,63 +66,61 @@ void	other_text_create_me(t_parse *m_parse)
 	other_out_filesme(m_parse);
 }
 
-/**
- * Bu fonksiyon, çıkış dosyalarını oluşturur.
- *
- * @param current_parse   Geçerli ayrıştırma yapısı
- * @param first_parse   Önceki ayrıştırma yapısı
- */
-void	create_output_files(t_parse *current_parse, t_parse *first_parse)
+char	*ft_strjoin2(char *s1, const char *s2)
 {
-	char	str[256];
-	char	*pwd;
-	t_parse	*next_parse;
-	char	*temp;
+	char	*str;
+	size_t	len;
+
+	if (!s1 || !s2)
+		return (0);
+	len = ft_strlen(s1) + ft_strlen(s2);
+	str = (char *)malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (0);
+	ft_strlcpy(str, s1, ft_strlen(s1) + 1);
+	ft_strlcat(str, s2, ft_strlen(s1) + ft_strlen(s2) + 1);
+	free(s1);
+	return (str);
+}
+
+void	create_out_files_me(t_parse *m_parse, t_parse *prev_parse)
+{
+	char		str[256];
+	char		*pwd;
+	t_parse	*m_next;
 
 	getcwd(str, 256);
-	next_parse = current_parse->next;
-	if (next_parse->type == 3 || next_parse->type == 4)
-		return (other_text_create_me(current_parse));
+	m_next = m_parse->next;
+	if (m_next->type == 3 || m_next->type == 4)
+		return (other_text_create_me(m_parse));
 	pwd = ft_strjoin(str, "/");
-	temp = ft_strjoin(pwd, next_parse->text[0]);
-	free(pwd);
-	pwd = temp;
-	if (current_parse->type == 4)
-		next_parse->fd = open(pwd, O_CREAT | O_RDWR | O_APPEND, 0777);
-	else if (current_parse->type == 3)
-		next_parse->fd = open(pwd, O_CREAT | O_RDWR | O_TRUNC, 0777);
-	else if (current_parse->cmd)
-		current_parse->outfile = next_parse->fd;
-	else if (first_parse->cmd)
-		first_parse->outfile = next_parse->fd;
+	pwd = ft_strjoin2(pwd, m_next->text[0]);
+	if (m_parse->type == 4)
+		m_next->fd = open(pwd, O_CREAT | O_RDWR | O_APPEND, 0777);
+	else if (m_parse->type == 3)
+		m_next->fd = open(pwd, O_CREAT | O_RDWR | O_TRUNC, 0777);
+	if (m_parse->cmd)
+		m_parse->outfile = m_next->fd;
+	else if (prev_parse->cmd)
+		prev_parse->outfile = m_next->fd;
 	if (pwd)
 		free(pwd);
 }
 
-/**
- * create_files_m fonksiyonu,
-	verilen t_shell yapısı içindeki parse listesini dolaşarak
- * çıkış ve giriş dosyalarını oluşturur.
- *
- * @param m_shell t_shell yapısı
- * @return int işlem başarılıysa 1, aksi halde 0
- */
-int	create_files(t_shell *m_shell)
+int	create_files_m(t_shell *m_shell)
 {
-	t_parse	*current_parse;
-	t_parse *first_parse;
-	int		i;
+	t_parse	*parse;
+	int			i;
 
 	i = 1;
-	current_parse = m_shell->parse;
-	first_parse = m_shell->parse;
-	while (current_parse)
+	parse = m_shell->parse;
+	while (parse)
 	{
-		if (current_parse->type == 3 || current_parse->type == 4)
-			create_output_files(current_parse, first_parse);
-		else if (current_parse->type == 5)
-			i = create_input_files(current_parse);
-		current_parse = current_parse->next;
+		if (parse->type == 3 || parse->type == 4)
+			create_out_files_me(parse, m_shell->parse);
+		else if (parse->type == 5)
+			i = create_in_files_me(parse);
+		parse = parse->next;
 	}
 	return (i);
 }

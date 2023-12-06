@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 12:24:15 by bakilli           #+#    #+#             */
-/*   Updated: 2023/12/06 19:53:33 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/06 13:29:47 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,5 @@ int	ft_parser(t_shell *m_shell)
 	mini_parse(m_shell->lex_list->lex, m_shell, a);
 	/* lexer'da olusturulan liste free'lendi cunku artik parser listesine sahibiz*/
 	free_node(m_shell->lex_list->lex);
-	return (create_files(m_shell));
+	return (create_files_m(m_shell));
 }
