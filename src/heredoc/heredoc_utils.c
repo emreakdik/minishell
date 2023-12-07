@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
+/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:24:46 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/03 17:17:04 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/07 16:25:55 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/ioctl.h>
+#include <stdio.h>
+#include <readline/readline.h>
+// #include <readline/history.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -21,7 +24,7 @@ void	killer(int sig)
 	g_does_have_heredoc = -3;
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 	// rl_replace_line("", 0);
-	// rl_on_new_line();
+	rl_on_new_line();
 }
 
 void	set_heredoc(int sig)

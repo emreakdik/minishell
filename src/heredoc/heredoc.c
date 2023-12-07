@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
+/*   By: yakdik <yakdik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:24:52 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/03 16:53:47 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/07 16:08:15 by yakdik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <signal.h>
+#include <stdio.h>
 #include <readline/readline.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
 
 char	*add_char(char *str, char a)
 {
@@ -82,16 +82,15 @@ void	get_input(t_parse *parse, int *fd)
 	while (1 && g_does_have_heredoc != -3)
 	{
 		buffer = readline("> ");
-		if (ft_strcmp(buffer, delimiter) == 0)
+		if ((buffer && ft_strcmp(buffer, delimiter) == 0) || (!buffer && ft_strcmp("", delimiter) != 0))
 		{
-			if (buffer)
-				free(buffer);
+			free(buffer);
 			break ;
 		}
 		write(fd[1], buffer, ft_strlen(buffer));
 		write(fd[1], "\n", 1);
 		if (buffer)
-			free(buffer);
+		free(buffer);
 	}
 }
 

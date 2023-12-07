@@ -11,7 +11,9 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdio.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 #include <stdlib.h>
 
 void	_free_env(t_list *tmp2, t_shell *m_shell)
