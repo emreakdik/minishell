@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_execve.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
+/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:26:12 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/03 16:17:26 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/07 18:19:57 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,9 @@ char	*search_command(char *cmd, char **value)
 	free(substring);
 	substring = ft_strjoin(data, cmd);
 	free(data);
-	*value = *value + i + 1;
-	return (substring);
+	if (*tmp)
+		*value = *value + i + 1;
+	return substring;
 }
 
 char	*_search_path(t_shell *m_shell)

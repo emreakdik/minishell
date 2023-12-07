@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:24:35 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/05 00:48:38 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/07 22:40:12 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,15 @@ char	*get_env(t_list *env, char *key)
 							key, 0, &flag));
 			return (ret);
 		}
-		else
-		{
-			/*
-			bu blokta eger env degiskeni bulunamadiysa fakat icerisinde dolar disinda bir ozel karakter varsa siradaki null'a kadar ya da siradaki dolara kadar o kisim alinmali diger kisimlar cikartilmali
-			*/
-		}
 		env = env->next;
 	}
+	int i = 0;
+	while(key[i] && ft_isalnum	(key[i]))
+		i++;
+	int j = i;
+	while (key[j] && key[j] != '$')
+		j++;
+	ret = ft_substr(key, i, j - i);
 	return (ret);
 }
 
