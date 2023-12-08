@@ -6,44 +6,12 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:24:35 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/08 17:06:27 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/08 19:00:28 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <stdio.h>
 #include <stdlib.h>
-
-int	there_is_no_env(t_shell *shell, t_list *lex, char **key)
-{
-	int		i;
-	int		j;
-	char	*temp;
-
-	if (!*key)
-		return (0);
-	i = 0;
-	j = 0;
-	if (*key && !ft_isalnum((*key)[1]))
-	{
-		if (ft_strchr(*key + 1, '$'))
-		{
-			*key = ft_strchr(*key + 1, '$');
-			expand_dollar_variable(shell, lex, *key);
-		}
-	}
-	else
-	{
-		while ((*key)[i] && ft_isalnum((*key)[i]) && (*key)[i] != '$')
-			i++;
-		j = i;
-		while ((*key)[j] && (*key)[j] != '$')
-			j++;
-		temp = ft_substr(*key, i, j - i);
-		*key = temp;
-	}
-	return (1);
-}
 
 int	is_count_odd(char *before, char c)
 {
@@ -63,7 +31,7 @@ int	is_count_odd(char *before, char c)
 	return (0);
 }
 
-char	*get_env(t_shell *shell, t_list *env, t_list *lex, char *key)
+char	*get_env(t_list *env, char *key)
 {
 	t_env	*tmp;
 	char	*ret;
@@ -71,8 +39,6 @@ char	*get_env(t_shell *shell, t_list *env, t_list *lex, char *key)
 
 	flag = 0;
 	ret = NULL;
-	if (!key)
-		return (NULL);
 	while (env)
 	{
 		tmp = env->content;
@@ -88,9 +54,13 @@ char	*get_env(t_shell *shell, t_list *env, t_list *lex, char *key)
 		}
 		env = env->next;
 	}
-	if (there_is_no_env(shell, lex, &key))
-		ret = ft_strdup(key);
-	free(key);
+	int i = 0;
+	while(key[i] && ft_isalnum	(key[i]))
+		i++;
+	int j = i;
+	while (key[j] && key[j] != '$')
+		j++;
+	ret = ft_substr(key, i, j - i);
 	return (ret);
 }
 
