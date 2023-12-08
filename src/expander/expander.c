@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:16:27 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/07 22:42:47 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/08 16:25:18 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void	expand_dollar_variable(t_shell *shell, t_list *lex, char *temp)
+void expand_dollar_variable(t_shell *shell, t_list *lex, char *temp)
 {
-	char	*before;
-	char	*new_value;
+	char *before;
+	char *new_value;
 
 	before = ft_substr(lex->content, 0, temp - (char *)lex->content);
-	if (!is_count_odd(before, '\'') && !is_count_odd(((char *)lex->content)
-			+ ft_strlen(before), '\''))
+	if (lex->content && !is_count_odd(before, '\'') && !is_count_odd(temp, '\''))
 	{
-		if (before && (before == lex->content || !ft_isalnum(*(before - 1))))
-		{
 			if (ft_isdigit(temp[1]))
 			{
 				new_value = ft_strdup(temp + 2);
@@ -34,7 +31,7 @@ void	expand_dollar_variable(t_shell *shell, t_list *lex, char *temp)
 			}
 			else
 			{
-				new_value = get_env(shell->env, temp + 1);
+				new_value = get_env(shell, shell->env, lex,  temp + 1);
 				free(lex->content);
 				lex->content = ft_strjoin(before, new_value);
 				if ((char *)lex->content == NULL)
@@ -42,12 +39,8 @@ void	expand_dollar_variable(t_shell *shell, t_list *lex, char *temp)
 				free(new_value);
 			}
 		}
-		if (ft_strchr(lex->content, '$'))
-		{
-			temp = ft_strchr(lex->content, '$');
+		if (lex->content && ft_strchr(lex->content, '$'))
 			handle_dollar(shell, lex);
-		}
-	}
 	free(before);
 }
 
@@ -59,8 +52,7 @@ void	expand_question_mark(t_shell *shell, t_list *lex, char *temp)
 	char	*new_value;
 
 	before = ft_substr(lex->content, 0, temp - (char *)lex->content);
-	if (!is_count_odd(before, '\'') && !is_count_odd(((char *)lex->content)
-			+ ft_strlen(before), '\''))
+	if (!is_count_odd(before, '\'') && !is_count_odd(temp, '\''))
 	{
 		after = ft_strdup(temp + 2);
 		free(lex->content);
@@ -73,10 +65,7 @@ void	expand_question_mark(t_shell *shell, t_list *lex, char *temp)
 		free(before);
 	}
 	if (ft_strchr(lex->content, '$'))
-	{
-		temp = ft_strchr(lex->content, '$');
 		handle_dollar(shell, lex);
-	}
 }
 
 void	handle_dollar(t_shell *shell, t_list *lex)
@@ -90,10 +79,7 @@ void	handle_dollar(t_shell *shell, t_list *lex)
 	if (temp && temp[1] == '?')
 		expand_question_mark(shell, lex, temp);
 	else if (ft_strchr(lex->content, '$'))
-	{
-		temp = ft_strchr(lex->content, '$');
 		expand_dollar_variable(shell, lex, temp);
-	}
 }
 
 static void	expander_tilde(t_shell *shell, t_list *lex)
@@ -101,7 +87,7 @@ static void	expander_tilde(t_shell *shell, t_list *lex)
 	char	*tmp;
 	char	*home;
 
-	home = get_env(shell->env, "HOME");
+	home = get_env(shell, shell->env, lex, "HOME");
 	if (((char *)lex->content)[0] == '~' && ((char *)lex->content)[1] == '/')
 	{
 		tmp = ft_strdup(lex->content);
@@ -118,6 +104,8 @@ static void	expander_tilde(t_shell *shell, t_list *lex)
 	}
 	else
 		free(home);
+	if (ft_strchr(lex->content, '$'))
+		handle_dollar(shell, lex);
 }
 
 void	expander(t_shell *shell)

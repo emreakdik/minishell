@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 18:29:16 by aaybaz            #+#    #+#             */
-/*   Updated: 2023/12/05 20:02:38 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/08 16:25:53 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void get_title_from_env(t_shell **shell)
 	char *title;
 	char *temp;
 
-	user = get_env((*shell)->env, "USER");
-	pwd = get_env((*shell)->env, "PWD");
+	user = get_env(*shell, (*shell)->env, NULL, "USER");
+	pwd = get_env(*shell, (*shell)->env, NULL, "PWD");
 	title = ft_strjoin("\033[1;36m", user);
 	free(user);
 	temp = ft_strjoin(title, "@");
@@ -46,10 +46,10 @@ void	free_str(char **str)
 	free(str);
 }
 
-void	env_get(char **env, t_shell **shell)
+void env_get(char **env, t_shell **shell)
 {
-	t_env	*a;
-	char	**str;
+	t_env *a;
+	char **str;
 
 	free((*shell)->env);
 	(*shell)->env = NULL;
@@ -57,9 +57,12 @@ void	env_get(char **env, t_shell **shell)
 	{
 		a = malloc(sizeof(t_env));
 		str = ft_split(*env, '=');
-		a->key = ft_strdup(str[0]);
-		a->value = ft_strdup(str[1]);
-		ft_lstadd_back(&(*shell)->env, ft_lstnew(a));
+		if (str && str[0] && str[1])
+		{
+			a->key = ft_strdup(str[0]);
+			a->value = ft_strdup(str[1]);
+			ft_lstadd_back(&(*shell)->env, ft_lstnew(a));
+		}
 		free_str(str);
 		env++;
 	}

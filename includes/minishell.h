@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:17:18 by akaniber          #+#    #+#             */
-/*   Updated: 2023/12/06 20:26:11 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/08 16:25:38 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void				lexer(t_shell *shell);
  * Expander Functions
  */
 int					is_count_odd(char *before, char c);
-char				*get_env(t_list *env, char *key);
+char	*get_env(t_shell *shell, t_list *env, t_list *lex, char *key);
 void				remove_quotes(t_list *node);
 int					ft_ultimatestrcmp(char *key, char *tmp, int i, int *flag);
 void				expander(t_shell *shell);
