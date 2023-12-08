@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:16:27 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/08 16:12:04 by codespace        ###   ########.fr       */
+/*   Updated: 2023/12/08 16:13:45 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,7 @@ void	expand_dollar_variable(t_shell *shell, t_list *lex, char *temp)
 				free(new_value);
 			}
 		if (ft_strchr(lex->content, '$'))
-		{
-			temp = ft_strchr(lex->content, '$');
 			handle_dollar(shell, lex);
-		}
 	}
 	free(before);
 }
@@ -70,10 +67,7 @@ void	expand_question_mark(t_shell *shell, t_list *lex, char *temp)
 		free(before);
 	}
 	if (ft_strchr(lex->content, '$'))
-	{
-		temp = ft_strchr(lex->content, '$');
 		handle_dollar(shell, lex);
-	}
 }
 
 void	handle_dollar(t_shell *shell, t_list *lex)
