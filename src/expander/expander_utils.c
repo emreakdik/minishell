@@ -6,18 +6,19 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:24:35 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/08 16:25:10 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/08 16:42:37 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 int	there_is_no_env(t_shell *shell, t_list *lex, char **key)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	char	*temp;
 
 	if (!*key)
 		return (0);
@@ -38,7 +39,8 @@ int	there_is_no_env(t_shell *shell, t_list *lex, char **key)
 		j = i;
 		while ((*key)[j] && (*key)[j] != '$')
 			j++;
-		*key = ft_substr(*key, i, j - i);
+		temp = ft_substr(*key, i, j - i);
+		*key = temp;
 	}
 	return (1);
 }
