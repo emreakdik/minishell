@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:24:35 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/08 16:42:37 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/08 17:06:27 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ char	*get_env(t_shell *shell, t_list *env, t_list *lex, char *key)
 	}
 	if (there_is_no_env(shell, lex, &key))
 		ret = ft_strdup(key);
+	free(key);
 	return (ret);
 }
 
