@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   run_execve.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:26:12 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/07 18:19:57 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/08 16:10:46 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include <stdio.h>
+#include <sys/wait.h>
 #include <stdlib.h>
 #include <unistd.h>
 

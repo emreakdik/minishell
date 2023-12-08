@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:16:27 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/08 19:00:34 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/08 16:12:04 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ void	expand_dollar_variable(t_shell *shell, t_list *lex, char *temp)
 	if (!is_count_odd(before, '\'') && !is_count_odd(((char *)lex->content)
 			+ ft_strlen(before), '\''))
 	{
-		if (before && (before == lex->content || !ft_isalnum(*(before - 1))))
-		{
 			if (ft_isdigit(temp[1]))
 			{
 				new_value = ft_strdup(temp + 2);
@@ -41,7 +39,6 @@ void	expand_dollar_variable(t_shell *shell, t_list *lex, char *temp)
 					lex->content = ft_strdup(before);
 				free(new_value);
 			}
-		}
 		if (ft_strchr(lex->content, '$'))
 		{
 			temp = ft_strchr(lex->content, '$');
