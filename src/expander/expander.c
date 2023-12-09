@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:16:27 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/08 16:13:45 by codespace        ###   ########.fr       */
+/*   Updated: 2023/12/09 17:58:04 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,25 @@ void	expand_dollar_variable(t_shell *shell, t_list *lex, char *temp)
 	char	*new_value;
 
 	before = ft_substr(lex->content, 0, temp - (char *)lex->content);
-	if (!is_count_odd(before, '\'') && !is_count_odd(((char *)lex->content)
-			+ ft_strlen(before), '\''))
+	if ((!is_count_odd(before, '\'') && !is_count_odd(temp, '\''))
+		|| (is_count_odd(before, '\"') && is_count_odd(temp, '\"')))
 	{
-			if (ft_isdigit(temp[1]))
-			{
-				new_value = ft_strdup(temp + 2);
-				free(lex->content);
-				lex->content = ft_strjoin(before, new_value);
-				free(new_value);
-			}
-			else
-			{
-				new_value = get_env(shell->env, temp + 1);
-				free(lex->content);
-				lex->content = ft_strjoin(before, new_value);
-				if ((char *)lex->content == NULL)
-					lex->content = ft_strdup(before);
-				free(new_value);
-			}
+		if (ft_isdigit(temp[1]))
+		{
+			new_value = ft_strdup(temp + 2);
+			free(lex->content);
+			lex->content = ft_strjoin(before, new_value);
+			free(new_value);
+		}
+		else
+		{
+			new_value = get_env(shell->env, temp + 1);
+			free(lex->content);
+			lex->content = ft_strjoin(before, new_value);
+			if ((char *)lex->content == NULL)
+				lex->content = ft_strdup(before);
+			free(new_value);
+		}
 		if (ft_strchr(lex->content, '$'))
 			handle_dollar(shell, lex);
 	}
@@ -113,7 +113,7 @@ static void	expander_tilde(t_shell *shell, t_list *lex)
 
 void	expander(t_shell *shell)
 {
-	t_list	*lex;
+	t_list *lex;
 
 	lex = shell->lex_list->lex;
 	if (((char *)lex->content)[0] != '\'')

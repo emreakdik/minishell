@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:21:19 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/08 19:04:00 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/08 20:55:24 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	exec(char **env, t_shell *m_shell)
 		free_loop(1, m_shell);
 		free(m_shell->lex_list);
 		free(m_shell);
-		write(1, "exit\n", 5);
+		// write(1, "exit\n", 5);
 		exit(EXIT_SUCCESS);
 	}
 	x = single_or_multi_command(m_shell);

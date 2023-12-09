@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:24:35 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/08 19:00:28 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/09 17:55:52 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*get_env(t_list *env, char *key)
 	while(key[i] && ft_isalnum	(key[i]))
 		i++;
 	int j = i;
-	while (key[j] && key[j] != '$')
+	while (key[j])
 		j++;
 	ret = ft_substr(key, i, j - i);
 	return (ret);
