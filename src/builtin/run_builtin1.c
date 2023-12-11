@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:17:26 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/12 00:32:15 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/12 00:34:05 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	exec_export(t_parse *data, t_shell *m_shell)
 		}
 	}
 	m_shell->exec_status = 0;
+	return (0);
 }
 
 int	unset_edit(t_list **node, t_list **prev_node, t_shell *m_shell)
