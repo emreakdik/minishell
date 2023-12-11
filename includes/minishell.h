@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:17:18 by akaniber          #+#    #+#             */
-/*   Updated: 2023/12/12 00:03:25 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/12 00:32:12 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void				exec_env(t_shell *m_shell);
 void				edit_env(t_list *node, char *key, char *value,
 						t_shell *m_shell);
 void				declare_export(void *data, t_shell *m_shell);
-void				exec_export(t_parse *data, t_shell *m_shell);
+int					exec_export(t_parse *data, t_shell *m_shell);
 int					unset_edit(t_list **node, t_list **prev_node,
 						t_shell *m_shell);
 void				exec_unset(t_parse *data, t_shell *m_shell, int i, int x);

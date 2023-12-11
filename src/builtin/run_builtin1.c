@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_builtin1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
+/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:17:26 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/03 16:24:20 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/12 00:32:15 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void	edit_env(t_list *node, char *key, char *value, t_shell *m_shell)
 void	declare_export(void *data, t_shell *m_shell)
 {
 	t_parse	*str;
-	t_env		*new;
-	int			i;
+	t_env	*new;
+	int		i;
 
 	i = 0;
 	str = m_shell->parse;
@@ -54,7 +54,7 @@ void	declare_export(void *data, t_shell *m_shell)
 	write(str->outfile, "\n", 1);
 }
 
-void	exec_export(t_parse *data, t_shell *m_shell)
+int	exec_export(t_parse *data, t_shell *m_shell)
 {
 	int		i;
 	char	*key;
@@ -73,11 +73,10 @@ void	exec_export(t_parse *data, t_shell *m_shell)
 	{
 		while (data->text[i])
 		{
-			key = ft_substr(data->text[i], 0,
-					ft_strchrindex(data->text[i], '='));
-			value = ft_substr(data->text[i],
-					ft_strchrindex(data->text[i], '=') + 1,
-					(ft_strlen(data->cmd) - 1));
+			key = ft_substr(data->text[i], 0, ft_strchrindex(data->text[i],
+						'='));
+			value = ft_substr(data->text[i], ft_strchrindex(data->text[i], '=')
+					+ 1, (ft_strlen(data->cmd) - 1));
 			edit_env(m_shell->env, key, value, m_shell);
 			i++;
 		}
