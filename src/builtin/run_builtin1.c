@@ -65,8 +65,10 @@ void	exec_export(t_parse *data, t_shell *m_shell)
 	value = NULL;
 	if (data->text == NULL)
 		ft_newlstiter(m_shell->env, declare_export, m_shell);
-	else if (!ft_strchr(data->text[0], '='))
-		return ;
+	else if (ft_strchr(data->text[0], '='))
+		return (write(2, "minishell: export: `", 20) + write(2, data->text[0],
+				ft_strlen(data->text[0])) + write(2,
+				"': not a valid identifier\n", 26));
 	else
 	{
 		while (data->text[i])
