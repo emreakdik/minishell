@@ -1,5 +1,9 @@
 # minishell
 
+#### Kampusumuzdeki yeni kurallar geregi, bu minishell kodunun hic degistirilmeden ya da kendinize ozgu hale getirilmeden kullanilmasi yasak. Bu yuzden direkt kopyala/yapistir kullanimi yapmayin. 
+
+
+
 Table of Contents
 =================
 
