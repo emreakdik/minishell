@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/29 19:16:27 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/09 17:58:04 by emre             ###   ########.fr       */
+/*   Created: 2023/12/11 23:16:41 by emre              #+#    #+#             */
+/*   Updated: 2023/12/12 00:04:08 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,77 +14,46 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void	expand_dollar_variable(t_shell *shell, t_list *lex, char *temp)
+void	expand_dollar_variable(t_shell *shell, t_list *lex, char *temp,
+		char *before)
 {
-	char	*before;
 	char	*new_value;
 
-	before = ft_substr(lex->content, 0, temp - (char *)lex->content);
-	if ((!is_count_odd(before, '\'') && !is_count_odd(temp, '\''))
-		|| (is_count_odd(before, '\"') && is_count_odd(temp, '\"')))
+	if (ft_isdigit(temp[1]))
 	{
-		if (ft_isdigit(temp[1]))
-		{
-			new_value = ft_strdup(temp + 2);
-			free(lex->content);
-			lex->content = ft_strjoin(before, new_value);
-			free(new_value);
-		}
-		else
-		{
-			new_value = get_env(shell->env, temp + 1);
-			free(lex->content);
-			lex->content = ft_strjoin(before, new_value);
-			if ((char *)lex->content == NULL)
-				lex->content = ft_strdup(before);
-			free(new_value);
-		}
-		if (ft_strchr(lex->content, '$'))
-			handle_dollar(shell, lex);
+		new_value = ft_strdup(temp + 2);
+		free(lex->content);
+		lex->content = ft_strjoin(before, new_value);
+		free(new_value);
+	}
+	else
+	{
+		new_value = get_env(shell->env, temp + 1);
+		free(lex->content);
+		lex->content = ft_strjoin(before, new_value);
+		if ((char *)lex->content == NULL)
+			lex->content = ft_strdup(before);
+		free(new_value);
 	}
 	free(before);
 }
 
-void	expand_question_mark(t_shell *shell, t_list *lex, char *temp)
+void	expand_question_mark(t_shell *shell, t_list *lex, char *temp,
+		char *before)
 {
-	char	*before;
 	char	*after;
 	char	*back;
 	char	*new_value;
 
-	before = ft_substr(lex->content, 0, temp - (char *)lex->content);
-	if (!is_count_odd(before, '\'') && !is_count_odd(((char *)lex->content)
-			+ ft_strlen(before), '\''))
-	{
-		after = ft_strdup(temp + 2);
-		free(lex->content);
-		new_value = ft_itoa(shell->exec_status);
-		back = ft_strjoin(new_value, after);
-		free(new_value);
-		free(after);
-		lex->content = ft_strjoin(before, back);
-		free(back);
-		free(before);
-	}
-	if (ft_strchr(lex->content, '$'))
-		handle_dollar(shell, lex);
-}
-
-void	handle_dollar(t_shell *shell, t_list *lex)
-{
-	char	*temp;
-
-	if (ft_strcmp(lex->content, "$") == 0 || ft_strcmp(lex->content,
-			"\"$\"") == 0)
-		return ;
-	temp = ft_strchr(lex->content, '$');
-	if (temp && temp[1] == '?')
-		expand_question_mark(shell, lex, temp);
-	else if (ft_strchr(lex->content, '$'))
-	{
-		temp = ft_strchr(lex->content, '$');
-		expand_dollar_variable(shell, lex, temp);
-	}
+	after = ft_strdup(temp + 2);
+	free(lex->content);
+	new_value = ft_itoa(shell->exec_status);
+	back = ft_strjoin(new_value, after);
+	free(new_value);
+	free(after);
+	lex->content = ft_strjoin(before, back);
+	free(back);
+	free(before);
 }
 
 static void	expander_tilde(t_shell *shell, t_list *lex)
@@ -113,21 +82,30 @@ static void	expander_tilde(t_shell *shell, t_list *lex)
 
 void	expander(t_shell *shell)
 {
-	t_list *lex;
+	char	*temp;
+	t_list	*lex;
+	char	*before;
 
 	lex = shell->lex_list->lex;
-	if (((char *)lex->content)[0] != '\'')
+	while (lex)
 	{
-		while (lex)
+		if (((char *)lex->content)[0] == '~')
+			expander_tilde(shell, lex);
+		temp = ft_strchr(lex->content, '$');
+		before = ft_substr(lex->content, 0, temp - (char *)lex->content);
+		while (temp)
 		{
-			if (ft_strchr(lex->content, '~'))
-				expander_tilde(shell, lex);
-			if (ft_strchr(lex->content, '$'))
-				handle_dollar(shell, lex);
-			remove_quotes(lex);
-			lex = lex->next;
+			if (check_quote(before, temp))
+			{
+				if (temp[1] == '?')
+					expand_question_mark(shell, lex, temp, before);
+				else
+					expand_dollar_variable(shell, lex, temp, before);
+			}
+			temp = ft_strchr(temp + 1, '$');
+			before = ft_substr(lex->content, 0, temp - (char *)lex->content);
 		}
-	}
-	else
 		remove_quotes(lex);
+		lex = lex->next;
+	}
 }

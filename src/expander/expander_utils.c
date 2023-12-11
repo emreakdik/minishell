@@ -6,11 +6,12 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:24:35 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/09 17:55:52 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/11 18:39:06 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 int	is_count_odd(char *before, char c)
@@ -26,9 +27,44 @@ int	is_count_odd(char *before, char c)
 			count++;
 		i++;
 	}
+	if (count == 0)
+		return (-2);
+	i = 0;
 	if (count % 2 == 1)
+	{
+		while (before[i])
+		{
+			if (before[i] == c)
+				return (i);
+			i++;
+		}
+	}
+	return (-1);
+}
+
+int	check_quote(char *before, char *after)
+{
+	int	single_quotes_before;
+	int	single_quotes_after;
+	int	double_quotes_before;
+	int	double_quotes_after;
+
+	single_quotes_before = is_count_odd(before, '\'');
+	single_quotes_after = is_count_odd(after, '\'');
+	double_quotes_before = is_count_odd(before, '\"');
+	double_quotes_after = is_count_odd(after, '\"');
+	if ((single_quotes_before > -1 && single_quotes_after < 0))
 		return (1);
-	return (0);
+	else if ((single_quotes_before > -1 && single_quotes_after > -1)
+		&& (double_quotes_before > -1 && double_quotes_after > -1))
+		return (single_quotes_before > double_quotes_before);
+	else if ((single_quotes_before > -1 && single_quotes_after > -1)
+		&& (double_quotes_before < 0 && double_quotes_after < 0))
+		return (0);
+	else if ((single_quotes_before < 0 && single_quotes_after < 0)
+		&& (double_quotes_before > -1 && double_quotes_after > -1))
+		return (1);
+	return (1);
 }
 
 char	*get_env(t_list *env, char *key)
@@ -36,6 +72,8 @@ char	*get_env(t_list *env, char *key)
 	t_env	*tmp;
 	char	*ret;
 	int		flag;
+	int		i;
+	int		j;
 
 	flag = 0;
 	ret = NULL;
@@ -54,10 +92,10 @@ char	*get_env(t_list *env, char *key)
 		}
 		env = env->next;
 	}
-	int i = 0;
-	while(key[i] && ft_isalnum	(key[i]))
+	i = 0;
+	while (key[i] && ft_isalnum(key[i]))
 		i++;
-	int j = i;
+	j = i;
 	while (key[j])
 		j++;
 	ret = ft_substr(key, i, j - i);

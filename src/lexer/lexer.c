@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 18:21:22 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/06 00:14:57 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/11 16:21:07 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static int	ignore_quote(char const *cmd, int i)
+int	ignore_quote(char const *cmd, int i)
 {
 	if (cmd[i] == '\"')
 	{
