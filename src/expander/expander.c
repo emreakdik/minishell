@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:16:41 by emre              #+#    #+#             */
-/*   Updated: 2023/12/12 00:04:08 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/12 16:02:59 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,41 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void	expand_dollar_variable(t_shell *shell, t_list *lex, char *temp,
+void	expand_dollar_variable(t_shell *shell, t_list *lex, char **temp,
 		char *before)
 {
 	char	*new_value;
-
-	if (ft_isdigit(temp[1]))
+	if (ft_isdigit((*temp)[1]))
 	{
-		new_value = ft_strdup(temp + 2);
+		new_value = ft_strdup(*temp + 2);
 		free(lex->content);
 		lex->content = ft_strjoin(before, new_value);
 		free(new_value);
+		*temp = ft_strchr(lex->content + ft_strlen(before), '$');
 	}
-	else
+	else if (!ft_isdigit((*temp)[1]))
 	{
-		new_value = get_env(shell->env, temp + 1);
+		new_value = get_env(shell->env, *temp + 1);
 		free(lex->content);
 		lex->content = ft_strjoin(before, new_value);
 		if ((char *)lex->content == NULL)
 			lex->content = ft_strdup(before);
 		free(new_value);
+		*temp = ft_strchr(lex->content + ft_strlen(before), '$');
 	}
+	else
+		*temp = ft_strchr(*temp + 1, '$');
 	free(before);
 }
 
-void	expand_question_mark(t_shell *shell, t_list *lex, char *temp,
+void	expand_question_mark(t_shell *shell, t_list *lex, char **temp,
 		char *before)
 {
 	char	*after;
 	char	*back;
 	char	*new_value;
 
-	after = ft_strdup(temp + 2);
+	after = ft_strdup(*temp + 2);
 	free(lex->content);
 	new_value = ft_itoa(shell->exec_status);
 	back = ft_strjoin(new_value, after);
@@ -53,6 +56,7 @@ void	expand_question_mark(t_shell *shell, t_list *lex, char *temp,
 	free(after);
 	lex->content = ft_strjoin(before, back);
 	free(back);
+	*temp = ft_strchr(lex->content + ft_strlen(before), '$');
 	free(before);
 }
 
@@ -98,11 +102,12 @@ void	expander(t_shell *shell)
 			if (check_quote(before, temp))
 			{
 				if (temp[1] == '?')
-					expand_question_mark(shell, lex, temp, before);
+					expand_question_mark(shell, lex, &temp, before);
 				else
-					expand_dollar_variable(shell, lex, temp, before);
+					expand_dollar_variable(shell, lex, &temp, before);
 			}
-			temp = ft_strchr(temp + 1, '$');
+			else
+				temp = ft_strchr(temp + 1, '$');
 			before = ft_substr(lex->content, 0, temp - (char *)lex->content);
 		}
 		remove_quotes(lex);
