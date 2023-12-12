@@ -34,18 +34,6 @@ void	change_old(char *str, t_shell *m_shell)
 	}
 }
 
-void	_change_pwd(t_env **env)
-{
-	char	cwd[1024];
-
-	if (!ft_strcmp((*env)->key, "PWD"))
-	{
-		if ((*env)->value)
-			free((*env)->value);
-		(*env)->value = ft_strdup(getcwd(cwd, sizeof(cwd)));
-	}
-}
-
 void	change_pwd(t_parse	*data, t_shell *m_shell)
 {
 	t_list	*tmp;
@@ -63,14 +51,12 @@ void	change_pwd(t_parse	*data, t_shell *m_shell)
 				free(env->value);
 			env->value = get_home(m_shell);
 		}
-		else if (!ft_strcmp(env->key, "PWD")
-			&& data->text && !ft_strcmp(data->text[0], ".."))
+		else if (!ft_strcmp(env->key, "PWD"))
 		{
 			if (env->value)
 				free(env->value);
 			env->value = ft_strdup(getcwd(cwd, sizeof(cwd)));
 		}
-		_change_pwd(&env);
 		tmp = tmp->next;
 	}
 }
