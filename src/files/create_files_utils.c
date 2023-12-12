@@ -35,7 +35,7 @@ int	create_in_files_me(t_parse *parse)
 	{
 		if (pwd)
 			free(pwd);
-		printf("minishell: %s: No such file or directory\n", parse->text[0]);
+		printf("minishell: %s: No such file or directory\n", nparse->text[0]);
 		return (0);
 	}
 	if (pwd)
