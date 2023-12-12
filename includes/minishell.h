@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:17:18 by akaniber          #+#    #+#             */
-/*   Updated: 2023/12/12 00:32:12 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/12 16:07:08 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,9 @@ char				*get_env(t_list *env, char *key);
 void				remove_quotes(t_list *node);
 int					ft_ultimatestrcmp(char *key, char *tmp, int i, int *flag);
 void				expand_question_mark(t_shell *shell, t_list *lex,
-						char *temp, char *before);
+						char **temp, char *before);
 void				expand_dollar_variable(t_shell *shell, t_list *lex,
-						char *temp, char *before);
+						char **temp, char *before);
 void				expander(t_shell *shell);
 /**
  * Parser Functions

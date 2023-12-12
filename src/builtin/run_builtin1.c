@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:17:26 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/12 00:34:05 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/12 16:06:47 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	exec_export(t_parse *data, t_shell *m_shell)
 	value = NULL;
 	if (data->text == NULL)
 		ft_newlstiter(m_shell->env, declare_export, m_shell);
-	else if (ft_strchr(data->text[0], '='))
+	else if (data->text[0][0] == '=')
 		return (write(2, "minishell: export: `", 20) + write(2, data->text[0],
 				ft_strlen(data->text[0])) + write(2,
 				"': not a valid identifier\n", 26));
