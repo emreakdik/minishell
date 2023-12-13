@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:24:35 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/11 18:39:06 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/13 13:59:18 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ int	check_quote(char *before, char *after)
 	single_quotes_after = is_count_odd(after, '\'');
 	double_quotes_before = is_count_odd(before, '\"');
 	double_quotes_after = is_count_odd(after, '\"');
-	if ((single_quotes_before > -1 && single_quotes_after < 0))
+	if (double_quotes_after > -1 && after[1] == '\"')
+		return (0);
+	else if ((single_quotes_before > -1 && single_quotes_after < 0))
 		return (1);
 	else if ((single_quotes_before > -1 && single_quotes_after > -1)
 		&& (double_quotes_before > -1 && double_quotes_after > -1))
@@ -67,13 +69,26 @@ int	check_quote(char *before, char *after)
 	return (1);
 }
 
+static void	if_there_is_no_env(char *key, char **ret)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (key[i] && ft_isalnum(key[i]))
+		i++;
+	j = i;
+	while (key[j])
+		j++;
+	*ret = ft_substr(key, i, j - i);
+}
+
 char	*get_env(t_list *env, char *key)
 {
 	t_env	*tmp;
 	char	*ret;
 	int		flag;
-	int		i;
-	int		j;
 
 	flag = 0;
 	ret = NULL;
@@ -92,46 +107,8 @@ char	*get_env(t_list *env, char *key)
 		}
 		env = env->next;
 	}
-	i = 0;
-	while (key[i] && ft_isalnum(key[i]))
-		i++;
-	j = i;
-	while (key[j])
-		j++;
-	ret = ft_substr(key, i, j - i);
+	if_there_is_no_env(key, &ret);
 	return (ret);
-}
-
-void	remove_quotes(t_list *lex)
-{
-	char	*str;
-	int		i;
-	int		j;
-	char	quote_char;
-	int		in_quotes;
-
-	str = lex->content;
-	i = 0, j = 0, in_quotes = 0;
-	quote_char = '\0';
-	while (str[i])
-	{
-		if ((str[i] == '\'' || str[i] == '\"') && (!in_quotes
-				|| quote_char == str[i]))
-		{
-			in_quotes = !in_quotes;
-			if (in_quotes)
-				quote_char = str[i];
-			else
-				quote_char = '\0';
-		}
-		else
-		{
-			str[j] = str[i];
-			j++;
-		}
-		i++;
-	}
-	str[j] = '\0';
 }
 
 int	ft_ultimatestrcmp(char *key, char *tmp, int i, int *flag)

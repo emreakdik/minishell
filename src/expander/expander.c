@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:16:41 by emre              #+#    #+#             */
-/*   Updated: 2023/12/12 16:02:59 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/13 14:04:56 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,43 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void	remove_quotes(t_list *lex)
+{
+	int		i;
+	int		j;
+	int		in_quotes;
+	char	*str;
+	char	quote_char;
+
+	str = lex->content;
+	i = 0, j = 0, in_quotes = 0;
+	quote_char = '\0';
+	while (str[i])
+	{
+		if ((str[i] == '\'' || str[i] == '\"') && (!in_quotes
+				|| quote_char == str[i]))
+		{
+			in_quotes = !in_quotes;
+			if (in_quotes)
+				quote_char = str[i];
+			else
+				quote_char = '\0';
+		}
+		else
+		{
+			str[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	str[j] = '\0';
+}
+
 void	expand_dollar_variable(t_shell *shell, t_list *lex, char **temp,
 		char *before)
 {
 	char	*new_value;
+
 	if (ft_isdigit((*temp)[1]))
 	{
 		new_value = ft_strdup(*temp + 2);
@@ -38,7 +71,6 @@ void	expand_dollar_variable(t_shell *shell, t_list *lex, char **temp,
 	}
 	else
 		*temp = ft_strchr(*temp + 1, '$');
-	free(before);
 }
 
 void	expand_question_mark(t_shell *shell, t_list *lex, char **temp,
@@ -57,7 +89,6 @@ void	expand_question_mark(t_shell *shell, t_list *lex, char **temp,
 	lex->content = ft_strjoin(before, back);
 	free(back);
 	*temp = ft_strchr(lex->content + ft_strlen(before), '$');
-	free(before);
 }
 
 static void	expander_tilde(t_shell *shell, t_list *lex)
@@ -96,19 +127,17 @@ void	expander(t_shell *shell)
 		if (((char *)lex->content)[0] == '~')
 			expander_tilde(shell, lex);
 		temp = ft_strchr(lex->content, '$');
-		before = ft_substr(lex->content, 0, temp - (char *)lex->content);
 		while (temp)
 		{
+			before = ft_substr(lex->content, 0, temp - (char *)lex->content);
 			if (check_quote(before, temp))
-			{
 				if (temp[1] == '?')
 					expand_question_mark(shell, lex, &temp, before);
 				else
 					expand_dollar_variable(shell, lex, &temp, before);
-			}
 			else
 				temp = ft_strchr(temp + 1, '$');
-			before = ft_substr(lex->content, 0, temp - (char *)lex->content);
+			free(before);
 		}
 		remove_quotes(lex);
 		lex = lex->next;
