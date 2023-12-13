@@ -51,7 +51,7 @@ void	other_text_create_me(t_parse *current_parse)
 	i = 0;
 	while (current_parse->text[i])
 		i++;
-	while (n_parse->next && n_parse->type != 2)
+	while (n_parse && n_parse->type != 2)
 	{
 		j = 1;
 		while (n_parse->text[j])
