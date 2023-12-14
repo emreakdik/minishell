@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:21:19 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/13 22:38:05 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/15 01:31:41 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	exec(char **env, t_shell *m_shell)
 	if (m_shell->parse->cmd)
 	{
 		if (ft_strcmp(m_shell->parse->cmd, "exit") == 0
-			&& g_does_have_heredoc != -10)
+			&& g_does_have_heredoc != -10 && m_shell->parse->type != PIPE)
 		{
 			free_(m_shell);
 			free_loop(1, m_shell);
