@@ -68,6 +68,8 @@ void	print_list(void *data, t_shell *m_shell)
 	i = 0;
 	str = m_shell->parse;
 	new = (t_env *)data;
+	if (!new->value)
+		return ;
 	while (new->key[i])
 		write(str->outfile, &new->key[i++], 1);
 	write(str->outfile, "=", 1);
