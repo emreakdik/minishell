@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
+/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:25:49 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/03 16:24:22 by yakdik           ###   ########.fr       */
+/*   Updated: 2023/12/15 01:29:08 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	exec_echo(t_parse *data, t_shell *m_shell)
 	i = 0;
 	if (!data->text)
 		write(data->outfile, "\n", 1);
+	else if (!data->text || data->text[0] == NULL || data->text[0][0] == '\0')
+		write(data->outfile, "", 1);
 	else
 	{
 		if (ft_strcmp(data->text[0], "-n") == 0)
