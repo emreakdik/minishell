@@ -26,7 +26,8 @@ void	edit_env(t_list *node, char *key, char *value, t_shell *m_shell)
 			if (env->value)
 				free(env->value);
 			env->value = ft_strdup(value);
-			free(value);
+			if (value)
+				free(value);
 			free(key);
 			return ;
 		}
@@ -47,11 +48,26 @@ void	declare_export(void *data, t_shell *m_shell)
 	write(str->outfile, "declare -x ", 11);
 	while (new->key[i])
 		write(str->outfile, &new->key[i++], 1);
-	write(str->outfile, "=", 1);
+	if (new->value && new->key[0] > 31)
+		write(str->outfile, "=", 1);
 	i = 0;
-	while (new->value[i])
+	while (new->value && new->value[i])
 		write(str->outfile, &new->value[i++], 1);
 	write(str->outfile, "\n", 1);
+}
+
+int	ft_strchrindex_0(char *s, int c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == c)
+			return (i);
+		i++;
+	}
+	return (-1);
 }
 
 int	exec_export(t_parse *data, t_shell *m_shell)
@@ -64,19 +80,28 @@ int	exec_export(t_parse *data, t_shell *m_shell)
 	key = NULL;
 	value = NULL;
 	if (data->text == NULL)
+	{
 		ft_newlstiter(m_shell->env, declare_export, m_shell);
-	else if (data->text[0][0] == '=')
-		return (write(2, "minishell: export: `", 20) + write(2, data->text[0],
-				ft_strlen(data->text[0])) + write(2,
-				"': not a valid identifier\n", 26));
+	}
 	else
 	{
 		while (data->text[i])
 		{
-			key = ft_substr(data->text[i], 0, ft_strchrindex(data->text[i],
-						'='));
-			value = ft_substr(data->text[i], ft_strchrindex(data->text[i], '=')
-					+ 1, (ft_strlen(data->cmd) - 1));
+			if (data->text[i][0] == '=')
+				return (write(2, "minishell: export: `", 20) + write(2, data->text[i],
+						ft_strlen(data->text[i])) + write(2,
+						"': not a valid identifier\n", 26));
+			if (ft_strchrindex_0(data->text[i], '=') != -1)
+			{
+				key = ft_substr(data->text[i], 0, ft_strchrindex(data->text[i],
+							'='));
+				value = ft_substr(data->text[i], ft_strchrindex(data->text[i], '=')
+						+ 1, (ft_strlen(data->cmd) - 1));
+			}
+			else
+			{
+				key = ft_substr(data->text[i], 0, ft_strlen(data->text[i]));
+			}
 			edit_env(m_shell->env, key, value, m_shell);
 			i++;
 		}
