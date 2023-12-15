@@ -70,6 +70,20 @@ int	ft_strchrindex_0(char *s, int c)
 	return (-1);
 }
 
+int	export_key_control(char *text)
+{
+	int		i;
+
+	if (text[0] == '=' || ft_isdigit(text[0]))
+		return (0);
+	i = 0;
+	while (text[i] && text[i] != '=' && (ft_isalnum(text[i]) || text[i] == '_'))
+		i++;
+	if (text[i] == '=' || !text[i])
+		return (1);
+	return (0);
+}
+
 int	exec_export(t_parse *data, t_shell *m_shell)
 {
 	int		i;
@@ -87,7 +101,7 @@ int	exec_export(t_parse *data, t_shell *m_shell)
 	{
 		while (data->text[i])
 		{
-			if (data->text[i][0] == '=')
+			if (!export_key_control(data->text[i]))
 				return (write(2, "minishell: export: `", 20) + write(2, data->text[i],
 						ft_strlen(data->text[i])) + write(2,
 						"': not a valid identifier\n", 26));
