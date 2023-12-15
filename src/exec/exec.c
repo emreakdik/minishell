@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:21:19 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/15 01:31:41 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/15 11:24:12 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 void	run_command(char **env, t_parse *tmp, int *fd, t_shell *m_shell)
 {
-	int			control;
+	int	control;
 
 	control = is_builtin(tmp);
 	if (control)
@@ -66,7 +66,7 @@ void	multi_command_(t_parse *parse, char **env, t_shell *m_shell, int *fd)
 
 void	multi_command(char **env, int x, t_parse *parse, t_shell *m_shell)
 {
-	int			*fd;
+	int	*fd;
 
 	(void)x;
 	m_shell->parse->std_in = dup(0);
@@ -81,24 +81,21 @@ void	multi_command(char **env, int x, t_parse *parse, t_shell *m_shell)
 
 void	exec(char **env, t_shell *m_shell)
 {
-	int			x;
+	int	x;
 
 	if (g_does_have_heredoc != 0)
 		loop_heredoc(m_shell);
 	if (!ft_strcmp(m_shell->cmd, ""))
 		return ;
-	if (m_shell->parse->cmd)
+	if (!ft_strcmp(m_shell->parse->cmd, "exit") && g_does_have_heredoc != -10
+		&& _next_command(&m_shell->parse) == NULL)
 	{
-		if (ft_strcmp(m_shell->parse->cmd, "exit") == 0
-			&& g_does_have_heredoc != -10 && m_shell->parse->type != PIPE)
-		{
-			free_(m_shell);
-			free_loop(1, m_shell);
-			free(m_shell->lex_list);
-			free(m_shell);
-			write(1, "exit\n", 5);
-			exit(EXIT_SUCCESS);
-		}
+		free_(m_shell);
+		free_loop(1, m_shell);
+		free(m_shell->lex_list);
+		free(m_shell);
+		write(1, "exit\n", 5);
+		exit(EXIT_SUCCESS);
 	}
 	x = single_or_multi_command(m_shell);
 	if (!x && g_does_have_heredoc != -10)
