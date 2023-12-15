@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:16:41 by emre              #+#    #+#             */
-/*   Updated: 2023/12/13 14:04:56 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/15 18:07:35 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,10 @@ void	expander(t_shell *shell)
 			if (check_quote(before, temp))
 				if (temp[1] == '?')
 					expand_question_mark(shell, lex, &temp, before);
-				else
+				else if (*(temp + 1) != '$' && *(temp + 1) != '\0')
 					expand_dollar_variable(shell, lex, &temp, before);
+				else
+					temp = ft_strchr(temp + 1, '$');
 			else
 				temp = ft_strchr(temp + 1, '$');
 			free(before);
