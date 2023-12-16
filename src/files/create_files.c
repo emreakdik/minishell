@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:20:50 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/06 20:34:54 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/16 19:15:20 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	other_text_create_me(t_parse *current_parse)
 	i = 0;
 	while (current_parse->text[i])
 		i++;
-	while (n_parse && n_parse->type != 2)
+	while (n_parse->next && n_parse->type != 2)
 	{
 		j = 1;
 		while (n_parse->text[j])

@@ -6,13 +6,14 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:21:19 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/15 11:24:12 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/16 19:47:08 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdio.h>
 
 void	run_command(char **env, t_parse *tmp, int *fd, t_shell *m_shell)
 {
@@ -82,12 +83,10 @@ void	multi_command(char **env, int x, t_parse *parse, t_shell *m_shell)
 void	exec(char **env, t_shell *m_shell)
 {
 	int	x;
-
+	
 	if (g_does_have_heredoc != 0)
 		loop_heredoc(m_shell);
-	if (!ft_strcmp(m_shell->cmd, ""))
-		return ;
-	if (!ft_strcmp(m_shell->parse->cmd, "exit") && g_does_have_heredoc != -10
+	if (m_shell->parse->cmd && !ft_strcmp(m_shell->parse->cmd, "exit") && g_does_have_heredoc != -10
 		&& _next_command(&m_shell->parse) == NULL)
 	{
 		free_(m_shell);

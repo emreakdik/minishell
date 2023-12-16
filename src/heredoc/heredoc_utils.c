@@ -6,17 +6,16 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:24:46 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/14 00:26:18 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/16 19:24:46 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/ioctl.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <readline/readline.h>
-// #include <readline/history.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include <readline/history.h>
 
 void	killer(int sig)
 {

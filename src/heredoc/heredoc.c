@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:24:52 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/08 16:11:02 by codespace        ###   ########.fr       */
+/*   Updated: 2023/12/16 19:27:53 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <readline/readline.h>
-#include <sys/wait.h>
+#include <readline/history.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -83,15 +83,16 @@ void	get_input(t_parse *parse, int *fd)
 	while (1 && g_does_have_heredoc != -3)
 	{
 		buffer = readline("> ");
-		if ((buffer && ft_strcmp(buffer, delimiter) == 0) || (!buffer && ft_strcmp("", delimiter) != 0))
+		if (ft_strcmp(buffer, delimiter) == 0)
 		{
-			free(buffer);
+			if (buffer)
+				free(buffer);
 			break ;
 		}
 		write(fd[1], buffer, ft_strlen(buffer));
 		write(fd[1], "\n", 1);
 		if (buffer)
-		free(buffer);
+			free(buffer);
 	}
 }
 
