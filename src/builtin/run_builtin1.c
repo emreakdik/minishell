@@ -69,7 +69,6 @@ int	ft_strchrindex_0(char *s, int c)
 	}
 	return (-1);
 }
-
 int	export_key_control(char *text)
 {
 	int		i;
@@ -84,39 +83,46 @@ int	export_key_control(char *text)
 	return (0);
 }
 
-int	exec_export(t_parse *data, t_shell *m_shell)
+int	export_print(char *text, char *cmd, t_shell *m_shell)
 {
-	int		i;
 	char	*key;
 	char	*value;
 
-	i = 0;
-	key = NULL;
-	value = NULL;
-	if (data->text == NULL)
+	if (!export_key_control(text))
+		return (write(2, "minishell: export: `", 20) + write(2, text,
+						ft_strlen(text)) + write(2,
+						"': not a valid identifier\n", 26));
+	if (ft_strchrindex_0(text, '=') != -1)
 	{
-		ft_newlstiter(m_shell->env, declare_export, m_shell);
+		key = ft_substr(text, 0, ft_strchrindex(text, '='));
+		value = ft_substr(text, ft_strchrindex(text, '=')
+				+ 1, (ft_strlen(cmd) - 1));
 	}
+	else
+	{
+		key = ft_substr(text, 0, ft_strlen(text));
+		value = NULL;
+	}
+	edit_env(m_shell->env, key, value, m_shell);
+	return (0);
+}
+
+int	exec_export(t_parse *data, t_shell *m_shell)
+{
+	int		i;
+
+	i = 0;
+	if (data->text == NULL)
+		ft_newlstiter(m_shell->env, declare_export, m_shell);
 	else
 	{
 		while (data->text[i])
 		{
-			if (!export_key_control(data->text[i]))
-				return (write(2, "minishell: export: `", 20) + write(2, data->text[i],
-						ft_strlen(data->text[i])) + write(2,
-						"': not a valid identifier\n", 26));
-			if (ft_strchrindex_0(data->text[i], '=') != -1)
+			if (export_print(data->text[i], data->cmd, m_shell) == 26)
 			{
-				key = ft_substr(data->text[i], 0, ft_strchrindex(data->text[i],
-							'='));
-				value = ft_substr(data->text[i], ft_strchrindex(data->text[i], '=')
-						+ 1, (ft_strlen(data->cmd) - 1));
+				m_shell->exec_status = 1;
+				return (26);
 			}
-			else
-			{
-				key = ft_substr(data->text[i], 0, ft_strlen(data->text[i]));
-			}
-			edit_env(m_shell->env, key, value, m_shell);
 			i++;
 		}
 	}
@@ -134,7 +140,8 @@ int	unset_edit(t_list **node, t_list **prev_node, t_shell *m_shell)
 	else
 		(*prev_node)->next = (*node)->next;
 	free(tmp->key);
-	free(tmp->value);
+	if (tmp->value)
+		free(tmp->value);
 	free((*node)->content);
 	free(*node);
 	return (1);
