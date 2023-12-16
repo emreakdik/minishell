@@ -89,9 +89,12 @@ int	export_print(char *text, char *cmd, t_shell *m_shell)
 	char	*value;
 
 	if (!export_key_control(text))
-		return (write(2, "minishell: export: `", 20) + write(2, text,
-						ft_strlen(text)) + write(2,
-						"': not a valid identifier\n", 26));
+	{
+		write(2,"minishell: export: `", 20);
+		write(2, text,ft_strlen(text));
+		write(2, "': not a valid identifier\n", 26);
+		return (1);
+	}
 	if (ft_strchrindex_0(text, '=') != -1)
 	{
 		key = ft_substr(text, 0, ft_strchrindex(text, '='));
@@ -118,10 +121,10 @@ int	exec_export(t_parse *data, t_shell *m_shell)
 	{
 		while (data->text[i])
 		{
-			if (export_print(data->text[i], data->cmd, m_shell) == 26)
+			if (export_print(data->text[i], data->cmd, m_shell))
 			{
 				m_shell->exec_status = 1;
-				return (26);
+				return (1);
 			}
 			i++;
 		}
