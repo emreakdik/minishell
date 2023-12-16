@@ -6,13 +6,62 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 12:24:15 by bakilli           #+#    #+#             */
-/*   Updated: 2023/12/06 13:29:47 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/16 20:55:50 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+static void	remove_quotes_in_str(char *str)
+{
+	int		i = 0, j = 0, in_quotes;
+	char	quote_char;
+
+	i = 0, j = 0, in_quotes = 0;
+	quote_char = '\0';
+	while (str[i])
+	{
+		if ((str[i] == '\'' || str[i] == '\"') && (!in_quotes
+				|| quote_char == str[i]))
+		{
+			in_quotes = !in_quotes;
+			if (in_quotes)
+				quote_char = str[i];
+			else
+				quote_char = '\0';
+		}
+		else
+		{
+			str[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	str[j] = '\0';
+}
+
+static void	remove_quotes_in_parse(t_parse *parse)
+{
+	char	**text_ptr;
+
+	if (parse != NULL)
+	{
+		if (parse->cmd != NULL) // Add null check for cmd
+			remove_quotes_in_str(parse->cmd);
+		if (parse->text != NULL)
+		{
+			text_ptr = parse->text;
+			while (*text_ptr != NULL)
+			{
+				remove_quotes_in_str(*text_ptr);
+				text_ptr++;
+			}
+		}
+		remove_quotes_in_parse(parse->next);
+	}
+}
 
 /**
  * Bu fonksiyon, verilen lex listesini kullanarak bir parse ağacı oluşturur.
@@ -46,6 +95,7 @@ void	mini_parse(t_list *lex, t_shell *m_shell, int a[3])
 				a[0] = 0;
 			parse->next = parse_init((size_t)ft_lstsize(lex));
 			a[1] = 0;
+			remove_quotes_in_parse(parse);
 			parse = parse->next;
 		}
 		/**
@@ -55,6 +105,7 @@ void	mini_parse(t_list *lex, t_shell *m_shell, int a[3])
 			*/
 		else if (ft_strcmp(str, ""))
 			parse_text_m(parse, str, &a[1], &a[2]);
+		remove_quotes_in_parse(parse);
 		lex = lex->next;
 	}
 	/**
@@ -77,7 +128,7 @@ void	mini_parse(t_list *lex, t_shell *m_shell, int a[3])
  */
 int	ft_parser(t_shell *m_shell)
 {
-	int	a[3];
+	int a[3];
 
 	a[0] = 0; // pipe sonrasinda miyiz kontrolu
 	a[1] = 0; // text'in indeksini tutacak

@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 21:02:01 by emre              #+#    #+#             */
-/*   Updated: 2023/12/07 22:50:26 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/16 20:09:17 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,6 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		}
 		free_loop(control, shell);
+		// system("leaks --atExit -- ./minishell");
 	}
 }

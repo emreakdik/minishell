@@ -6,16 +6,13 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 18:21:22 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/16 17:54:43 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/16 20:23:53 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
-
-// Eger metakarakterler tek tirnak icerisindeyse onlari parser kisminda ignore edecek bir fonksiyon yazilabilir.
-// Boylece lexer kisminda tek tirnak icerisindeki metakarakterleri ignore edebiliriz. 
 
 int	ignore_quote(char const *cmd, int i)
 {

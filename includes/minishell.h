@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:17:18 by akaniber          #+#    #+#             */
-/*   Updated: 2023/12/12 16:07:08 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/16 20:50:02 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ int					ignore_quote(char const *cmd, int i);
 int					check_quote(char *before, char *after);
 int					is_count_odd(char *before, char c);
 char				*get_env(t_list *env, char *key);
-void				remove_quotes(t_list *node);
 int					ft_ultimatestrcmp(char *key, char *tmp, int i, int *flag);
 void				expand_question_mark(t_shell *shell, t_list *lex,
 						char **temp, char *before);

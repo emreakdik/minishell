@@ -6,45 +6,13 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:16:41 by emre              #+#    #+#             */
-/*   Updated: 2023/12/15 18:07:35 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/16 20:49:50 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
-
-void	remove_quotes(t_list *lex)
-{
-	int		i;
-	int		j;
-	int		in_quotes;
-	char	*str;
-	char	quote_char;
-
-	str = lex->content;
-	i = 0, j = 0, in_quotes = 0;
-	quote_char = '\0';
-	while (str[i])
-	{
-		if ((str[i] == '\'' || str[i] == '\"') && (!in_quotes
-				|| quote_char == str[i]))
-		{
-			in_quotes = !in_quotes;
-			if (in_quotes)
-				quote_char = str[i];
-			else
-				quote_char = '\0';
-		}
-		else
-		{
-			str[j] = str[i];
-			j++;
-		}
-		i++;
-	}
-	str[j] = '\0';
-}
 
 void	expand_dollar_variable(t_shell *shell, t_list *lex, char **temp,
 		char *before)
@@ -141,7 +109,6 @@ void	expander(t_shell *shell)
 				temp = ft_strchr(temp + 1, '$');
 			free(before);
 		}
-		remove_quotes(lex);
 		lex = lex->next;
 	}
 }
