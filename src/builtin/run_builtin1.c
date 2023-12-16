@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:17:26 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/12 16:06:47 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/16 14:39:38 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ void	declare_export(void *data, t_shell *m_shell)
 	write(str->outfile, "declare -x ", 11);
 	while (new->key[i])
 		write(str->outfile, &new->key[i++], 1);
-	if (new->value && new->key[0] > 31)
+	if (new->value && *(new->value) &&new->key[0] > 31)
 		write(str->outfile, "=", 1);
 	i = 0;
-	while (new->value && new->value[i])
+	while (new->value &&new->value[i])
 		write(str->outfile, &new->value[i++], 1);
 	write(str->outfile, "\n", 1);
 }
@@ -71,7 +71,7 @@ int	ft_strchrindex_0(char *s, int c)
 }
 int	export_key_control(char *text)
 {
-	int		i;
+	int	i;
 
 	if (text[0] == '=' || ft_isdigit(text[0]))
 		return (0);
@@ -90,16 +90,16 @@ int	export_print(char *text, char *cmd, t_shell *m_shell)
 
 	if (!export_key_control(text))
 	{
-		write(2,"minishell: export: `", 20);
-		write(2, text,ft_strlen(text));
+		write(2, "minishell: export: `", 20);
+		write(2, text, ft_strlen(text));
 		write(2, "': not a valid identifier\n", 26);
 		return (1);
 	}
 	if (ft_strchrindex_0(text, '=') != -1)
 	{
 		key = ft_substr(text, 0, ft_strchrindex(text, '='));
-		value = ft_substr(text, ft_strchrindex(text, '=')
-				+ 1, (ft_strlen(cmd) - 1));
+		value = ft_substr(text, ft_strchrindex(text, '=') + 1, (ft_strlen(cmd)
+					- 1));
 	}
 	else
 	{
@@ -112,7 +112,7 @@ int	export_print(char *text, char *cmd, t_shell *m_shell)
 
 int	exec_export(t_parse *data, t_shell *m_shell)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	if (data->text == NULL)

@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:25:49 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/15 01:29:08 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/16 14:42:24 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	print_list(void *data, t_shell *m_shell)
 		write(str->outfile, &new->key[i++], 1);
 	write(str->outfile, "=", 1);
 	i = 0;
-	while (new->value[i])
+	while (new->value && new->value[i])
 		write(str->outfile, &new->value[i++], 1);
 	write(str->outfile, "\n", 1);
 }
