@@ -6,15 +6,16 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:18:10 by akaniber          #+#    #+#             */
-/*   Updated: 2023/12/15 01:38:00 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/16 15:07:38 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <readline/readline.h>
 #include <signal.h>
-
+#include <string.h>
 void	signals(int sig)
 {
 	(void)sig;

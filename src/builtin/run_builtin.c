@@ -1,18 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   run_builtin.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/05 14:25:49 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/16 14:42:24 by emre             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "minishell.h"
-#include <unistd.h>
 #include <stdio.h>
+#include <unistd.h>
 
 void	run_echo(t_parse *data, int *i)
 {
@@ -32,6 +22,16 @@ void	run_echo(t_parse *data, int *i)
 	}
 }
 
+static int	all_n_chars(const char *str)
+{
+	while (*str != '\0')
+	{
+		if (*str != 'n')
+			return (0);
+		str++;
+	}
+	return (1);
+}
 void	exec_echo(t_parse *data, t_shell *m_shell)
 {
 	int	i;
@@ -43,7 +43,8 @@ void	exec_echo(t_parse *data, t_shell *m_shell)
 		write(data->outfile, "", 1);
 	else
 	{
-		if (ft_strcmp(data->text[0], "-n") == 0)
+		if (data->text[0][0] == '-' && data->text[0][1] == 'n'
+			&& all_n_chars(data->text[0] + 2))
 		{
 			i = 1;
 			if (data->text[1])
@@ -62,8 +63,8 @@ void	exec_echo(t_parse *data, t_shell *m_shell)
 void	print_list(void *data, t_shell *m_shell)
 {
 	t_parse	*str;
-	t_env		*new;
-	int			i;
+	t_env	*new;
+	int		i;
 
 	i = 0;
 	str = m_shell->parse;
@@ -74,7 +75,7 @@ void	print_list(void *data, t_shell *m_shell)
 		write(str->outfile, &new->key[i++], 1);
 	write(str->outfile, "=", 1);
 	i = 0;
-	while (new->value && new->value[i])
+	while (new->value &&new->value[i])
 		write(str->outfile, &new->value[i++], 1);
 	write(str->outfile, "\n", 1);
 }
