@@ -26,7 +26,8 @@ void	edit_env(t_list *node, char *key, char *value, t_shell *m_shell)
 			if (env->value)
 				free(env->value);
 			env->value = ft_strdup(value);
-			free(value);
+			if (value)
+				free(value);
 			free(key);
 			return ;
 		}
@@ -47,37 +48,84 @@ void	declare_export(void *data, t_shell *m_shell)
 	write(str->outfile, "declare -x ", 11);
 	while (new->key[i])
 		write(str->outfile, &new->key[i++], 1);
-	write(str->outfile, "=", 1);
+	if (new->value && new->key[0] > 31)
+		write(str->outfile, "=", 1);
 	i = 0;
-	while (new->value[i])
+	while (new->value && new->value[i])
 		write(str->outfile, &new->value[i++], 1);
 	write(str->outfile, "\n", 1);
+}
+
+int	ft_strchrindex_0(char *s, int c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == c)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+int	export_key_control(char *text)
+{
+	int		i;
+
+	if (text[0] == '=' || ft_isdigit(text[0]))
+		return (0);
+	i = 0;
+	while (text[i] && text[i] != '=' && (ft_isalnum(text[i]) || text[i] == '_'))
+		i++;
+	if (text[i] == '=' || !text[i])
+		return (1);
+	return (0);
+}
+
+int	export_print(char *text, char *cmd, t_shell *m_shell)
+{
+	char	*key;
+	char	*value;
+
+	if (!export_key_control(text))
+	{
+		write(2,"minishell: export: `", 20);
+		write(2, text,ft_strlen(text));
+		write(2, "': not a valid identifier\n", 26);
+		return (1);
+	}
+	if (ft_strchrindex_0(text, '=') != -1)
+	{
+		key = ft_substr(text, 0, ft_strchrindex(text, '='));
+		value = ft_substr(text, ft_strchrindex(text, '=')
+				+ 1, (ft_strlen(cmd) - 1));
+	}
+	else
+	{
+		key = ft_substr(text, 0, ft_strlen(text));
+		value = NULL;
+	}
+	edit_env(m_shell->env, key, value, m_shell);
+	return (0);
 }
 
 int	exec_export(t_parse *data, t_shell *m_shell)
 {
 	int		i;
-	char	*key;
-	char	*value;
 
 	i = 0;
-	key = NULL;
-	value = NULL;
 	if (data->text == NULL)
 		ft_newlstiter(m_shell->env, declare_export, m_shell);
-	else if (data->text[0][0] == '=')
-		return (write(2, "minishell: export: `", 20) + write(2, data->text[0],
-				ft_strlen(data->text[0])) + write(2,
-				"': not a valid identifier\n", 26));
 	else
 	{
 		while (data->text[i])
 		{
-			key = ft_substr(data->text[i], 0, ft_strchrindex(data->text[i],
-						'='));
-			value = ft_substr(data->text[i], ft_strchrindex(data->text[i], '=')
-					+ 1, (ft_strlen(data->cmd) - 1));
-			edit_env(m_shell->env, key, value, m_shell);
+			if (export_print(data->text[i], data->cmd, m_shell))
+			{
+				m_shell->exec_status = 1;
+				return (1);
+			}
 			i++;
 		}
 	}
@@ -95,7 +143,8 @@ int	unset_edit(t_list **node, t_list **prev_node, t_shell *m_shell)
 	else
 		(*prev_node)->next = (*node)->next;
 	free(tmp->key);
-	free(tmp->value);
+	if (tmp->value)
+		free(tmp->value);
 	free((*node)->content);
 	free(*node);
 	return (1);
