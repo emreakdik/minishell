@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:20:50 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/16 19:15:20 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/17 17:42:21 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,29 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	other_out_filesme(t_parse *parse)
+void	other_out_filesme(t_parse *parse, t_shell *m_shell)
 {
-	char	str[256];
-	char	*pwd;
 	char	*pwd1;
 	t_parse	*nparse;
+	char	*home;
 
-	getcwd(str, 256);
+	home = get_env(m_shell->env, "HOME");
+	pwd1 = NULL;
 	nparse = parse->next;
-	pwd = ft_strjoin(str, "/");
-	pwd1 = ft_strjoin(pwd, nparse->text[0]);
-	open(pwd1, O_CREAT | O_RDWR, 0777);
-	free(pwd1);
-	pwd1 = ft_strjoin(pwd, nparse->next->text[0]);
+	if (!ft_strnstr(nparse->text[0], home, ft_strlen(home)))
+		handle_absolue_path(&pwd1, parse);
+	else
+		pwd1 = ft_strdup(nparse->text[0]);
 	if (nparse->type == 4)
 		parse->fd = open(pwd1, O_CREAT | O_RDWR | O_APPEND, 0777);
 	else if (parse->type == 3)
 		parse->fd = open(pwd1, O_CREAT | O_RDWR | O_TRUNC, 0777);
 	parse->outfile = parse->fd;
-	if (pwd)
-		free(pwd);
 	if (pwd1)
 		free(pwd1);
 }
 
-void	other_text_create_me(t_parse *current_parse)
+void	other_text_create_me(t_parse *current_parse, t_shell *m_shell)
 {
 	t_parse	*n_parse;
 	int		i;
@@ -63,24 +60,25 @@ void	other_text_create_me(t_parse *current_parse)
 		n_parse = n_parse->next;
 	}
 	current_parse->text[i] = NULL;
-	other_out_filesme(current_parse);
+	other_out_filesme(current_parse, m_shell);
 }
 
-void	create_out_files_me(t_parse *current_parse, t_parse *first_parse)
+void	create_out_files_me(t_parse *current_parse, t_parse *first_parse,
+		t_shell *m_shell)
 {
-	char	str[256];
 	char	*pwd;
 	t_parse	*m_next;
-	char	*temp;
+	char	*home;
 
-	getcwd(str, 256);
+	home = get_env(m_shell->env, "HOME");
 	m_next = current_parse->next;
 	if (m_next->type == 3 || m_next->type == 4)
-		return (other_text_create_me(current_parse));
-	pwd = ft_strjoin(str, "/");
-	temp = ft_strjoin(pwd, m_next->text[0]);
-	free(pwd);
-	pwd = temp;
+		return (other_text_create_me(current_parse, m_shell));
+	if (!ft_strnstr(m_next->text[0], home, ft_strlen(home)))
+		handle_absolue_path(&pwd, current_parse);
+	else
+		pwd = ft_strdup(m_next->text[0]);
+	printf("pwd = %s\n", pwd);
 	if (current_parse->type == 4)
 		m_next->fd = open(pwd, O_CREAT | O_RDWR | O_APPEND, 0777);
 	else if (current_parse->type == 3)
@@ -96,7 +94,7 @@ void	create_out_files_me(t_parse *current_parse, t_parse *first_parse)
 int	create_files_m(t_shell *m_shell)
 {
 	t_parse	*current_parse;
-	t_parse  *first_parse;
+	t_parse	*first_parse;
 	int		i;
 
 	i = 1;
@@ -105,9 +103,9 @@ int	create_files_m(t_shell *m_shell)
 	while (current_parse)
 	{
 		if (current_parse->type == 3 || current_parse->type == 4)
-			create_out_files_me(current_parse, first_parse);
+			create_out_files_me(current_parse, first_parse, m_shell);
 		else if (current_parse->type == 5)
-			i = create_in_files_me(current_parse);
+			i = create_in_files_me(current_parse, m_shell);
 		current_parse = current_parse->next;
 	}
 	return (i);
