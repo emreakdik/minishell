@@ -17,6 +17,7 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 char	*add_char(char *str, char a)
 {

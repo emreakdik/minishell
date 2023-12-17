@@ -22,9 +22,8 @@ void	handle_relative_path(char **pwd, t_parse *current_parse)
 	char *temp;
 	t_parse *m_next;
 
-	str = NULL;
+	str = getcwd(NULL, 0);
 	m_next = current_parse->next;
-	str = getcwd(str, 256);
 	*pwd = ft_strjoin(str, "/");
 	temp = ft_strjoin(*pwd, m_next->text[0]);
 	free(*pwd);

@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:20:50 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/17 17:52:52 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/17 18:46:06 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	other_text_create_me(t_parse *current_parse, t_shell *m_shell)
 	i = 0;
 	while (current_parse->text[i])
 		i++;
-	while (n_parse->next && n_parse->type != 2)
+	while (n_parse && n_parse->type != 2)
 	{
 		j = 1;
 		while (n_parse->text[j])
@@ -75,7 +75,7 @@ void	create_out_files_me(t_parse *current_parse, t_parse *first_parse,
 	if (m_next->type == 3 || m_next->type == 4)
 		return (other_text_create_me(current_parse, m_shell));
 	if (!ft_strnstr(m_next->text[0], home, ft_strlen(home)))
-		handle_absolue_path(&pwd, current_parse);
+		handle_relative_path(&pwd, current_parse);
 	else
 		pwd = ft_strdup(m_next->text[0]);
 	printf("pwd = %s\n", pwd);

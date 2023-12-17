@@ -38,7 +38,6 @@ void	change_pwd(t_parse	*data, t_shell *m_shell)
 {
 	t_list	*tmp;
 	t_env	*env;
-	char	cwd[1024];
 
 	tmp = m_shell->env;
 	while (tmp)
@@ -55,7 +54,7 @@ void	change_pwd(t_parse	*data, t_shell *m_shell)
 		{
 			if (env->value)
 				free(env->value);
-			env->value = ft_strdup(getcwd(cwd, sizeof(cwd)));
+			env->value = getcwd(NULL, 0);
 		}
 		tmp = tmp->next;
 	}
@@ -71,10 +70,9 @@ void	exec_cd1(char *str, t_parse *data, t_shell *m_shell)
 
 void	exec_cd(t_parse *data, t_shell *m_shell)
 {
-	char	cwd[1024];
 	char	*str;
 
-	str = ft_strdup(getcwd(cwd, sizeof(cwd)));
+	str = getcwd(NULL, 0);
 	if (data->text && data->text[0])
 	{
 		if (chdir(data->text[0]) == 0)

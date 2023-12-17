@@ -32,11 +32,12 @@ void	edit_env_(t_list *node, char *key, char *value, t_shell *m_shell)
 
 void	exec_pwd(t_parse *data, t_shell *m_shell)
 {
-	char	cwd[1024];
+	char	*cwd;
+	cwd = getcwd(NULL, 0);
 
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	if (cwd != NULL)
 	{
-		write(data->outfile, &cwd, ft_strlen(cwd));
+		write(data->outfile, cwd, ft_strlen(cwd));
 		write(1, "\n", 1);
 		m_shell->exec_status = 0;
 	}
