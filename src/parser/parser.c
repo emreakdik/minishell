@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 12:24:15 by bakilli           #+#    #+#             */
-/*   Updated: 2023/12/16 20:55:50 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/17 15:16:56 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	remove_quotes_in_parse(t_parse *parse)
 
 	if (parse != NULL)
 	{
-		if (parse->cmd != NULL) // Add null check for cmd
+		if (parse->cmd != NULL)
 			remove_quotes_in_str(parse->cmd);
 		if (parse->text != NULL)
 		{

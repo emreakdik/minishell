@@ -11,6 +11,7 @@ SRC		:= src/builtin/builtin.c \
 			src/builtin/run_builtin1.c \
 			src/builtin/run_builtin2.c \
 			src/builtin/run_builtin3.c \
+			src/builtin/run_builtin4.c \
 			src/check/check.c \
 			src/check/check_utils.c \
 			src/dup2/dup2_fd.c \

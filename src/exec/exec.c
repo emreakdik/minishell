@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:21:19 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/16 19:47:08 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/17 14:56:37 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,8 @@ void	exec(char **env, t_shell *m_shell)
 	if (m_shell->parse->cmd && !ft_strcmp(m_shell->parse->cmd, "exit") && g_does_have_heredoc != -10
 		&& _next_command(&m_shell->parse) == NULL)
 	{
-		free_(m_shell);
-		free_loop(1, m_shell);
-		free(m_shell->lex_list);
-		free(m_shell);
-		write(1, "exit\n", 5);
-		exit(EXIT_SUCCESS);
+		builtin_exit(&m_shell);
+		return ;
 	}
 	x = single_or_multi_command(m_shell);
 	if (!x && g_does_have_heredoc != -10)

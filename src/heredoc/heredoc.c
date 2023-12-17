@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sekilinc <sekilinc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:24:52 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/16 19:27:53 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/16 21:25:35 by sekilinc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,11 @@ char	*add_char(char *str, char a)
 	int		i;
 	int		len;
 
-	len = ft_strlen(str);
-	tmp = malloc(sizeof(char) * (len + 2));
+	if (str == NULL)
+		len = 0;
+	else
+		len = ft_strlen(str);
+	tmp = ft_calloc(sizeof(char) * (len + 2), 1);
 	if (!tmp)
 		return (NULL);
 	i = 0;
@@ -40,7 +43,6 @@ char	*add_char(char *str, char a)
 		i++;
 	}
 	tmp[i] = a;
-	tmp[i + 1] = '\0';
 	free(str);
 	return (tmp);
 }
@@ -55,12 +57,12 @@ void	get_var(int *fd, t_shell *m_shell)
 		m_shell->heredoc = NULL;
 		return ;
 	}
-	m_shell->heredoc = ft_calloc(sizeof(char), 2);
+	/*m_shell->heredoc = ft_calloc(sizeof(char), 2);
 	if (!m_shell->heredoc)
 	{
 		free(a);
 		return ;
-	}
+	}*/
 	while (read(fd[0], a, 1))
 	{
 		m_shell->heredoc = add_char(m_shell->heredoc, *a);
