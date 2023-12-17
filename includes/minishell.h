@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:17:18 by akaniber          #+#    #+#             */
-/*   Updated: 2023/12/17 17:35:23 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/17 17:52:58 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,6 +222,6 @@ void				create_out_files_me(t_parse *current_parse,
 void				other_text_create_me(t_parse *current_parse,
 						t_shell *m_shell);
 void				other_out_filesme(t_parse *parse, t_shell *m_shell);
-void				handle_absolue_path(char **pwd, t_parse *current_parse);
+void				handle_relative_path(char **pwd, t_parse *current_parse);
 int					create_in_files_me(t_parse *parse, t_shell *shell);
 #endif

@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:20:50 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/17 17:42:21 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/17 17:52:52 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	other_out_filesme(t_parse *parse, t_shell *m_shell)
 	pwd1 = NULL;
 	nparse = parse->next;
 	if (!ft_strnstr(nparse->text[0], home, ft_strlen(home)))
-		handle_absolue_path(&pwd1, parse);
+		handle_relative_path(&pwd1, parse);
 	else
 		pwd1 = ft_strdup(nparse->text[0]);
 	if (nparse->type == 4)

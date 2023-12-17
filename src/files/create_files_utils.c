@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:20:44 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/17 17:42:10 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/17 17:52:48 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	handle_absolue_path(char **pwd, t_parse *current_parse)
+void	handle_relative_path(char **pwd, t_parse *current_parse)
 {
 	char	*str;
 	char *temp;
