@@ -6,7 +6,7 @@
 /*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 21:02:01 by emre              #+#    #+#             */
-/*   Updated: 2023/12/16 20:09:17 by emre             ###   ########.fr       */
+/*   Updated: 2023/12/17 17:51:51 by emre             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,6 @@ void	get_readline(t_shell *shell)
 	add_history(shell->cmd);
 }
 
-/**
- * Bu fonksiyon, shell komutunu analiz eder ve gerekli işlemleri gerçekleştirir.
- *
- * @param shell Shell yapısı
- * @param env Çevre değişkenleri dizisi
- */
 void	go_parser(t_shell *shell, char **env, int control)
 {
 	if (!control)
