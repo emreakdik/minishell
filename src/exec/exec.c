@@ -1,19 +1,9 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/05 14:21:19 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/17 14:56:37 by emre             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "minishell.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
 
 void	run_command(char **env, t_parse *tmp, int *fd, t_shell *m_shell)
 {
@@ -83,11 +73,11 @@ void	multi_command(char **env, int x, t_parse *parse, t_shell *m_shell)
 void	exec(char **env, t_shell *m_shell)
 {
 	int	x;
-	
+
 	if (g_does_have_heredoc != 0)
 		loop_heredoc(m_shell);
-	if (m_shell->parse->cmd && !ft_strcmp(m_shell->parse->cmd, "exit") && g_does_have_heredoc != -10
-		&& _next_command(&m_shell->parse) == NULL)
+	if (m_shell->parse->cmd && !ft_strcmp(m_shell->parse->cmd, "exit")
+		&& g_does_have_heredoc != -10 && _next_command(&m_shell->parse) == NULL)
 	{
 		builtin_exit(&m_shell);
 		return ;

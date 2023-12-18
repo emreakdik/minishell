@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/21 18:21:22 by yakdik            #+#    #+#             */
-/*   Updated: 2023/12/16 20:23:53 by emre             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../includes/minishell.h"
 #include <stdio.h>
@@ -75,22 +65,8 @@ static void	separate_cmd(char *cmd, t_lexer **lex_list)
 	free(cmd);
 }
 
-// static void	print_lexer(t_lexer *lex_list)
-// {
-// 	t_list	*lex;
-
-// 	lex = lex_list->lex;
-// 	while (lex)
-// 	{
-// 		printf(";;%s;;\n", (char *)lex->content);
-// 		lex = lex->next;
-// 	}
-// 	printf("\n");
-// }
-
 void	lexer(t_shell *shell)
 {
 	shell->lex_list->lex = NULL;
 	separate_cmd(shell->cmd, &shell->lex_list);
-	// print_lexer(shell->lex_list);
 }

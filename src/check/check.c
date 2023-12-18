@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   check.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/30 21:35:57 by akaniber          #+#    #+#             */
-/*   Updated: 2023/12/05 20:34:56 by emre             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../includes/minishell.h"
 #include <stdio.h>
@@ -26,17 +16,16 @@ int	is_valid_other(char *a, char *b)
 		return (0);
 	else if (((a[0] == '>' && a[1] == '>')) && (!ft_strcmp(a, b)))
 		return (0);
-	else if (((a[0] == '<' && a[1] != '<'))
-		&& (b[0] == '<' || b[0] == '>' || b[0] == '|'))
+	else if (((a[0] == '<' && a[1] != '<')) && (b[0] == '<' || b[0] == '>'
+			|| b[0] == '|'))
 		return (0);
-	else if ((a[0] == '>' && a[1] != '>')
-		&& (b[0] == '<' || b[0] == '>' || b[0] == '|'))
+	else if ((a[0] == '>' && a[1] != '>') && (b[0] == '<' || b[0] == '>'
+			|| b[0] == '|'))
 		return (0);
-	else if (((a[0] == '<' && a[1] == '<'))
-		&& (b[0] == '>' || b[0] == '|'))
+	else if (((a[0] == '<' && a[1] == '<')) && (b[0] == '>' || b[0] == '|'))
 		return (0);
-	else if ((a[0] == '>' && a[1] == '>')
-		&& (b[0] == '<' || b[0] == '>' || b[0] == '|'))
+	else if ((a[0] == '>' && a[1] == '>') && (b[0] == '<' || b[0] == '>'
+			|| b[0] == '|'))
 		return (0);
 	else if ((a[0] == '|' && !a[1] && b[0] == '|' && !b[1]))
 		return (0);
@@ -61,9 +50,8 @@ int	cmd_is_valid(t_lexer *lex_list, char *a, char *b)
 			return (print_error());
 		else if ((a[0] == '>' && !a[1]) && !b)
 			return (print_error());
-		else
-			if (!is_valid_other(a, b))
-				return (print_error());
+		else if (!is_valid_other(a, b))
+			return (print_error());
 		tmp = tmp->next;
 		i++;
 	}

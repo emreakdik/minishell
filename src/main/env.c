@@ -1,24 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 18:29:16 by aaybaz            #+#    #+#             */
-/*   Updated: 2023/12/15 01:32:50 by emre             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../includes/minishell.h"
 #include <stdlib.h>
 
-void get_title_from_env(t_shell **shell)
+void	get_title_from_env(t_shell **shell)
 {
-	char *user;
-	char *pwd;
-	char *title;
-	char *temp;
+	char	*user;
+	char	*pwd;
+	char	*title;
+	char	*temp;
 
 	user = get_env((*shell)->env, "USER");
 	pwd = get_env((*shell)->env, "PWD");
@@ -46,10 +36,10 @@ void	free_str(char **str)
 	free(str);
 }
 
-void env_get(char **env, t_shell **shell)
+void	env_get(char **env, t_shell **shell)
 {
-	t_env *a;
-	char **str;
+	t_env	*a;
+	char	**str;
 
 	free((*shell)->env);
 	(*shell)->env = NULL;

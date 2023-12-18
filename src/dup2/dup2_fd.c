@@ -1,27 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   dup2_fd.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/05 14:20:58 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/06 16:00:06 by emre             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "minishell.h"
 #include <unistd.h>
 
 void	_create_dup(t_shell *m_shell)
 {
-	int		new_fd[2];
+	int	new_fd[2];
 
 	pipe(new_fd);
-	write(new_fd[1], m_shell->heredoc,
-		ft_strlen(m_shell->heredoc));
+	write(new_fd[1], m_shell->heredoc, ft_strlen(m_shell->heredoc));
 	dup2(new_fd[0], 0);
-	close (new_fd[1]);
+	close(new_fd[1]);
 	close(new_fd[0]);
 }
 

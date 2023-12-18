@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expander.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/11 23:16:41 by emre              #+#    #+#             */
-/*   Updated: 2023/12/16 20:49:50 by emre             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../../includes/minishell.h"
 #include <stdio.h>
@@ -99,12 +89,14 @@ void	expander(t_shell *shell)
 		{
 			before = ft_substr(lex->content, 0, temp - (char *)lex->content);
 			if (check_quote(before, temp))
+			{
 				if (temp[1] == '?')
 					expand_question_mark(shell, lex, &temp, before);
 				else if (*(temp + 1) != '$' && *(temp + 1) != '\0')
 					expand_dollar_variable(shell, lex, &temp, before);
 				else
 					temp = ft_strchr(temp + 1, '$');
+			}
 			else
 				temp = ft_strchr(temp + 1, '$');
 			free(before);

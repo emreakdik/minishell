@@ -1,19 +1,9 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   run_builtin2.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yakdik <yakdik@student.42kocaeli.com.tr    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/05 14:26:02 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/03 16:24:18 by yakdik           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "minishell.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
 
 void	change_old(char *str, t_shell *m_shell)
 {
@@ -34,7 +24,7 @@ void	change_old(char *str, t_shell *m_shell)
 	}
 }
 
-void	change_pwd(t_parse	*data, t_shell *m_shell)
+void	change_pwd(t_parse *data, t_shell *m_shell)
 {
 	t_list	*tmp;
 	t_env	*env;
@@ -43,8 +33,8 @@ void	change_pwd(t_parse	*data, t_shell *m_shell)
 	while (tmp)
 	{
 		env = tmp->content;
-		if (!ft_strcmp(env->key, "PWD")
-			&& data->text && !ft_strcmp(data->text[0], "~"))
+		if (!ft_strcmp(env->key, "PWD") && data->text
+			&& !ft_strcmp(data->text[0], "~"))
 		{
 			if (env->value)
 				free(env->value);

@@ -1,5 +1,4 @@
 
-
 #include "minishell.h"
 #include <stdio.h>
 #include <unistd.h>
@@ -32,6 +31,7 @@ static int	all_n_chars(const char *str)
 	}
 	return (1);
 }
+
 void	exec_echo(t_parse *data, t_shell *m_shell)
 {
 	int	i;
@@ -75,7 +75,7 @@ void	print_list(void *data, t_shell *m_shell)
 		write(str->outfile, &new->key[i++], 1);
 	write(str->outfile, "=", 1);
 	i = 0;
-	while (new->value &&new->value[i])
+	while (new->value && new->value[i])
 		write(str->outfile, &new->value[i++], 1);
 	write(str->outfile, "\n", 1);
 }

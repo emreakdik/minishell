@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   run_execve.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/05 14:26:12 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/17 14:21:21 by emre             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../../includes/minishell.h"
 #include <stdio.h>
@@ -102,8 +92,8 @@ void	run_execve(t_parse *parse, char **env, int *fd, t_shell *m_shell)
 	{
 		full_cmd = get_args(parse);
 		create_dup(m_shell, parse);
-		if (!full_cmd || !parse->cmd || (execve(parse->cmd, full_cmd, env) ==
-				-1))
+		if (!full_cmd || !parse->cmd || (execve(parse->cmd, full_cmd, env)
+				== -1))
 		{
 			if (parse->cmd && ft_strcmp(parse->cmd, "<<"))
 				printf("minishell: %s: command not found\n", parse->cmd);

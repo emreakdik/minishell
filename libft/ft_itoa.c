@@ -1,21 +1,12 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: akaniber <akaniber@student.42kocaeli.com.  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 11:43:05 by akaniber          #+#    #+#             */
-/*   Updated: 2022/10/04 11:43:07 by akaniber         ###   ########.tr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "libft.h"
 #include <stdlib.h>
 
+
 static int	ft_cal_number_digits(int n)
 {
-	int	res;
+	int res;
 
 	res = 0;
 	if (n < 0)
@@ -35,8 +26,8 @@ static int	ft_cal_number_digits(int n)
 
 char	*ft_itoa(int n)
 {
-	char	*res;
-	int		num_digits;
+	char *res;
+	int num_digits;
 
 	num_digits = ft_cal_number_digits(n);
 	res = malloc((num_digits + 1) * sizeof(char));

@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   run_builtin1.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/05 14:17:26 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/16 14:39:38 by emre             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "minishell.h"
 #include <stdlib.h>
@@ -48,10 +38,10 @@ void	declare_export(void *data, t_shell *m_shell)
 	write(str->outfile, "declare -x ", 11);
 	while (new->key[i])
 		write(str->outfile, &new->key[i++], 1);
-	if (new->value && *(new->value) &&new->key[0] > 31)
+	if (new->value && *(new->value) && new->key[0] > 31)
 		write(str->outfile, "=", 1);
 	i = 0;
-	while (new->value &&new->value[i])
+	while (new->value && new->value[i])
 		write(str->outfile, &new->value[i++], 1);
 	write(str->outfile, "\n", 1);
 }
@@ -69,6 +59,7 @@ int	ft_strchrindex_0(char *s, int c)
 	}
 	return (-1);
 }
+
 int	export_key_control(char *text)
 {
 	int	i;

@@ -1,23 +1,23 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   heredoc.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sekilinc <sekilinc@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/05 14:24:52 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/16 21:25:35 by sekilinc         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
+
+
+
+
+
+
+
+
+
+
 
 #include "minishell.h"
-#include <signal.h>
 #include <stdio.h>
-#include <readline/readline.h>
 #include <readline/history.h>
+#include <readline/readline.h>
+#include <signal.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
 char	*add_char(char *str, char a)
 {
@@ -58,12 +58,6 @@ void	get_var(int *fd, t_shell *m_shell)
 		m_shell->heredoc = NULL;
 		return ;
 	}
-	/*m_shell->heredoc = ft_calloc(sizeof(char), 2);
-	if (!m_shell->heredoc)
-	{
-		free(a);
-		return ;
-	}*/
 	while (read(fd[0], a, 1))
 	{
 		m_shell->heredoc = add_char(m_shell->heredoc, *a);
@@ -79,8 +73,8 @@ void	get_var(int *fd, t_shell *m_shell)
 
 void	get_input(t_parse *parse, int *fd)
 {
-	char		*delimiter;
-	char		*buffer;
+	char	*delimiter;
+	char	*buffer;
 
 	delimiter = parse->next->text[0];
 	while (1 && g_does_have_heredoc != -3)
@@ -101,8 +95,8 @@ void	get_input(t_parse *parse, int *fd)
 
 void	heredoc(t_parse *parse, t_shell *m_shell)
 {
-	int		fd[2];
-	int		id;
+	int	fd[2];
+	int	id;
 
 	pipe(fd);
 	signal(SIGINT, set_heredoc);

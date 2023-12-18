@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/19 17:30:44 by aaybaz            #+#    #+#             */
-/*   Updated: 2023/12/06 13:29:59 by emre             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <stdlib.h>
@@ -33,25 +22,12 @@ void	parse_text_m(t_parse *parse, char *str, int *j, int *flag)
 	*flag = 1;
 }
 
-/**
- * Bu fonksiyon,
-	t_parse yapısı içindeki text alanını serbest bırakır ve NULL olarak ayarlar.
- *
- * @param parse t_parse yapısı
- */
 void	flag_(t_parse *parse)
 {
 	free_text(parse->text);
 	parse->text = NULL;
 }
 
-/**
- * Bu fonksiyon, verilen bir karakter dizisini analiz ederek,
-	belirli bir tür ataması yapar.
- *
- * @param parse - Analiz edilen verinin türünü tutan parse yapısı
- * @param str - Analiz edilecek karakter dizisi
- */
 void	tokenize_type_m(t_parse **parse, const char *str)
 {
 	if (str[0] == '|')

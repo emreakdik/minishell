@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   create_files.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/05 14:20:50 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/17 18:46:06 by emre             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "minishell.h"
 #include <fcntl.h>
@@ -36,6 +26,7 @@ void	other_out_filesme(t_parse *parse, t_shell *m_shell)
 	parse->outfile = parse->fd;
 	if (pwd1)
 		free(pwd1);
+	free(home);
 }
 
 void	other_text_create_me(t_parse *current_parse, t_shell *m_shell)
@@ -73,7 +64,7 @@ void	create_out_files_me(t_parse *current_parse, t_parse *first_parse,
 	home = get_env(m_shell->env, "HOME");
 	m_next = current_parse->next;
 	if (m_next->type == 3 || m_next->type == 4)
-		return (other_text_create_me(current_parse, m_shell));
+		return (free(home), other_text_create_me(current_parse, m_shell));
 	if (!ft_strnstr(m_next->text[0], home, ft_strlen(home)))
 		handle_relative_path(&pwd, current_parse);
 	else
@@ -89,6 +80,7 @@ void	create_out_files_me(t_parse *current_parse, t_parse *first_parse,
 		first_parse->outfile = m_next->fd;
 	if (pwd)
 		free(pwd);
+	free(home);
 }
 
 int	create_files_m(t_shell *m_shell)

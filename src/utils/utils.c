@@ -1,18 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/05 13:48:13 by ealbayra          #+#    #+#             */
-/*   Updated: 2023/12/08 16:11:17 by codespace        ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../../includes/minishell.h"
-#include <sys/wait.h>
 #include <stdlib.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 void	wait_all(t_shell *m_shell)
@@ -60,13 +50,6 @@ void	_multi_command(t_parse **parse)
 		(*parse) = (*parse)->next;
 	}
 }
-
-// void	fd_init(int *fd)
-// {
-// 	fd = (int *)malloc(sizeof(int) * 2);
-// 	if (!fd)
-// 		return (NULL);
-// }
 
 void	ft_newlstiter(t_list *lst, void (*f)(void *, t_shell *), t_shell *shell)
 {

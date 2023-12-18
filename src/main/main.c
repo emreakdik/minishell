@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: emre <emre@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/04 21:02:01 by emre              #+#    #+#             */
-/*   Updated: 2023/12/17 17:51:51 by emre             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../includes/minishell.h"
 #include <stdio.h>
@@ -106,6 +96,5 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		}
 		free_loop(control, shell);
-		// system("leaks --atExit -- ./minishell");
 	}
 }

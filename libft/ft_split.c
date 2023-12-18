@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: akaniber <akaniber@student.42kocaeli.co    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/07 19:21:52 by akaniber          #+#    #+#             */
-/*   Updated: 2023/10/15 19:56:35 by akaniber         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "libft.h"
 #include <stdlib.h>
@@ -52,7 +42,7 @@ static char	**ft_split_words(char **res, char const *s, char c, int word_ct)
 	int	word_ln;
 
 	i = 0;
-	j = 0 ;
+	j = 0;
 	word_ln = 0;
 	while (s[j] && i < word_ct)
 	{
@@ -66,7 +56,7 @@ static char	**ft_split_words(char **res, char const *s, char c, int word_ct)
 		res[i] = (char *)malloc(sizeof(char) * (word_ln + 1));
 		if (!res[i])
 			return (0);
-		ft_make_words (res[i], s, j, word_ln);
+		ft_make_words(res[i], s, j, word_ln);
 		word_ln = 0;
 		i++;
 	}
@@ -85,6 +75,6 @@ char	**ft_split(char const *s, char c)
 	res = (char **)malloc(sizeof(char *) * (word_ct + 1));
 	if (!res)
 		return (0);
-	ft_split_words (res, s, c, word_ct);
+	ft_split_words(res, s, c, word_ct);
 	return (res);
 }
