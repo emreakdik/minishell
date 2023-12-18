@@ -52,9 +52,8 @@ static void	remove_quotes_in_parse(t_parse *parse)
 	}
 }
 
-void	mini_parse(t_list *lex, t_shell *m_shell, int a[3])
+void	mini_parse(t_list *lex, t_shell *m_shell, int a[3], char *str)
 {
-	char	*str;
 	t_parse	*parse;
 
 	parse = parse_init((size_t)ft_lstsize(lex));
@@ -84,12 +83,14 @@ void	mini_parse(t_list *lex, t_shell *m_shell, int a[3])
 
 int	ft_parser(t_shell *m_shell)
 {
-	int	a[3];
+	int		a[3];
+	char	*content;
 
+	content = NULL;
 	a[0] = 0;
 	a[1] = 0;
 	a[2] = 0;
-	mini_parse(m_shell->lex_list->lex, m_shell, a);
+	mini_parse(m_shell->lex_list->lex, m_shell, a, content);
 	free_node(m_shell->lex_list->lex);
 	return (create_files_m(m_shell));
 }

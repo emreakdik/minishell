@@ -27,8 +27,6 @@ void	expand_dollar_variable(t_shell *shell, t_list *lex, char **temp,
 		free(new_value);
 		*temp = ft_strchr(lex->content + ft_strlen(before), '$');
 	}
-	else
-		*temp = ft_strchr(*temp + 1, '$');
 }
 
 void	expand_question_mark(t_shell *shell, t_list *lex, char **temp,
@@ -73,6 +71,16 @@ static void	expander_tilde(t_shell *shell, t_list *lex)
 		free(home);
 }
 
+void	handle_dollar(t_shell *shell, t_list *lex, char **temp, char *before)
+{
+	if ((*temp)[1] == '?')
+		expand_question_mark(shell, lex, temp, before);
+	else if (**(temp + 1) != '$' && **(temp + 1) != '\0')
+		expand_dollar_variable(shell, lex, temp, before);
+	else
+		*temp = ft_strchr(*temp + 1, '$');
+}
+
 void	expander(t_shell *shell)
 {
 	char	*temp;
@@ -89,14 +97,7 @@ void	expander(t_shell *shell)
 		{
 			before = ft_substr(lex->content, 0, temp - (char *)lex->content);
 			if (check_quote(before, temp))
-			{
-				if (temp[1] == '?')
-					expand_question_mark(shell, lex, &temp, before);
-				else if (*(temp + 1) != '$' && *(temp + 1) != '\0')
-					expand_dollar_variable(shell, lex, &temp, before);
-				else
-					temp = ft_strchr(temp + 1, '$');
-			}
+				handle_dollar(shell, lex, &temp, before);
 			else
 				temp = ft_strchr(temp + 1, '$');
 			free(before);

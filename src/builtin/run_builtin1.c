@@ -4,28 +4,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	edit_env(t_list *node, char *key, char *value, t_shell *m_shell)
-{
-	t_env	*env;
-
-	while (node != NULL)
-	{
-		env = (t_env *)node->content;
-		if (ft_strcmp(env->key, key) == 0)
-		{
-			if (env->value)
-				free(env->value);
-			env->value = ft_strdup(value);
-			if (value)
-				free(value);
-			free(key);
-			return ;
-		}
-		node = node->next;
-	}
-	edit_env_(node, key, value, m_shell);
-}
-
 void	declare_export(void *data, t_shell *m_shell)
 {
 	t_parse	*str;
@@ -44,34 +22,6 @@ void	declare_export(void *data, t_shell *m_shell)
 	while (new->value && new->value[i])
 		write(str->outfile, &new->value[i++], 1);
 	write(str->outfile, "\n", 1);
-}
-
-int	ft_strchrindex_0(char *s, int c)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == c)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-int	export_key_control(char *text)
-{
-	int	i;
-
-	if (text[0] == '=' || ft_isdigit(text[0]))
-		return (0);
-	i = 0;
-	while (text[i] && text[i] != '=' && (ft_isalnum(text[i]) || text[i] == '_'))
-		i++;
-	if (text[i] == '=' || !text[i])
-		return (1);
-	return (0);
 }
 
 int	export_print(char *text, char *cmd, t_shell *m_shell)

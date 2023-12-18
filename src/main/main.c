@@ -44,6 +44,7 @@ void	get_readline(t_shell *shell)
 
 void	go_parser(t_shell *shell, char **env, int control)
 {
+	control = check(shell);
 	if (!control)
 	{
 		error_free(&(shell->lex_list)->lex);
@@ -54,6 +55,7 @@ void	go_parser(t_shell *shell, char **env, int control)
 		if (ft_parser(shell))
 			exec(env, shell);
 	}
+	free_loop(control, shell);
 }
 
 void	error_free(t_list **node)
@@ -87,7 +89,6 @@ int	main(int ac, char **av, char **env)
 		{
 			lexer(shell);
 			expander(shell);
-			control = check(shell);
 			go_parser(shell, env, control);
 		}
 		else
@@ -95,6 +96,5 @@ int	main(int ac, char **av, char **env)
 			(free(shell->cmd), free(shell->title));
 			continue ;
 		}
-		free_loop(control, shell);
 	}
 }

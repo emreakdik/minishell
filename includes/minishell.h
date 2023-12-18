@@ -79,7 +79,7 @@ void				expander(t_shell *shell);
 /**
  * Parser Functions
  */
-void				mini_parse(t_list *lex, t_shell *m_shell, int a[3]);
+void	mini_parse(t_list *lex, t_shell *m_shell, int a[3], char *str);
 void				flag_(t_parse *parse);
 void				parse_text_m(t_parse *parse, char *str, int *j, int *flag);
 void				tokenize_type_m(t_parse **parse, const char *str);
@@ -145,6 +145,8 @@ void				edit_env_(t_list *node, char *key, char *value,
 						t_shell *m_shell);
 void				exec_pwd(t_parse *data, t_shell *m_shell);
 char				*get_home(t_shell *m_shell);
+int					export_key_control(char *text);
+int					ft_strchrindex_0(char *s, int c);
 
 /**
  * Signals Functions
