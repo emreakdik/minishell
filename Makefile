@@ -71,10 +71,6 @@ fclean:
 	@rm -rf $(OBJDIR)
 	@rm -f $(NAME)
 
-valgrind:
-	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
-
-norm:
-	norminette libft
-
 re:	fclean all
+
+.PHONY: all clean fclean re
