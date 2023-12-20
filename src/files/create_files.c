@@ -21,7 +21,7 @@ void	other_out_filesme(t_parse *parse, t_shell *m_shell)
 		pwd1 = ft_strdup(nparse->text[0]);
 	if (nparse->type == 4)
 		parse->fd = open(pwd1, O_CREAT | O_RDWR | O_APPEND, 0777);
-	else if (parse->type == 3)
+	else if (nparse->type == 3)
 		parse->fd = open(pwd1, O_CREAT | O_RDWR | O_TRUNC, 0777);
 	parse->outfile = parse->fd;
 	if (pwd1)
@@ -69,7 +69,6 @@ void	create_out_files_me(t_parse *current_parse, t_parse *first_parse,
 		handle_relative_path(&pwd, current_parse);
 	else
 		pwd = ft_strdup(m_next->text[0]);
-	printf("pwd = %s\n", pwd);
 	if (current_parse->type == 4)
 		m_next->fd = open(pwd, O_CREAT | O_RDWR | O_APPEND, 0777);
 	else if (current_parse->type == 3)
