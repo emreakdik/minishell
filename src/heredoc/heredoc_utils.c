@@ -22,7 +22,7 @@ void	killer(int sig)
 	(void)sig;
 	g_does_have_heredoc = -3;
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
-	rl_replace_line("", 0);
+	// rl_replace_line("", 0);
 	rl_on_new_line();
 }
 

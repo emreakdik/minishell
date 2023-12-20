@@ -75,7 +75,7 @@ void	handle_dollar(t_shell *shell, t_list *lex, char **temp, char *before)
 {
 	if ((*temp)[1] == '?')
 		expand_question_mark(shell, lex, temp, before);
-	else if (**(temp + 1) != '$' && **(temp + 1) != '\0')
+	else if ((*temp)[1] != '$' && ft_strcmp((*temp), "$") != 0)
 		expand_dollar_variable(shell, lex, temp, before);
 	else
 		*temp = ft_strchr(*temp + 1, '$');
